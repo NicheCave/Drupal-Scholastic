@@ -1,0 +1,63 @@
+<section class="bg-surface-container-lowest border-t border-surface-container-high py-20">
+  <div class="max-w-7xl mx-auto px-8">
+    <h2 class="text-3xl font-headline font-extrabold text-primary mb-10">
+      {{ 'Related Technical Guides'|t }}
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {% for row in rows %}
+        {% set node = row.content['#row']._entity %}
+        {% set node_url = path('entity.node.canonical', {'node': node.id}) %}
+        <article class="bg-white rounded-xl overflow-hidden shadow-sm
+                        hover:shadow-md transition-shadow border border-surface-container-high
+                        flex flex-col relative group">
+
+          {# Full-card clickable overlay #}
+          <a href="{{ node_url }}"
+             class="absolute inset-0 z-10"
+             aria-label="{{ node.label }}"></a>
+
+          {# Hero image #}
+          <div class="bento-card-img aspect-video overflow-hidden bg-surface-container">
+            {% if node.field_hero_image.entity %}
+              {% set media = node.field_hero_image.entity %}
+              {% if media.field_media_image.entity %}
+                <img
+                  src="{{ file_url(media.field_media_image.entity.uri.value) }}"
+                  alt="{{ media.field_media_image.alt }}"
+                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              {% endif %}
+            {% endif %}
+          </div>
+
+          {# Card body #}
+          <div class="p-6 flex flex-col gap-3 flex-1">
+
+            {# Category pill #}
+            {% if node.field_category.entity %}
+              <div class="bg-secondary-container text-on-secondary-container px-3 py-1
+                          text-xs font-semibold rounded-full uppercase tracking-wider
+                          font-label w-fit">
+                {{ node.field_category.entity.label }}
+              </div>
+            {% endif %}
+
+            {# Title #}
+            <h3 class="text-lg font-headline font-bold text-primary leading-snug
+                       group-hover:underline">
+              {{ node.label }}
+            </h3>
+
+            {# Subtitle #}
+            {% if node.field_subtitle.value %}
+              <p class="text-sm text-on-surface-variant leading-relaxed font-body line-clamp-2">
+                {{ node.field_subtitle.value }}
+              </p>
+            {% endif %}
+
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

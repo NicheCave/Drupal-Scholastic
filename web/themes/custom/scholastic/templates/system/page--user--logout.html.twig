@@ -1,0 +1,98 @@
+<div class="min-h-screen flex items-center justify-center bg-surface px-4 relative overflow-hidden">
+
+  {# Subtle background decoration #}
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-container/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col items-center gap-8 w-full max-w-sm">
+
+    {# Logo #}
+    <a href="/" class="no-underline">
+      <div class="text-xl font-extrabold tracking-tighter text-primary font-headline">Drupal Scholastic</div>
+    </a>
+
+    {# Card #}
+    <div class="w-full bg-white rounded-2xl shadow-xl shadow-primary/5 border border-surface-container-high p-10 flex flex-col items-center gap-6">
+
+      {# Icon #}
+      <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary" style="font-size:32px; font-variation-settings: 'FILL' 0, 'wght' 300;">logout</span>
+      </div>
+
+      {# Heading #}
+      <div class="text-center">
+        <h1 class="text-2xl font-extrabold text-primary font-headline mb-2">Sign out?</h1>
+        <p class="text-sm text-on-surface-variant font-body leading-relaxed">
+          You'll be signed out of your Drupal Scholastic account. You can always sign back in.
+        </p>
+      </div>
+
+      <div class="w-full logout-form-wrapper">
+        {{ page.content }}
+      </div>
+
+    </div>
+
+    {# Back link #}
+    <a href="/" class="flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors no-underline font-body">
+      <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
+      Back to home
+    </a>
+
+  </div>
+
+</div>
+
+<style>
+  /* The "Log out" button — override the global .form-submit to be full-width danger-adjacent */
+  .logout-form-wrapper .form-submit {
+    width: 100%;
+    background-color: #001f3c; /* primary */
+    color: #ffffff;
+    padding: 0.85rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    border: none;
+    margin-top: 0;
+    transition: opacity 0.15s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .logout-form-wrapper .form-submit:hover {
+    opacity: 0.88;
+    background-color: #001f3c;
+  }
+
+  /* The "Cancel" link — render as a subtle secondary button */
+  .logout-form-wrapper a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #f3f4f5; /* surface-container-low */
+    color: #43474f;            /* on-surface-variant */
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .logout-form-wrapper a:hover {
+    background-color: #e7e8e9; /* surface-container-high */
+    color: #001f3c;
+  }
+
+  /* Hide the default form margins Drupal adds */
+  .logout-form-wrapper form {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+</style>

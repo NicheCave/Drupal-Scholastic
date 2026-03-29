@@ -1,0 +1,42 @@
+{#
+  paragraph--feature-item.html.twig
+  FOLDER: themes/custom/scholastic/templates/paragraph/
+
+  Fields (Structure → Paragraph types → Feature Item → Manage fields):
+    field_icon        → Text plain  — enter a Material Symbols name
+                        e.g. "architecture", "security", "hub", "bolt"
+                        Browse icons at: https://fonts.google.com/icons
+    field_title       → Text plain
+    field_description → Text plain long
+
+  NOTE: field_icon must be rendered with |render|striptags|trim so only
+  the icon name string is output — not Drupal's field wrapper markup.
+  Without this the <span> would contain wrapper divs and the icon fails.
+#}
+
+<div class="bg-surface p-10 flex flex-col gap-4 h-full
+            hover:bg-surface-container-lowest transition-colors duration-200">
+
+  {# Material Symbol icon — renders the icon name as text inside <span> #}
+  {% if content.field_icon|render %}
+    <span class="material-symbols-outlined"
+          style="font-size:2.5rem; color:#1460a4; line-height:1;">
+      {{- content.field_icon|render|striptags|trim -}}
+    </span>
+  {% endif %}
+
+  {# Feature title #}
+  {% if content.field_title|render %}
+    <h3 class="text-lg font-bold text-primary font-headline leading-snug">
+      {{ content.field_title }}
+    </h3>
+  {% endif %}
+
+  {# Description #}
+  {% if content.field_description|render %}
+    <p class="text-sm text-on-surface-variant leading-relaxed font-body">
+      {{ content.field_description }}
+    </p>
+  {% endif %}
+
+</div>

@@ -1,0 +1,114 @@
+{#
+  views-view-unformatted--tutorial-categories.html.twig
+
+  Sidebar "CURATIONS" block: lists taxonomy categories with tutorial
+  counts and links to the filtered /tutorials page.
+
+  ── HOW TO SET UP THE VIEW ───────────────────────────────────────────
+  View machine name : tutorial_categories
+  Show             : Taxonomy terms
+  Vocabulary       : tutorial_category (your category vocabulary)
+
+  Fields (in order, all "Exclude from display"):
+    1. Taxonomy term: Name
+       • Machine name: name
+       • Formatter: Plain text (no link)
+
+    2. COUNT of Content ID  ← requires "Use aggregation" to be ON
+       • Relationship first: add "Taxonomy term: Content using Tutorial Category"
+         Call it "tutorial_nodes" — filter by Content type = Tutorial, published
+       • Then add field: Content: Nid  → set to Aggregation → COUNT
+       • Machine name: nid (or count)
+
+  Exposed filter:  none — this block just generates links, it does not
+                   expose its own filter.
+
+  Sort: Name ASC (or Count DESC for popular-first)
+  Pager: Display all items (no pager in the sidebar)
+  Block display: machine name block_1
+
+  Place block in:  sidebar_first region
+  Visibility:      Pages → /tutorials  and  /tutorials/*
+
+  ── HOW THE LINKS WORK ──────────────────────────────────────────────
+  Each category link points to:
+    /tutorials?field_category_target_id=<term_id>
+
+  This targets the exposed filter on the "All Tutorials" view page.
+  The term id is read directly from the entity so no field rewriting
+  is needed.
+
+  The "All Modules" totals row is computed by summing all counts in
+  Twig — no extra query needed.
+#}
+
+{# ── Pre-compute grand total from all rows ── #}
+{% set grand_total = 0 %}
+{% for row in rows %}
+  {% set vsp   = row.content['#view'].style_plugin %}
+  {% set idx   = loop.index0 %}
+  {% set count = vsp.getField(idx, 'nid')|striptags|trim|number_format(0, '.', '') %}
+  {% set grand_total = grand_total + count %}
+{% endfor %}
+
+{# ── Current active filter (if any) ── #}
+{% set active_tid = app.request.query.get('field_category_target_id') %}
+
+{# ── CURATIONS label ── #}
+<div>
+  <p class="text-[10px] font-bold tracking-widest uppercase text-outline mb-3 font-label">
+    {{ "Curations"|t }}
+  </p>
+
+  <nav aria-label="{{ 'Tutorial categories'|t }}">
+    <ul class="list-none p-0 m-0 flex flex-col gap-1">
+
+      {# "All Modules" link — clears the category filter #}
+      <li>
+        <a href="/tutorials"
+           class="flex items-center justify-between w-full px-3 py-2 rounded-lg
+                  font-body text-sm transition-colors no-underline
+                  {% if not active_tid %}
+                    bg-primary text-on-primary font-bold
+                  {% else %}
+                    text-on-surface-variant hover:bg-surface-container hover:text-primary
+                  {% endif %}">
+          <span>{{ "All Modules"|t }}</span>
+          <span class="text-xs font-bold
+                       {% if not active_tid %}opacity-70{% else %}text-outline{% endif %}">
+            {{ grand_total }}
+          </span>
+        </a>
+      </li>
+
+      {# One link per taxonomy term #}
+      {% for row in rows %}
+        {% set vsp   = row.content['#view'].style_plugin %}
+        {% set idx   = loop.index0 %}
+        {% set name  = vsp.getField(idx, 'name')|striptags|trim %}
+        {% set count = vsp.getField(idx, 'nid')|striptags|trim %}
+        {% set tid   = row.content['#row']._entity.id() %}
+        {% set is_active = (active_tid == tid) %}
+
+        <li>
+          <a href="/tutorials?field_category_target_id={{ tid }}"
+             class="flex items-center justify-between w-full px-3 py-2 rounded-lg
+                    font-body text-sm transition-colors no-underline
+                    {% if is_active %}
+                      bg-primary text-on-primary font-bold
+                    {% else %}
+                      text-on-surface-variant hover:bg-surface-container hover:text-primary
+                    {% endif %}"
+             {% if is_active %}aria-current="true"{% endif %}>
+            <span>{{ name }}</span>
+            <span class="text-xs font-bold
+                         {% if is_active %}opacity-70{% else %}text-outline{% endif %}">
+              {{ count }}
+            </span>
+          </a>
+        </li>
+      {% endfor %}
+
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,27 @@
+{#
+  FILENAME: block--block-content--section-header.html.twig
+  FOLDER:   themes/custom/scholastic/templates/block/
+            ↑ must be in the /block/ subfolder, not /templates/ directly
+
+  Fields (exact machine names from your Manage fields):
+    field_section_eyebrow        → Text plain
+    field_section_header_heading → Text plain
+    field_link                   → Link
+#}
+<div class="flex justify-between items-end mb-16">
+
+  <div>
+    <span class="text-surface-tint font-bold text-sm tracking-widest uppercase block mb-2">
+      {{ content.field_section_eyebrow }}
+    </span>
+    <h2 class="text-4xl font-extrabold text-primary font-headline">
+      {{ content.field_section_header_heading }}
+    </h2>
+  </div>
+
+  <div class="flex items-center gap-1 text-primary font-bold">
+    {{ content.field_link }}
+    <span class="material-symbols-outlined" style="font-size:20px; color:#001f3c;">arrow_forward</span>
+  </div>
+
+</div>

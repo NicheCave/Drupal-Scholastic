@@ -1,0 +1,66 @@
+<article{{ attributes.addClass('node-tutorial') }}>
+
+  {# 1. Hero Header Section #}
+  <header class="bg-surface-container-low pt-20 pb-16">
+    <div class="max-w-7xl mx-auto px-8">
+      <div class="flex flex-col gap-6 prose-column mx-auto lg:mx-0">
+        <div class="flex items-center gap-3">
+          {# Category Pill #}
+          <div class="bg-secondary-container text-on-secondary-container px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wider font-label">
+            {{ content.field_category }}
+          </div>
+          <span class="text-on-surface-variant text-sm font-label">
+            Published {{ node.getCreatedTime()|date('F j, Y') }}
+          </span>
+        </div>
+        
+        <h1 class="text-5xl md:text-6xl font-headline font-extrabold tracking-tighter leading-tight text-primary">
+          {{ label }}
+        </h1>
+        
+        <div class="text-xl text-on-surface-variant leading-relaxed font-body">
+          {{ content.field_subtitle }}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {# 2. Main Layout Grid #}
+  <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-16 py-16">
+    
+    {# Sidebar: Pro-Tip & Navigation #}
+    <aside class="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
+      {% if content.field_pro_tip|render %}
+        <div class="bg-tertiary-container p-6 rounded-xl text-on-tertiary">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+            <span class="font-bold font-headline">Pro-Tip</span>
+          </div>
+          <div class="text-sm leading-relaxed opacity-90">
+            {{ content.field_pro_tip }}
+          </div>
+        </div>
+      {% endif %}
+    </aside>
+
+    {# Main Tutorial Content #}
+    <div class="lg:col-span-9">
+      <div class="prose-column mx-auto lg:mx-0 flex flex-col gap-16">
+        
+        {# Hero Image #}
+        <div class="rounded-xl overflow-hidden shadow-2xl shadow-primary/5 w-full"
+             style="aspect-ratio: 16/9;"
+             data-tutorial-img-wrap>
+          {{ content.field_hero_image }}
+        </div>
+
+        {# Main Body Text #}
+        <div class="text-lg leading-relaxed text-on-surface-variant">
+          {{ content.field_body }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</article>

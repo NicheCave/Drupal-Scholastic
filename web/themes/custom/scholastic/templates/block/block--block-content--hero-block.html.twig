@@ -1,0 +1,160 @@
+{#
+  block--block-content--hero-block.html.twig
+  FOLDER: themes/custom/scholastic/templates/block/
+
+  Fields (Structure → Block types → Hero Block → Manage fields):
+    field_eyebrow        → Text plain         e.g. "Architectural Learning"
+    field_heading        → Text plain         e.g. "Master Drupal's"
+    field_heading_accent → Text plain         e.g. "Core Architecture"
+    field_description    → Text plain long    subtitle paragraph
+    field_cta_primary    → Link               "Browse Tutorials" → /tutorials
+    field_cta_secondary  → Link               "Learn More" → /about
+    field_hero_image     → Media reference (Image)
+
+  IMAGE FIX EXPLAINED:
+  Drupal wraps the <img> in several divs:
+    .field  >  .field__items  >  .field__item  >  .media  >  img
+  The [data-hero-img-wrap] attribute + CSS in html.html.twig forces
+  every one of those wrappers to width/height:100% so the image fills
+  its parent container. No class-name guessing required.
+#}
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+  {# ── Left: text content ── #}
+  <div class="z-10 flex flex-col gap-6">
+
+    {# Eyebrow label — from field_eyebrow, editable in Block admin #}
+    {% if content.field_eyebrow|render %}
+      <span class="inline-block py-1.5 px-4 bg-secondary-container text-on-secondary-container
+                   text-xs font-bold tracking-widest uppercase rounded font-label w-fit">
+        {{ content.field_eyebrow }}
+      </span>
+    {% endif %}
+
+    {# Main heading — two lines: base + accent colour #}
+    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.08]
+               text-primary font-headline tracking-tighter">
+      {{ content.field_heading }}
+      {% if content.field_heading_accent|render %}
+        <span class="block" style="color:#1460a4;">
+          {{ content.field_heading_accent }}
+        </span>
+      {% endif %}
+    </h1>
+
+    {# Description paragraph #}
+    {% if content.field_description|render %}
+      <div class="text-lg text-on-surface-variant leading-relaxed max-w-[520px] font-body">
+        {{ content.field_description }}
+      </div>
+    {% endif %}
+
+    {# CTA buttons — primary (gradient) + secondary (tonal) #}
+    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+
+      {% if content.field_cta_primary|render %}
+        {#
+          Drupal renders field_cta_primary as <a href="…">Label</a>.
+          We wrap it in a styled <div> so the Link field value controls the
+          URL and text — no hardcoding needed.
+        #}
+        <div class="cta-primary-wrap">
+          {{ content.field_cta_primary }}
+        </div>
+      {% endif %}
+
+      {% if content.field_cta_secondary|render %}
+        <div class="cta-secondary-wrap">
+          {{ content.field_cta_secondary }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  {# ── Right: hero image ── #}
+  <div class="relative group hidden lg:block">
+
+    {# Decorative tinted backing card #}
+    <div class="absolute -inset-4 bg-secondary-container/30 rounded-[2rem]
+                transform rotate-2 group-hover:rotate-1 transition-transform duration-500">
+    </div>
+
+    {#
+      The actual image container.
+      aspect-[4/5]          → fixes the height via CSS aspect-ratio
+      [data-hero-img-wrap]  → targeted by the CSS in html.html.twig that
+                              forces all Drupal's field wrappers + the <img>
+                              to width/height:100% + object-fit:cover
+    #}
+    <div class="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]
+                bg-surface-container shadow-2xl shadow-primary/10"
+         data-hero-img-wrap>
+      {{ content.field_hero_image }}
+    </div>
+
+  </div>
+
+</div>
+
+{#
+  Button styles — scoped so they only apply inside hero blocks.
+  The Link field renders a plain <a> tag; we style it here.
+#}
+<style>
+  /* Primary CTA — dark gradient button */
+  .cta-primary-wrap a {
+    display:          inline-block;
+    padding:          0.875rem 2rem;
+    background:       linear-gradient(135deg, #001f3c 0%, #00345f 100%);
+    color:            #ffffff;
+    font-weight:      700;
+    font-family:      "Inter", sans-serif;
+    font-size:        0.9375rem;
+    border-radius:    0.375rem;
+    text-decoration:  none;
+    transition:       opacity 0.15s, transform 0.15s;
+    white-space:      nowrap;
+    letter-spacing:   0.01em;
+  }
+  .cta-primary-wrap a:hover {
+    opacity:   0.92;
+    transform: translateY(-1px);
+  }
+
+  /* Secondary CTA — tonal surface button */
+  .cta-secondary-wrap a {
+    display:          inline-block;
+    padding:          0.875rem 2rem;
+    background-color: #e7e8e9;   /* surface-container-high */
+    color:            #001f3c;   /* primary */
+    font-weight:      700;
+    font-family:      "Inter", sans-serif;
+    font-size:        0.9375rem;
+    border-radius:    0.375rem;
+    text-decoration:  none;
+    transition:       background-color 0.15s, transform 0.15s;
+    white-space:      nowrap;
+  }
+  .cta-secondary-wrap a:hover {
+    background-color: #d9dadb;
+    transform:        translateY(-1px);
+  }
+  /* Force Drupal's nested media wrappers to fill the aspect-[4/5] container */
+  [data-hero-img-wrap] > div,
+  [data-hero-img-wrap] article,
+  [data-hero-img-wrap] picture,
+  [data-hero-img-wrap] img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: block;
+  }
+  
+  /* Make the image zoom/crop to fill the space without distorting */
+  [data-hero-img-wrap] img {
+    object-fit: cover;
+    object-position: center; 
+  }
+</style>

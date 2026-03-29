@@ -1,0 +1,137 @@
+{#
+  views-view-unformatted--all-tutorials.html.twig
+
+  ── VIEW FIELDS NEEDED (all "Exclude from display") ─────────────────
+    • field_category  formatter: Taxonomy term name (NOT a link)
+    • title           formatter: Plain text (NOT the Link formatter)
+    • field_subtitle
+    • field_read_time
+  No image field needed in the View — image is read from the entity.
+#}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+  {% for row in rows %}
+
+    {% set vsp         = row.content['#view'].style_plugin %}
+    {% set idx         = loop.index0 %}
+    {% set node_entity = row.content['#row']._entity %}
+
+    {# ── HERO IMAGE ─────────────────────────────────────────────────
+       BUG FIX 1 + 2: We only set img_uri / img_alt as variables here.
+       The <img> tag is rendered INSIDE the <article> below.
+       Previously the <img> was output here (line 56), creating a loose
+       element in the grid that appeared as a separate column.
+       hero_img was also never set in the success path, so the article
+       always showed the placeholder — both bugs fixed by using img_uri.
+    ── #}
+    {% set media_entity = node_entity.field_hero_image.entity %}
+    {% if media_entity and media_entity.field_media_image is not empty %}
+      {% set img_uri = media_entity.field_media_image.entity.uri.value %}
+      {% set img_alt = media_entity.field_media_image.alt %}
+    {% else %}
+      {% set img_uri = null %}
+      {% set img_alt = '' %}
+    {% endif %}
+
+    {# ── Other fields ───────────────────────────────────────────────
+       BUG FIX 3: subtitle must NOT have |striptags applied.
+       vsp.getField() returns a Markup object. |striptags converts it
+       to a plain string; Twig then re-escapes it on output, turning
+       &#039; into the literal text &#039; on the page.
+       - title:    |striptags|trim is correct — it may contain <a> tags
+       - category: |striptags|trim is correct — taxonomy label
+       - subtitle: rendered as Markup directly (already safe, no tags)
+       - readtime: |striptags|trim is correct — plain integer string
+    ── #}
+    {% set title    = vsp.getField(idx, 'title')|striptags|trim %}
+    {% set category = vsp.getField(idx, 'field_category')|striptags|trim %}
+    {% set subtitle = vsp.getField(idx, 'field_subtitle') %}
+    {% set readtime = vsp.getField(idx, 'field_read_time')|striptags|trim %}
+
+    {# ── Node URL — path() is sandbox-safe, toUrl() is not ── #}
+    {% set node_url = path('entity.node.canonical', {'node': node_entity.id()}) %}
+
+    {# ──────────────────────────────────────────────────────── #}
+    {#   TUTORIAL CARD                                          #}
+    {# ──────────────────────────────────────────────────────── #}
+    <article class="group bg-white rounded-2xl overflow-hidden
+                    shadow-sm hover:shadow-lg
+                    border border-surface-container-high
+                    transition-all duration-300
+                    relative flex flex-col">
+
+      {# ── Hero image: 16:9 aspect ratio ── #}
+      <div class="overflow-hidden w-full" style="aspect-ratio: 16/9;">
+        <div class="bento-card-img w-full h-full transform
+                    group-hover:scale-105 transition-transform duration-500">
+          {% if img_uri %}
+            {# img_uri is now correctly set inside the article — not outside it #}
+            <img src="{{ file_url(img_uri) }}"
+                 alt="{{ img_alt }}"
+                 loading="lazy"
+                 style="width:100%;height:100%;object-fit:cover;display:block;">
+          {% else %}
+            <div class="w-full h-full bg-surface-container-high"></div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# ── Card body ── #}
+      <div class="p-6 flex flex-col gap-3 flex-1">
+
+        {% if category %}
+          <span class="inline-block py-1 px-2.5
+                       bg-secondary-container text-on-secondary-container
+                       text-[10px] font-bold tracking-widest uppercase
+                       rounded w-fit font-label">
+            {{ category }}
+          </span>
+        {% endif %}
+
+        <h2 class="text-xl font-bold text-primary font-headline leading-snug
+                   line-clamp-2">
+          {{ title }}
+        </h2>
+
+        {% if subtitle %}
+          <p class="text-sm text-on-surface-variant line-clamp-2
+                    font-body leading-relaxed flex-1">
+            {{ subtitle }}
+          </p>
+        {% endif %}
+
+        <div class="flex items-center justify-between
+                    pt-4 mt-auto
+                    border-t border-surface-container-high">
+
+          {% if readtime %}
+            <span class="flex items-center gap-1 text-xs text-outline font-body">
+              <span class="material-symbols-outlined" style="font-size:15px;">schedule</span>
+              {{ readtime }} {{ "min read"|t }}
+            </span>
+          {% else %}
+            <span></span>
+          {% endif %}
+
+          <span class="text-surface-tint text-sm font-bold
+                       flex items-center gap-0.5
+                       group-hover:gap-1.5 transition-all
+                       font-body pointer-events-none">
+            {{ "Read More"|t }}
+            <span class="material-symbols-outlined" style="font-size:16px;">chevron_right</span>
+          </span>
+
+        </div>
+      </div>
+
+      {# Full-card click overlay — aria-label uses plain-text title (striptags applied above) #}
+      <a href="{{ node_url }}"
+         class="absolute inset-0 z-10 rounded-2xl"
+         aria-label="{{ title }}"></a>
+
+    </article>
+
+  {% endfor %}
+
+</div>

@@ -1,0 +1,21 @@
+name: 'Scholastic'
+type: theme
+description: 'An editorial, architectural theme for technical documentation.'
+package: Custom
+core_version_requirement: ^9 || ^10 || ^11
+base theme: false
+
+libraries:
+  - scholastic/global-styling
+
+regions:
+  header: 'Header'
+  primary_menu: 'Primary menu'
+  breadcrumb: 'Breadcrumbs'
+  hero: 'Front: Hero'
+  features: 'Front: Feature Grid'
+  related_content: 'Related Content'
+  content: 'Main content'
+  newsletter: 'Front: Newsletter CTA'
+  sidebar_first: 'Sidebar First'
+  footer: 'Footer'

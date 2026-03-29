@@ -1,0 +1,39 @@
+{#
+  FILENAME: block--block-content--newsletter-cta.html.twig
+  FOLDER:   themes/custom/scholastic/templates/block/
+
+  Fields (exact machine names from your Manage fields screen):
+    field_newsletter_heading     → Text plain
+    field_newsletter_description → Text plain long
+#}
+<div class="bg-surface-container-low rounded-[2rem] p-12 lg:p-20 text-center relative overflow-hidden">
+
+  <div class="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
+       style="background-color:rgba(0,52,95,0.05); transform:translate(50%,-50%);"></div>
+  <div class="absolute bottom-0 left-0 w-32 h-32 rounded-full pointer-events-none"
+       style="background-color:rgba(213,228,247,0.1); transform:translate(-50%,50%);"></div>
+
+  <div class="relative z-10 max-w-2xl mx-auto">
+
+    <h2 class="text-4xl font-extrabold text-primary mb-6 font-headline">
+      {{ content.field_newsletter_heading }}
+    </h2>
+
+    <p class="text-on-surface-variant mb-10 leading-relaxed">
+      {{ content.field_newsletter_description }}
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+      <input type="email" placeholder="email@example.com"
+        class="flex-grow bg-white border-none rounded-lg px-6 outline-none h-14"
+        style="margin: 0; box-shadow: 0 0 0 2px transparent;">
+        
+      <button class="text-white px-8 rounded-lg font-bold hover:opacity-95 transition-all h-14 shrink-0"
+              style="background-color:#001f3c;">
+        Subscribe
+      </button>
+
+    </div>
+
+  </div>
+</div>
