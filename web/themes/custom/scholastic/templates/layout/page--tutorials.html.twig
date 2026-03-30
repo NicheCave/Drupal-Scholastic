@@ -115,8 +115,10 @@
 
 {# ── FOOTER (identical to page.html.twig) ── #}
 <footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
-  <div class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+  <div class="max-w-7xl mx-auto px-8 py-16
+              grid grid-cols-1 md:grid-cols-3 gap-12">
 
+    {# Column 1 – brand #}
     <div class="flex flex-col gap-4">
       <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3">
         {% if logo %}
@@ -134,29 +136,49 @@
       {% endif %}
       <p class="text-xs text-outline font-body mt-2">
         © {{ "now"|date("Y") }} {{ site_name }}.
-        {{ "An Architectural Approach to Learning. Dedicated to the craft of structural development."|t }}
       </p>
     </div>
 
+    {# Column 2 – Explore + Legal links #}
     <div class="grid grid-cols-2 gap-8">
       <div>
         <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Resources"|t }}
+          {{ "Explore"|t }}
         </h4>
-        <ul class="space-y-2 list-none p-0 m-0">
-          <li><a href="/documentation" class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Documentation"|t }}</a></li>
-          <li><a href="/privacy"       class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Privacy Policy"|t }}</a></li>
-          <li><a href="/terms"         class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Terms of Service"|t }}</a></li>
-        </ul>
+        {#
+          page.footer renders the Footer menu block (menu.html.twig).
+          The CSS in html.html.twig styles the resulting <ul> links.
+        #}
+        {{ page.footer }}
       </div>
       <div>
         <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Stay Connected"|t }}
+          {{ "Legal"|t }}
         </h4>
-        {{ page.footer }}
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li>
+            <a href="/privacy"
+               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
+              {{ "Privacy Policy"|t }}
+            </a>
+          </li>
+          <li>
+            <a href="/terms"
+               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
+              {{ "Terms of Service"|t }}
+            </a>
+          </li>
+          <li>
+            <a href="/contact"
+               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
+              {{ "Contact Support"|t }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
 
+    {# Column 3 – Social icons + tagline #}
     <div class="flex flex-col justify-between items-start md:items-end gap-6">
       <div class="flex gap-3">
         <a href="#" aria-label="{{ 'Share'|t }}"
@@ -169,10 +191,12 @@
                   text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
           <span class="material-symbols-outlined" style="font-size:18px;">mail</span>
         </a>
+        <a href="#" aria-label="{{ 'Website'|t }}"
+           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
+                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
+          <span class="material-symbols-outlined" style="font-size:18px;">language</span>
+        </a>
       </div>
-      <p class="text-sm text-on-surface-variant font-body text-right">
-        {{ "Contact Support for enterprise training."|t }}
-      </p>
     </div>
 
   </div>
@@ -187,4 +211,76 @@
       btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); });
     }
   })();
+</script>
+
+{#
+  Prevent the exposed-filter autocomplete from auto-submitting the form.
+
+  Problem: Drupal's Views "auto-submit" behaviour listens for `change` events
+  on every exposed-filter field. jQuery UI autocomplete sets the field value
+  and immediately fires `change` after the user picks a suggestion, which
+  triggers an AJAX form submission before the user ever clicks Apply.
+
+  Fix (three-layer defence):
+    1. On `autocompleteselect`  — raise a flag the moment a suggestion is picked.
+    2. On `change` (capture)    — if the flag is up, eat the event before
+                                  Drupal's auto-submit handler sees it.
+    3. On form `submit` (capture) — belt-and-suspenders guard in case the
+                                  change event already escaped layer 2.
+
+  All three handlers are registered in the DOM capture phase so they run
+  before any jQuery bubble-phase handlers Drupal may have registered earlier.
+  The flag is cleared either when Apply is clicked or after a short safety
+  timeout so normal usage is never blocked.
+#}
+<script>
+(function ($, Drupal) {
+  'use strict';
+
+  Drupal.behaviors.scholasticPreventAutoSubmit = {
+    attach: function (context) {
+
+      var $form = $(context).find('.views-exposed-form').addBack('.views-exposed-form');
+      if (!$form.length || $form.data('sch-patched')) return;
+      $form.data('sch-patched', true);
+
+      var formEl  = $form[0];
+      var $input  = $form.find('input.form-autocomplete, input[data-autocomplete-path]');
+      if (!$input.length) return;
+
+      var inputEl = $input[0];
+      var blocked = false;   // true while a suggestion was just selected
+
+      /* ── 1. Flag the moment autocomplete commits a selection ── */
+      $input.on('autocompleteselect', function () {
+        blocked = true;
+        /* Safety valve: clear flag after 600 ms so normal typing still works */
+        setTimeout(function () { blocked = false; }, 600);
+      });
+
+      /* ── 2. Block the `change` event autocomplete fires right after ── */
+      inputEl.addEventListener('change', function (e) {
+        if (blocked) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, true /* capture — runs before jQuery handlers */);
+
+      /* ── 3. Belt-and-suspenders: block any form submit while blocked ── */
+      formEl.addEventListener('submit', function (e) {
+        if (blocked) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          blocked = false;
+        }
+      }, true /* capture */);
+
+      /* ── 4. Apply button: clear flag so the real submit goes through ── */
+      $form.find('input[type="submit"], button[type="submit"]').on('click', function () {
+        blocked = false;
+      });
+    }
+  };
+
+})(jQuery, Drupal);
 </script>

@@ -47,15 +47,14 @@
 {% for row in rows %}
   {% set vsp   = row.content['#view'].style_plugin %}
   {% set idx   = loop.index0 %}
-  {% set count = vsp.getField(idx, 'nid')|striptags|trim|number_format(0, '.', '') %}
+  {% set count = vsp.getField(idx, 'nid')|striptags|trim %}
   {% set grand_total = grand_total + count %}
 {% endfor %}
 
-{# ── Current active filter (if any) ── #}
-{% set active_tid = app.request.query.get('field_category_target_id') %}
+{# ── Current active filter string from the URL ── #}
+{% set current_filter = app.request.query.get('field_category_target_id') %}
 
-{# ── CURATIONS label ── #}
-<div>
+<div class="sidebar-curations">
   <p class="text-[10px] font-bold tracking-widest uppercase text-outline mb-3 font-label">
     {{ "Curations"|t }}
   </p>
@@ -63,46 +62,42 @@
   <nav aria-label="{{ 'Tutorial categories'|t }}">
     <ul class="list-none p-0 m-0 flex flex-col gap-1">
 
-      {# "All Modules" link — clears the category filter #}
+      {# ── "All Modules" Link ── #}
       <li>
         <a href="/tutorials"
            class="flex items-center justify-between w-full px-3 py-2 rounded-lg
                   font-body text-sm transition-colors no-underline
-                  {% if not active_tid %}
-                    bg-primary text-on-primary font-bold
-                  {% else %}
-                    text-on-surface-variant hover:bg-surface-container hover:text-primary
-                  {% endif %}">
+                  {{ not current_filter ? 'bg-primary text-on-primary font-bold shadow-md' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary' }}">
           <span>{{ "All Modules"|t }}</span>
-          <span class="text-xs font-bold
-                       {% if not active_tid %}opacity-70{% else %}text-outline{% endif %}">
+          <span class="text-xs font-bold {{ not current_filter ? 'opacity-70' : 'text-outline' }}">
             {{ grand_total }}
           </span>
         </a>
       </li>
 
-      {# One link per taxonomy term #}
+      {# ── Category Links ── #}
       {% for row in rows %}
         {% set vsp   = row.content['#view'].style_plugin %}
         {% set idx   = loop.index0 %}
         {% set name  = vsp.getField(idx, 'name')|striptags|trim %}
         {% set count = vsp.getField(idx, 'nid')|striptags|trim %}
         {% set tid   = row.content['#row']._entity.id() %}
-        {% set is_active = (active_tid == tid) %}
+        
+        {# 
+          THE HANDSHAKE: 
+          We create the exact string the Autocomplete field expects: "Category Name (ID)"
+        #}
+        {% set filter_string = name ~ ' (' ~ tid ~ ')' %}
+        {% set is_active = (current_filter == filter_string) %}
 
         <li>
-          <a href="/tutorials?field_category_target_id={{ tid }}"
+          <a href="/tutorials?field_category_target_id={{ filter_string|url_encode }}"
              class="flex items-center justify-between w-full px-3 py-2 rounded-lg
                     font-body text-sm transition-colors no-underline
-                    {% if is_active %}
-                      bg-primary text-on-primary font-bold
-                    {% else %}
-                      text-on-surface-variant hover:bg-surface-container hover:text-primary
-                    {% endif %}"
+                    {{ is_active ? 'bg-primary text-on-primary font-bold shadow-md' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary' }}"
              {% if is_active %}aria-current="true"{% endif %}>
             <span>{{ name }}</span>
-            <span class="text-xs font-bold
-                         {% if is_active %}opacity-70{% else %}text-outline{% endif %}">
+            <span class="text-xs font-bold {{ is_active ? 'opacity-70' : 'text-outline' }}">
               {{ count }}
             </span>
           </a>

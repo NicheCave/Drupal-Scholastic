@@ -1,0 +1,366 @@
+{#
+  node--about.html.twig
+  FOLDER: themes/custom/scholastic/templates/content/
+
+  Drupal picks this template automatically for any node whose content
+  type machine name is "about".  No hook or extra config needed.
+
+  ── FIELD REFERENCE ─────────────────────────────────────────────────
+  All fields live on Structure → Content types → About Page → Manage fields.
+
+  HERO SECTION
+    field_eyebrow           Text (plain)       "PRINCIPAL EDUCATOR"
+    field_headline          Text (plain)       the large H1
+    field_bio               Text (plain, long) introductory paragraph
+    field_portrait          Image              educator photo
+    field_stat_number       Text (plain)       "150+"
+    field_stat_label        Text (plain)       "Enterprises"
+    field_stat_description  Text (plain)       sub-label under stat
+
+  JOURNEY SECTION
+    field_journey_heading   Text (plain)       "The Journey"
+    field_journey_body      Text (formatted)   body copy — supports <strong>
+    field_quote             Text (plain, long) blockquote text
+
+  EXPERTISE SECTION
+    field_expertise_heading   Text (plain)
+    field_expertise_subtitle  Text (plain)
+    field_expertise_items     Entity ref revisions → Feature Item paragraph
+                              (reuses the existing paragraph type — same fields:
+                               field_icon, field_title, field_description)
+
+  HONORS SECTION
+    field_honors_heading  Text (plain)         "Professional Honors"
+    field_honors_items    Entity ref revisions → Honor Item paragraph
+                          (new paragraph type — see paragraph--honor-item.html.twig)
+    field_cta_heading     Text (plain)         "Need expert guidance?"
+    field_cta_body        Text (plain, long)   CTA description
+    field_cta_label       Text (plain)         button label "Work with me"
+    field_cta_url         Link                 destination URL
+  ────────────────────────────────────────────────────────────────────
+#}
+
+<article{{ attributes.addClass('node-about') }}>
+
+{# ════════════════════════════════════════════════
+   1. HERO SECTION
+   ════════════════════════════════════════════════ #}
+<section class="bg-white pt-20 pb-10">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      {# ── Left: text ── #}
+      <div class="flex flex-col gap-6">
+
+        {# Eyebrow label #}
+        {% if content.field_eyebrow|render %}
+          <span class="text-xs font-bold tracking-widest uppercase
+                       text-surface-tint font-label">
+            {{ content.field_eyebrow }}
+          </span>
+        {% endif %}
+
+        {# Headline #}
+        {% if content.field_headline|render %}
+          <h1 class="text-5xl font-extrabold font-headline text-primary
+                     leading-tight tracking-tight">
+            {{ content.field_headline }}
+          </h1>
+        {% endif %}
+
+        {# Bio / intro paragraph #}
+        {% if content.field_bio|render %}
+          <div class="text-base text-on-surface-variant leading-relaxed font-body
+                      max-w-lg">
+            {{ content.field_bio }}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {# ── Right: portrait + stat card ── #}
+      <div class="relative">
+
+        {# Portrait image #}
+        {% if content.field_portrait|render %}
+          <div class="rounded-2xl overflow-hidden shadow-xl shadow-primary/10
+                      about-portrait-img">
+            {{ content.field_portrait }}
+          </div>
+        {% endif %}
+
+        {# Stat card — floats over the bottom-left of the image #}
+        {% if content.field_stat_number|render %}
+          <div class="absolute -bottom-6 -left-4 lg:-left-10
+                      bg-white rounded-2xl shadow-2xl shadow-primary/15
+                      px-7 py-5 flex flex-col gap-1 max-w-[220px]
+                      border border-surface-container-high">
+            <span class="text-2xl font-extrabold text-primary font-headline">
+              {{ content.field_stat_number }}
+              {% if content.field_stat_label|render %}
+                {{ content.field_stat_label }}
+              {% endif %}
+            </span>
+            {% if content.field_stat_description|render %}
+              <span class="text-xs text-on-surface-variant font-body leading-snug">
+                {{ content.field_stat_description }}
+              </span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ════════════════════════════════════════════════
+   2. THE JOURNEY SECTION
+   ════════════════════════════════════════════════ #}
+{% if content.field_journey_body|render %}
+<section class="bg-white pt-24 pb-16">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="max-w-2xl flex flex-col gap-8">
+
+      {# Section heading #}
+      {% if content.field_journey_heading|render %}
+        <h2 class="text-3xl font-extrabold text-primary font-headline">
+          {{ content.field_journey_heading }}
+        </h2>
+      {% endif %}
+
+      {# Body copy — rendered as formatted text; <strong> works here #}
+      <div class="text-base text-on-surface-variant leading-relaxed
+                  font-body flex flex-col gap-4">
+        {{ content.field_journey_body }}
+      </div>
+
+      {# Pull quote #}
+      {% if content.field_quote|render %}
+        <blockquote class="relative border-l-4 pl-6 py-4 pr-4
+                           rounded-r-xl about-pull-quote"
+                    style="border-color:#1460a4; background:rgba(20,96,164,0.05);">
+          <div class="text-base leading-relaxed font-body about-quote-text">
+            {{ content.field_quote }}
+          </div>
+        </blockquote>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ════════════════════════════════════════════════
+   3. CORE EXPERTISE SECTION
+   ════════════════════════════════════════════════ #}
+{% if content.field_expertise_items|render %}
+<section class="bg-surface-container-lowest py-20">
+  <div class="max-w-7xl mx-auto px-8">
+
+    {# Section header #}
+    <div class="mb-10 flex flex-col gap-2">
+      {% if content.field_expertise_heading|render %}
+        <h2 class="text-3xl font-extrabold text-primary font-headline">
+          {{ content.field_expertise_heading }}
+        </h2>
+      {% endif %}
+      {% if content.field_expertise_subtitle|render %}
+        <p class="text-sm text-on-surface-variant font-body">
+          {{ content.field_expertise_subtitle }}
+        </p>
+      {% endif %}
+    </div>
+
+    {#
+      3-column expertise grid.
+      Uses the same display:contents trick as block--block-content--feature-grid
+      to flatten Drupal's field wrappers so items are direct grid children.
+      The Feature Item paragraph template (paragraph--feature-item.html.twig)
+      already renders icon + title + description — no changes needed there.
+    #}
+    <div class="about-expertise-grid" data-eg>
+      {{ content.field_expertise_items }}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+{# ════════════════════════════════════════════════
+   4. PROFESSIONAL HONORS + CTA SECTION
+   ════════════════════════════════════════════════ #}
+{% if content.field_honors_items|render or content.field_cta_heading|render %}
+<section class="bg-white py-20">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+      {# ── Left: honors list ── #}
+      <div>
+        {% if content.field_honors_heading|render %}
+          <h2 class="text-3xl font-extrabold text-primary font-headline mb-8">
+            {{ content.field_honors_heading }}
+          </h2>
+        {% endif %}
+
+        {# Honor Item paragraphs — each renders its own row #}
+        <div class="about-honors-list flex flex-col gap-0">
+          {{ content.field_honors_items }}
+        </div>
+      </div>
+
+      {# ── Right: dark CTA card ── #}
+      {% if content.field_cta_heading|render %}
+        <div class="rounded-2xl p-10 flex flex-col gap-6"
+             style="background-color: #001f3c;">
+
+          <h3 class="text-2xl font-bold font-headline"
+              style="color:#ffffff;">
+            {{ content.field_cta_heading }}
+          </h3>
+
+          {% if content.field_cta_body|render %}
+            <div class="about-cta-body text-sm leading-relaxed font-body">
+              {{ content.field_cta_body }}
+            </div>
+          {% endif %}
+
+          {% if content.field_cta_url|render %}
+            {#
+              field_cta_url is a Link field.
+              Rendered with: Label = the button text (field_cta_label overrides it),
+              URL = destination.  We let Drupal render it and restyle below.
+            #}
+            <div class="about-cta-btn">
+              {{ content.field_cta_url }}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+</article>
+
+{# ────────────────────────────────────────────────
+   Self-contained styles for this node template.
+   Scoped with .node-about so nothing bleeds out.
+──────────────────────────────────────────────── #}
+<style>
+  /* Portrait fills container, covers crop */
+  .about-portrait-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    max-height: 480px;
+  }
+
+  /* ── Expertise 3-col grid ───────────────────────
+     Same display:contents trick used in feature-grid block.
+     Drupal wraps field output in .field > .field__items > .field__item
+     Two levels of display:contents make each .field__item a direct
+     grid child so grid-template-columns actually works.
+  ─────────────────────────────────────────────── */
+  .about-expertise-grid {
+    display:               grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:                   1px;
+    background-color:      rgba(195, 198, 209, 0.15);
+    border-radius:         0.75rem;
+    overflow:              hidden;
+  }
+  .about-expertise-grid > *       { display: contents; } /* .field */
+  .about-expertise-grid > * > *   { display: contents; } /* .field__items */
+  .about-expertise-grid > * > * > * { display: flex; flex-direction: column; } /* .field__item */
+  .about-expertise-grid > * > * > * > * { flex: 1; display: flex; flex-direction: column; }
+
+  @media (max-width: 767px) {
+    .about-expertise-grid { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .about-expertise-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Honors list: flatten Drupal wrappers ───────
+     Same pattern: display:contents on the two wrapper levels so each
+     paragraph--honor-item renders as a direct flex child.
+  ─────────────────────────────────────────────── */
+  .about-honors-list > * { display: contents; } /* .field */
+  .about-honors-list > * > * { display: contents; } /* .field__items */
+  
+  /* This targets the paragraph wrapper - keep this */
+  .about-honors-list > * > * > * { 
+    display: block; 
+    width: 100%; 
+  }
+
+  /* ── CTA button ─────────────────────────────────
+     Drupal's Link field renders <a class="..."> inside a div.
+     We override it to look like the ghost button in the design.
+  ─────────────────────────────────────────────── */
+  .about-cta-btn a {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  space-between;
+    width:            100%;
+    padding:          0.75rem 1.25rem;
+    border-radius:    0.5rem;
+    border:           1px solid rgba(255,255,255,0.25);
+    color:            #ffffff;
+    font-size:        0.875rem;
+    font-weight:      600;
+    text-decoration:  none;
+    transition:       background-color 0.2s;
+  }
+  .about-cta-btn a::after {
+    content:     "→";
+    font-size:   1rem;
+    margin-left: 0.5rem;
+  }
+  .about-cta-btn a:hover {
+    background-color: rgba(255,255,255,0.08);
+  }
+  /* ── Pull quote ─────────────────────────────────
+    Italic, slightly weighted, with a faint blue wash
+    behind the text. Targets the inner Drupal text
+    wrapper so the style is never blocked by field divs.
+  ─────────────────────────────────────────────── */
+  .about-pull-quote .about-quote-text,
+  .about-pull-quote .about-quote-text * {
+    font-style:  italic    !important;
+    font-weight: 500       !important;
+    color:       #1e3a5f   !important;
+    font-size:   0.9375rem !important;
+  }
+  
+  /* ── CTA body text ──────────────────────────────
+     Drupal wraps field output in .field > div > p.
+     The inline style on a parent never punches through
+     those wrappers reliably, so we target with CSS.
+  ─────────────────────────────────────────────── */
+  .about-cta-body,
+  .about-cta-body * {
+    color: rgba(191, 219, 254, 0.85) !important;
+  }
+  
+  /* ── Material Symbols safety net ────────────────
+     Ensures the icon font-family is always applied
+     even if Tailwind's reset strips it from the span.
+  ─────────────────────────────────────────────── */
+  .material-symbols-outlined {
+    font-family:                 'Material Symbols Outlined', sans-serif;
+    font-style:                  normal;
+    font-weight:                 normal;
+    font-size:                   18px;
+    line-height:                 1;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings:       'liga';
+    -webkit-font-smoothing:      antialiased;
+    font-variation-settings:     'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+  }
+</style>
