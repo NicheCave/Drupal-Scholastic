@@ -25,3 +25,18 @@ function scholastic_preprocess_page(&$variables) {
   // Fetch the uploaded Logo URL from Appearance -> Theme Settings
   $variables['logo'] = theme_get_setting('logo.url');
 }
+
+function scholastic_preprocess_views_view_unformatted(&$variables) {
+  // Only run this specific query for our sidebar categories view.
+  if ($variables['view']->id() === 'tutorial_categories') {
+    
+    // Query the database for ALL published tutorials
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'tutorial')
+      ->condition('status', 1)
+      ->accessCheck(TRUE);
+      
+    // Count them and pass the number to Twig as a new variable
+    $variables['total_tutorials'] = $query->count()->execute();
+  }
+}

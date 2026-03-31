@@ -1,25 +1,19 @@
 {#
   views-view-unformatted--featured-tutorials.html.twig
 
-  Bento grid layout — 4 card styles based on position:
-    Card 1 (large): Full-bleed image, overlaid text — "Advanced Path" style
-    Card 2 (small): Half-image, half-text card — "Foundation" style
-    Card 3 (small): Icon + text card — "Core Mastery" style
-    Card 4 (large): Split dark/image horizontal banner — "Developer" style
-
-  Fields required in your View (see admin checklist):
-    - field_hero_image   (Image field, rendered as <img> tag)
-    - title              (Node title)
-    - field_subtitle     (Plain text)
-    - field_category     (Text/taxonomy label)
-    - view_node          (Link to node — the "path" field)
+  Fields in View:
+    - field_hero_image   
+    - title            
+    - field_subtitle   
+    - field_category     
+    - view_node        
 #}
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
   {% for row in rows %}
 
-    {# ── Grab the raw field values from Views ── #}
+    {# Grab the raw field values from Views #}
     {% set vsp       = row.content['#view'].style_plugin %}
     {% set idx       = loop.index0 %}
     {% set image     = vsp.getField(idx, 'field_hero_image') %}
@@ -28,17 +22,14 @@
     {% set category  = vsp.getField(idx, 'field_category') %}
     {% set path      = vsp.getField(idx, 'view_node') %}
 
-    {# ── Card 1: Large full-bleed image card ── #}
+    {# Card 1 #}
     {% if loop.index == 1 %}
     <div class="md:col-span-2 group">
       <div class="relative overflow-hidden rounded-xl bg-surface-container-highest h-[450px]">
-        {# Image fills entire card #}
         <div class="bento-card-img absolute inset-0 z-0 transform group-hover:scale-105 transition-transform duration-700">
           {{ image }}
         </div>
-        {# Dark gradient overlay for legibility #}
         <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent z-10"></div>
-        {# Text overlaid at bottom #}
         <div class="absolute bottom-0 left-0 p-10 z-20 text-white">
           <span class="inline-block py-1 px-3 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold tracking-widest uppercase mb-4 rounded">
             {{ category }}
@@ -50,23 +41,20 @@
             <span class="material-symbols-outlined ml-2 group-hover:translate-x-2 transition-transform">east</span>
           </a>
         </div>
-        {# Full-card clickable overlay #}
         <a href="{{ path }}" class="absolute inset-0 z-30" aria-label="Start {{ title }}"></a>
       </div>
     </div>
 
-    {# ── Card 2: Half-image, half-text card ── #}
+    {# Card 2 #}
     {% elseif loop.index == 2 %}
     <div class="group">
       <div class="relative overflow-hidden rounded-xl bg-surface-container-high h-[450px] flex flex-col">
-        {# Top half: image #}
         <div class="h-1/2 relative overflow-hidden">
           <div class="bento-card-img w-full h-full transform group-hover:scale-110 transition-transform duration-500">
             {{ image }}
           </div>
           <div class="absolute inset-0 bg-surface-tint/10"></div>
         </div>
-        {# Bottom half: text #}
         <div class="h-1/2 p-8 flex flex-col justify-between bg-white">
           <div>
             <span class="inline-block py-1 px-2 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase mb-3 rounded">
@@ -83,11 +71,10 @@
       </div>
     </div>
 
-    {# ── Card 3: Icon + text card (no image) ── #}
+    {# Card 3 #}
     {% elseif loop.index == 3 %}
     <div class="group">
       <div class="bg-white border border-surface-container-high shadow-sm p-10 rounded-xl h-full flex flex-col justify-between hover:shadow-md hover:border-outline-variant transition-all relative">
-        {# Icon in a tinted circle #}
         <div class="bg-secondary-container p-4 rounded-full w-fit mb-8">
           <span class="material-symbols-outlined text-surface-tint text-3xl">storage</span>
         </div>
@@ -107,18 +94,15 @@
       </div>
     </div>
 
-    {# ── Card 4: Large dark horizontal split card ── #}
+    {# Card 4 #}
     {% elseif loop.index == 4 %}
     <div class="md:col-span-2 group relative">
       
-      {# ── Main Card Container ── #}
       <div class="overflow-hidden rounded-xl flex flex-col md:flex-row h-full md:h-[300px] transition-all duration-300"
            style="background-color:#001f3c;">
 
-        {# ── Left: text panel ── #}
         <div class="md:w-1/2 p-10 flex flex-col justify-center gap-0 z-10">
 
-          {# Category pill #}
           <span class="inline-block text-[10px] font-bold tracking-widest uppercase mb-4 rounded px-3 py-1 w-fit font-label"
                 style="background-color:rgba(255,255,255,0.12); color:#93c5fd; border:1px solid rgba(255,255,255,0.15);">
             {{ category }}
@@ -134,7 +118,6 @@
             {{ subtitle }}
           </p>
 
-          {# Visible button (Visual only, the overlay handles the click) #}
           <div class="flex items-center justify-between px-6 py-2.5 rounded text-sm font-bold transition-all w-fit gap-4"
                 style="background-color:#ffffff; color:#001f3c;">
             Enroll in Course
@@ -143,24 +126,21 @@
 
         </div>
 
-        {# ── Right: image panel ── #}
         <div class="md:w-1/2 relative overflow-hidden min-h-[200px]"
              style="background-color:#0f172a;">
           <div class="bento-card-img absolute inset-0 transform group-hover:scale-105 transition-transform duration-700">
             {{ image }}
           </div>
-          {# Dark tint overlay #}
           <div class="absolute inset-0" style="background-color:rgba(0,31,60,0.45);"></div>
         </div>
 
       </div>
 
-      {# ── THE FIX: Full-card clickable overlay link ── #}
       <a href="{{ path }}" class="absolute inset-0 z-20" aria-label="Enroll in {{ title }}"></a>
 
     </div>
 
-    {# ── Cards 5+: Generic fallback card ── #}
+    {# Cards 5+ #}
     {% else %}
     <div class="group">
       <div class="relative overflow-hidden rounded-xl bg-surface-container-high h-[350px] flex flex-col">

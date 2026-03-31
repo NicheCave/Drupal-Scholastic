@@ -1,11 +1,28 @@
 global-styling:
   css:
     theme:
-      # Fonts are safe to load via libraries — CSS order doesn't matter for them.
+      # External fonts
       'https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap': { type: external, minified: true }
       'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap': { type: external, minified: true }
-  # NOTE: Tailwind CDN is intentionally NOT listed here.
-  # It is loaded via a direct <script> tag in html.html.twig, immediately
-  # followed by the tailwind.config script. This guarantees the CDN has
-  # executed before config is applied — Drupal's library system cannot
-  # guarantee that ordering for external scripts + inline scripts.
+      # Base styles: icons, image wrappers, form resets, footer menu
+      css/base/global.css: {}
+
+node--about:
+  css:
+    component:
+      css/components/node--about.css: {}
+
+block--hero:
+  css:
+    component:
+      css/components/hero-block.css: {}
+
+block--feature-grid:
+  css:
+    component:
+      css/components/feature-grid.css: {}
+
+page--user-auth:
+  css:
+    component:
+      css/components/user-auth.css: {}

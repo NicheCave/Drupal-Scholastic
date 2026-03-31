@@ -1,11 +1,12 @@
+{% set _ = attach_library('scholastic/block--feature-grid') %}
 {#
   block--block-content--feature-grid.html.twig
   FOLDER: themes/custom/scholastic/templates/block/
 
   Fields (Structure → Block types → Feature Grid → Manage fields):
-    field_section_heading     → Text plain
-    field_section_description → Text plain long
-    field_features            → Entity reference revisions → Paragraph: Feature Item
+    field_section_heading 
+    field_section_description 
+    field_features 
 #}
 
 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-start">
@@ -27,103 +28,8 @@
 
   </div>
 
-  {#
-    ── Right column: 2×2 feature items grid ──────────────────────────────
-
-    THE PROBLEM this template solves:
-    {{ content.field_features }} renders this DOM structure:
-
-      <div class="field field--name-field-features ...">   ← wrapper 1
-        <div class="field__items">                          ← wrapper 2
-          <div class="field__item">                         ← item A
-            [paragraph--feature-item.html.twig output]
-          </div>
-          <div class="field__item">                         ← item B
-            ...
-          </div>
-          ...
-        </div>
-      </div>
-
-    Wrappers 1 and 2 sit between our CSS grid container and the actual
-    items. Block-level divs don't participate in the parent's grid, so
-    every item ends up in a single column regardless of grid-cols-2.
-
-    THE FIX — inside the <style> block below:
-    Use  display: contents  on the TWO intermediate wrapper levels:
-      [data-fg] > *      → the .field div        → display:contents
-      [data-fg] > * > *  → the .field__items div  → display:contents
-
-    With both wrappers "invisible" to the layout engine, each .field__item
-    becomes a direct grid child and the 2-column layout works.
-
-    WHY > * instead of class names:
-    Class names like .field--name-field-features depend on the exact field
-    machine name and Drupal version. Using the child combinator > * makes
-    this work regardless of what class names Drupal generates, and regardless
-    of whether html.html.twig has been updated. This template is self-contained.
-  #}
   <div class="md:col-span-7 feature-items-grid" data-fg>
     {{ content.field_features }}
   </div>
 
 </div>
-
-<style>
-  /* ═══════════════════════════════════════════════════════════════
-     FEATURE GRID — 2×2 LAYOUT FIX
-     Self-contained: no dependency on html.html.twig CSS.
-  ═══════════════════════════════════════════════════════════════ */
-
-  /* The outer grid container */
-  .feature-items-grid {
-    display:               grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:                   1px;
-    background-color:      rgba(195, 198, 209, 0.15); /* subtle divider tint */
-  }
-
-  /*
-    Level 1 — the .field wrapper Drupal renders around field_features.
-    display:contents makes this div invisible to the grid layout engine,
-    so its children (level 2) become the grid's direct children.
-  */
-  .feature-items-grid > * {
-    display: contents;
-  }
-
-  /*
-    Level 2 — the .field__items wrapper inside the .field.
-    Same treatment: invisible to layout, its children (.field__item)
-    become direct grid children.
-  */
-  .feature-items-grid > * > * {
-    display: contents;
-  }
-
-  /*
-    Level 3 — each .field__item is now a real grid cell.
-    Reset display so it actually occupies its grid area.
-  */
-  .feature-items-grid > * > * > * {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /*
-    Level 4 — the paragraph wrapper div Drupal adds around each paragraph.
-    Make it fill the grid cell fully so the inner styled div stretches.
-  */
-  .feature-items-grid > * > * > * > * {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Responsive: single column on small screens */
-  @media (max-width: 639px) {
-    .feature-items-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

@@ -2,24 +2,16 @@
   paragraph--honor-item.html.twig
   FOLDER: themes/custom/scholastic/templates/paragraph/
 
-  Renders one row in the "Professional Honors" list on the About page.
-
-  ── PARAGRAPH TYPE SETUP ────────────────────────────────────────────
-  Structure → Paragraph types → Add paragraph type
+  PARAGRAPH TYPE SETUP 
+  Structure → Paragraph types 
     Label:        Honor Item
     Machine name: honor_item
 
   Then add these fields:
     field_icon              Text (plain)       Material Symbols name
-                            e.g. "verified", "chat", "emoji_events", "school"
-                            Browse: https://fonts.google.com/icons
     field_honor_title       Text (plain)       "Acquia Certified Grand Master"
     field_honor_description Text (plain, long) single-line description
   ────────────────────────────────────────────────────────────────────
-
-  The parent template (node--about.html.twig) uses display:contents to
-  flatten Drupal's field wrappers, so this paragraph is a direct flex
-  child of .about-honors-list.
 #}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

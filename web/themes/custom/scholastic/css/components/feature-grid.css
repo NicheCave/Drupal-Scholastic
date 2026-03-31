@@ -1,0 +1,16 @@
+/* Feature grid */
+.feature-items-grid {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:                   1px;
+  background-color:      rgba(195, 198, 209, 0.15);
+}
+
+.feature-items-grid > *           { display: contents; } /* .field        */
+.feature-items-grid > * > *       { display: contents; } /* .field__items */
+.feature-items-grid > * > * > *   { display: flex; flex-direction: column; }
+.feature-items-grid > * > * > * > * { flex: 1; display: flex; flex-direction: column; }
+
+@media (max-width: 639px) {
+  .feature-items-grid { grid-template-columns: 1fr; }
+}

@@ -1,57 +1,10 @@
 {#
   views-view-unformatted--tutorial-categories.html.twig
 
-  Sidebar "CURATIONS" block: lists taxonomy categories with tutorial
-  counts and links to the filtered /tutorials page.
-
-  ── HOW TO SET UP THE VIEW ───────────────────────────────────────────
-  View machine name : tutorial_categories
-  Show             : Taxonomy terms
-  Vocabulary       : tutorial_category (your category vocabulary)
-
-  Fields (in order, all "Exclude from display"):
-    1. Taxonomy term: Name
-       • Machine name: name
-       • Formatter: Plain text (no link)
-
-    2. COUNT of Content ID  ← requires "Use aggregation" to be ON
-       • Relationship first: add "Taxonomy term: Content using Tutorial Category"
-         Call it "tutorial_nodes" — filter by Content type = Tutorial, published
-       • Then add field: Content: Nid  → set to Aggregation → COUNT
-       • Machine name: nid (or count)
-
-  Exposed filter:  none — this block just generates links, it does not
-                   expose its own filter.
-
-  Sort: Name ASC (or Count DESC for popular-first)
-  Pager: Display all items (no pager in the sidebar)
-  Block display: machine name block_1
-
-  Place block in:  sidebar_first region
-  Visibility:      Pages → /tutorials  and  /tutorials/*
-
-  ── HOW THE LINKS WORK ──────────────────────────────────────────────
   Each category link points to:
     /tutorials?field_category_target_id=<term_id>
-
-  This targets the exposed filter on the "All Tutorials" view page.
-  The term id is read directly from the entity so no field rewriting
-  is needed.
-
-  The "All Modules" totals row is computed by summing all counts in
-  Twig — no extra query needed.
 #}
 
-{# ── Pre-compute grand total from all rows ── #}
-{% set grand_total = 0 %}
-{% for row in rows %}
-  {% set vsp   = row.content['#view'].style_plugin %}
-  {% set idx   = loop.index0 %}
-  {% set count = vsp.getField(idx, 'nid')|striptags|trim %}
-  {% set grand_total = grand_total + count %}
-{% endfor %}
-
-{# ── Current active filter string from the URL ── #}
 {% set current_filter = app.request.query.get('field_category_target_id') %}
 
 <div class="sidebar-curations">
@@ -62,7 +15,7 @@
   <nav aria-label="{{ 'Tutorial categories'|t }}">
     <ul class="list-none p-0 m-0 flex flex-col gap-1">
 
-      {# ── "All Modules" Link ── #}
+      {# "All Modules" Link #}
       <li>
         <a href="/tutorials"
            class="flex items-center justify-between w-full px-3 py-2 rounded-lg
@@ -70,12 +23,12 @@
                   {{ not current_filter ? 'bg-primary text-on-primary font-bold shadow-md' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary' }}">
           <span>{{ "All Modules"|t }}</span>
           <span class="text-xs font-bold {{ not current_filter ? 'opacity-70' : 'text-outline' }}">
-            {{ grand_total }}
+            {{ total_tutorials }}
           </span>
         </a>
       </li>
 
-      {# ── Category Links ── #}
+      {# Category Links #}
       {% for row in rows %}
         {% set vsp   = row.content['#view'].style_plugin %}
         {% set idx   = loop.index0 %}
@@ -85,7 +38,7 @@
         
         {# 
           THE HANDSHAKE: 
-          We create the exact string the Autocomplete field expects: "Category Name (ID)"
+          exact string the Autocomplete field expects: "Category Name (ID)"
         #}
         {% set filter_string = name ~ ' (' ~ tid ~ ')' %}
         {% set is_active = (current_filter == filter_string) %}

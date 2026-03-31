@@ -1,7 +1,7 @@
 {#
   page--front.html.twig — Homepage only.
 
-  REGION MAP (Block Layout → configure in /admin/structure/block):
+  REGION MAP:
   ┌──────────────────────────────────────────────────────────────┐
   │  primary_menu  → "Main navigation" menu block                │
   │  hero          → "Hero Block" custom block (hero_block type) │
@@ -12,9 +12,9 @@
   └──────────────────────────────────────────────────────────────┘
 
   Dynamic variables:
-    logo       → URL of site logo image (Appearance → Scholastic → Logo)
+    logo       → URL of site logo image (Appearance → Scholastic → Logo) (not in use)
     site_name  → Configuration → System → Basic site settings → Site name
-    site_slogan→ Configuration → System → Basic site settings → Slogan
+    site_slogan→ Configuration → System → Basic site settings → Slogan 
     logged_in  → TRUE when user is authenticated
 #}
 
@@ -22,7 +22,7 @@
 <nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-xl shadow-sky-900/5">
   <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
 
-    {# 1. LEFT SIDE: Logo / site name (Fully Dynamic) (not implemented actually) #}
+    {# CONCEPT LEFT SIDE: Logo / site name (Fully Dynamic) (not implemented actually) #}
     {# 1. LEFT SIDE: Site name (Forced Text Mode) #}
     <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3 group">
       <span class="text-2xl font-extrabold tracking-tight font-headline transition-opacity group-hover:opacity-80" 
@@ -89,8 +89,9 @@
 
 <script>
   (function () {
-    var btn  = document.getElementById("mobile-menu-toggle");
-    var menu = document.getElementById("mobile-menu");
+    var btn  = document.getElementById("mobile-menu-toggle-inner");
+    var menu = document.getElementById("mobile-menu-inner");
+    
     if (btn && menu) {
       btn.addEventListener("click", function () {
         menu.classList.toggle("hidden");
@@ -101,32 +102,32 @@
 
 <main id="main-content">
 
-  {# ── HERO SECTION ──────────────────────────────────────────── #}
-  {# Block: "Hero Block" → placed in "Front: Hero" region        #}
+  {# HERO SECTION #}
+  {# Block: "Hero Block" → placed in "Front: Hero" region #}
   <section class="relative overflow-hidden pt-20 pb-32">
     <div class="max-w-7xl mx-auto px-8">
       {{ page.hero }}
     </div>
   </section>
 
-  {# ── FEATURE GRID ──────────────────────────────────────────── #}
-  {# Block: "Feature Grid" → placed in "Front: Feature Grid"     #}
+  {# FEATURE GRID #}
+  {# Block: "Feature Grid" → placed in "Front: Feature Grid" #}
   <section class="py-24 bg-surface-container-low">
     <div class="max-w-7xl mx-auto px-8">
       {{ page.features }}
     </div>
   </section>
 
-  {# ── FEATURED TUTORIALS ────────────────────────────────────── #}
-  {# Block: Section Header + Featured Tutorials view             #}
-  {# → both placed in "Main content" region                      #}
+  {# FEATURED TUTORIALS #}
+  {# Block: Section Header + Featured Tutorials view #}
+  {# → both placed in "Main content" region #}
   <section class="py-32" id="tutorials">
     <div class="max-w-7xl mx-auto px-8">
       {{ page.content }}
     </div>
   </section>
 
-  {# ── NEWSLETTER CTA ────────────────────────────────────────── #}
+  {# NEWSLETTER CTA #}
   {# Block: "Newsletter CTA" → placed in "Front: Newsletter CTA" #}
   <section class="py-24">
     <div class="max-w-7xl mx-auto px-8">
@@ -136,12 +137,10 @@
 
 </main>
 
-{# ── FOOTER ────────────────────────────────────────────────────── #}
+{# FOOTER #}
 {#
   site_name   → comes from Basic site settings
   site_slogan → comes from Basic site settings
-  page.footer → assign a menu block (e.g. "Footer" menu) in Block Layout
-                under the "Footer" region
 #}
 <footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
   <div class="max-w-7xl mx-auto px-8 py-16
@@ -174,10 +173,6 @@
         <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
           {{ "Explore"|t }}
         </h4>
-        {#
-          page.footer renders the Footer menu block (menu.html.twig).
-          The CSS in html.html.twig styles the resulting <ul> links.
-        #}
         {{ page.footer }}
       </div>
       <div>

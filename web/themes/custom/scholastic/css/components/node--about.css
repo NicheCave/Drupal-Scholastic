@@ -1,0 +1,73 @@
+/* Portrait image */
+.about-portrait-img img {
+  width:      100%;
+  height:     100%;
+  object-fit: cover;
+  display:    block;
+  max-height: 480px;
+}
+
+/* Expertise 3-col grid */
+.about-expertise-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   1px;
+  background-color:      rgba(195, 198, 209, 0.15);
+  border-radius:         0.75rem;
+  overflow:              hidden;
+}
+.about-expertise-grid > *           { display: contents; } /* .field        */
+.about-expertise-grid > * > *       { display: contents; } /* .field__items */
+.about-expertise-grid > * > * > *   { display: flex; flex-direction: column; }
+.about-expertise-grid > * > * > * > * { flex: 1; display: flex; flex-direction: column; }
+
+@media (max-width: 767px) {
+  .about-expertise-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-expertise-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Honors list: flatten Drupal wrappers */
+.about-honors-list > *       { display: contents; } /* .field        */
+.about-honors-list > * > *   { display: contents; } /* .field__items */
+.about-honors-list > * > * > * { display: block; width: 100%; }
+
+/* CTA button */
+.about-cta-btn a {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: space-between;
+  width:           100%;
+  padding:         0.75rem 1.25rem;
+  border-radius:   0.5rem;
+  border:          1px solid rgba(255, 255, 255, 0.25);
+  color:           #ffffff;
+  font-size:       0.875rem;
+  font-weight:     600;
+  text-decoration: none;
+  transition:      background-color 0.2s;
+}
+.about-cta-btn a::after {
+  content:     "→";
+  font-size:   1rem;
+  margin-left: 0.5rem;
+}
+.about-cta-btn a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Pull quote */
+.about-pull-quote .about-quote-text,
+.about-pull-quote .about-quote-text * {
+  font-style:  italic    !important;
+  font-weight: 500       !important;
+  color:       #1e3a5f   !important;
+  font-size:   0.9375rem !important;
+}
+
+/* CTA body text */
+.about-cta-body,
+.about-cta-body * {
+  color: rgba(191, 219, 254, 0.85) !important;
+}

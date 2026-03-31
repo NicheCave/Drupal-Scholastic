@@ -1,3 +1,4 @@
+{% set _ = attach_library('scholastic/page--user-auth') %}
 <div class="min-h-screen flex items-center justify-center bg-surface px-4 relative overflow-hidden">
 
   {# Subtle background decoration #}
@@ -42,57 +43,3 @@
   </div>
 
 </div>
-
-<style>
-  /* The "Log out" button — override the global .form-submit to be full-width danger-adjacent */
-  .logout-form-wrapper .form-submit {
-    width: 100%;
-    background-color: #001f3c; /* primary */
-    color: #ffffff;
-    padding: 0.85rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    cursor: pointer;
-    border: none;
-    margin-top: 0;
-    transition: opacity 0.15s ease;
-    letter-spacing: 0.01em;
-  }
-
-  .logout-form-wrapper .form-submit:hover {
-    opacity: 0.88;
-    background-color: #001f3c;
-  }
-
-  /* The "Cancel" link — render as a subtle secondary button */
-  .logout-form-wrapper a {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-top: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    background-color: #f3f4f5; /* surface-container-low */
-    color: #43474f;            /* on-surface-variant */
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.875rem;
-    text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
-  }
-
-  .logout-form-wrapper a:hover {
-    background-color: #e7e8e9; /* surface-container-high */
-    color: #001f3c;
-  }
-
-  /* Hide the default form margins Drupal adds */
-  .logout-form-wrapper form {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-</style>

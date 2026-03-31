@@ -9,13 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-    {#
-      Tailwind CDN is loaded here as a plain blocking <script> tag so the
-      browser executes it immediately. The config <script> directly below is
-      guaranteed to run after — tailwind.config (not window.tailwind.config)
-      is the correct property name for Tailwind v3 CDN.
-      This replaces the libraries.yml approach which could not guarantee order.
-    #}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
       tailwind.config = {
@@ -106,188 +99,6 @@
         document.body.removeAttribute("data-tailwind-cloak");
       });
     </script>
-
-    <style>
-      /* ── Material Symbols icon weight ── */
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-
-      /* ── Reading column max-width ── */
-      .prose-column { max-width: 680px; }
-
-      /* ── Page-cloak: hide unstyled flash ── */
-      [data-tailwind-cloak] { opacity: 0; }
-
-      /* ═══════════════════════════════════════════════════════════════
-         FEATURE GRID FIX
-         Problem: {{ content.field_features }} renders Drupal's
-         .field  >  .field__items  >  .field__item  wrappers.
-         Those block-level divs sit between the CSS-grid container
-         and the actual paragraph items, so grid columns never form.
-         Fix: display:contents makes those wrappers invisible to the
-         layout engine — .field__item becomes a direct grid child.
-      ═══════════════════════════════════════════════════════════════ */
-      [data-feature-grid] .field--name-field-features,
-      [data-feature-grid] .field--name-field-features .field__items {
-        display: contents;
-      }
-      /* Each paragraph item fills its grid cell fully */
-      [data-feature-grid] .field--name-field-features .field__item {
-        display: flex;
-        flex-direction: column;
-      }
-      [data-feature-grid] .field--name-field-features .field__item > * {
-        flex: 1;
-      }
-
-      /* ═══════════════════════════════════════════════════════════════
-         HERO IMAGE FIX
-         Problem: {{ content.field_hero_image }} wraps the <img> in
-         multiple Drupal divs (.field, .field__items, .field__item,
-         .media, .media__element). Any wrapper with height:auto
-         collapses the image to zero height.
-         Fix: target them via [data-hero-img-wrap] — a custom
-         attribute we put on the hero image container in the block
-         template, so we never have to guess Drupal's generated classes.
-      ═══════════════════════════════════════════════════════════════ */
-      [data-hero-img-wrap],
-      [data-hero-img-wrap] > *,
-      [data-hero-img-wrap] .field,
-      [data-hero-img-wrap] .field__items,
-      [data-hero-img-wrap] .field__item,
-      [data-hero-img-wrap] .media,
-      [data-hero-img-wrap] .media__element,
-      [data-hero-img-wrap] a {
-        display: block;
-        width:   100%;
-        height:  100%;
-      }
-      [data-hero-img-wrap] img {
-        display:    block;
-        width:      100%;
-        height:     100%;
-        object-fit: cover;
-        object-position: center;
-      }
-
-      /* ── Bento-grid card images (Views) ── */
-      .bento-card-img,
-      .bento-card-img > *,
-      .bento-card-img .field,
-      .bento-card-img .field__items,
-      .bento-card-img .field__item,
-      .bento-card-img .media,
-      .bento-card-img .media__element,
-      .bento-card-img a {
-        display: block;
-        width:   100%;
-        height:  100%;
-      }
-      .bento-card-img img {
-        display:    block;
-        width:      100%;
-        height:     100%;
-        object-fit: cover;
-      }
-
-      /* ═══════════════════════════════════════════════════════════════
-         DRUPAL FORM STYLES (login / register / logout pages)
-      ═══════════════════════════════════════════════════════════════ */
-      input[type="text"],
-      input[type="password"],
-      input[type="email"],
-      input[type="tel"],
-      select,
-      textarea {
-        display: block;
-        width: 100%;
-        padding: 0.75rem 1rem;
-        margin-top: 0.375rem;
-        margin-bottom: 1.25rem;
-        border: 1px solid #e7e8e9;
-        border-radius: 0.5rem;
-        background-color: #ffffff;
-        color: #191c1d;
-        font-family: "Inter", sans-serif;
-        font-size: 0.9375rem;
-        transition: border-color 0.15s, box-shadow 0.15s;
-      }
-      input:focus, select:focus, textarea:focus {
-        outline: none;
-        border-color: #1460a4;
-        box-shadow: 0 0 0 3px rgba(20, 96, 164, 0.12);
-      }
-      label {
-        display: block;
-        font-weight: 600;
-        font-size: 0.875rem;
-        color: #001f3c;
-        margin-bottom: 0.25rem;
-        font-family: "Inter", sans-serif;
-      }
-      .form-submit {
-        display: block;
-        width: 100%;
-        padding: 0.875rem 1.5rem;
-        margin-top: 0.5rem;
-        background-color: #001f3c;
-        color: #ffffff;
-        font-weight: 700;
-        font-family: "Inter", sans-serif;
-        font-size: 0.9375rem;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: opacity 0.15s;
-        letter-spacing: 0.01em;
-      }
-      .form-submit:hover { opacity: 0.88; }
-
-      /* ── Footer menu override: Drupal renders <ul> in footer region ── */
-      footer nav ul,
-      .region-footer ul {
-        list-style: none;
-        margin:  0;
-        padding: 0;
-      }
-      footer nav ul li a,
-      .region-footer ul li a {
-        display: block;
-        font-size: 0.875rem;
-        color: #43474f;
-        text-decoration: none;
-        padding: 0.25rem 0;
-        transition: color 0.15s;
-      }
-      footer nav ul li a:hover,
-      .region-footer ul li a:hover { color: #001f3c; }
-
-      /* ── Gradient helper (used by hero CTA + auth pages) ── */
-      .hero-gradient {
-        background: linear-gradient(135deg, #001f3c 0%, #00345f 100%);
-      }
-
-      [data-tutorial-img-wrap],
-      [data-tutorial-img-wrap] > *,
-      [data-tutorial-img-wrap] .field,
-      [data-tutorial-img-wrap] .field__items,
-      [data-tutorial-img-wrap] .field__item,
-      [data-tutorial-img-wrap] .media,
-      [data-tutorial-img-wrap] .media__element,
-      [data-tutorial-img-wrap] a {
-        display: block;
-        width:   100%;
-        height:  100%;
-      }
-      [data-tutorial-img-wrap] img {
-        display:    block;
-        width:      100%;
-        height:     100%;
-        object-fit: cover;
-        object-position: center;
-      }
-    </style>
   </head>
 
   <body{{ attributes.addClass("bg-surface", "font-body", "text-on-surface").setAttribute("data-tailwind-cloak", "") }}>
@@ -299,11 +110,7 @@
     {{ page_bottom }}
     <js-bottom-placeholder token="{{ placeholder_token|raw }}">
 
-    {# ══════════════════════════════════════════════════════════════
-       LOGOUT CONFIRMATION MODAL
-       Triggered by any <a data-logout-confirm> link.
-       Stores the href, then navigates only on "Yes, log out".
-    ══════════════════════════════════════════════════════════════ #}
+    {# LOGOUT CONFIRMATION MODAL #}
     <div id="logout-modal-backdrop"
          aria-modal="true" role="dialog" aria-labelledby="logout-modal-title"
          style="display:none; position:fixed; inset:0; z-index:9999;
@@ -382,7 +189,6 @@
       function openModal(href) {
         pendingHref = href;
         backdrop.style.display = 'flex';
-        /* Trigger enter animation on next frame */
         requestAnimationFrame(function () {
           requestAnimationFrame(function () {
             card.style.transform = 'scale(1) translateY(0)';
@@ -409,12 +215,12 @@
         openModal(link.href);
       });
 
-      /* Confirm → navigate */
+      /* Confirm */
       confirmBtn.addEventListener('click', function () {
         if (pendingHref) window.location.href = pendingHref;
       });
 
-      /* Cancel / backdrop click → close */
+      /* Cancel */
       cancelBtn.addEventListener('click', closeModal);
       backdrop.addEventListener('click', function (e) {
         if (e.target === backdrop) closeModal();

@@ -4,14 +4,10 @@
 
   Fields (Structure → Paragraph types → Feature Item → Manage fields):
     field_icon        → Text plain  — enter a Material Symbols name
-                        e.g. "architecture", "security", "hub", "bolt"
-                        Browse icons at: https://fonts.google.com/icons
     field_title       → Text plain
     field_description → Text plain long
 
-  NOTE: field_icon must be rendered with |render|striptags|trim so only
-  the icon name string is output — not Drupal's field wrapper markup.
-  Without this the <span> would contain wrapper divs and the icon fails.
+  NOTE: field_icon must be rendered with |render|striptags|trim 
 #}
 
 <div class="bg-surface p-10 flex flex-col gap-4 h-full

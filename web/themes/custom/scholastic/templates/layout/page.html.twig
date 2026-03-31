@@ -1,7 +1,7 @@
 {#
   page.html.twig — All non-front pages (tutorials, user pages, etc.)
 
-  Dynamic variables used:
+  Variables:
     logo         → Site logo image URL  (Appearance → Scholastic → Settings)
     site_name    → Configuration → System → Basic site settings
     site_slogan  → Configuration → System → Basic site settings
@@ -10,7 +10,7 @@
     page.footer  → Footer menu block
 #}
 
-{# ── TOP NAVIGATION ── #}
+{# TOP NAVIGATION #}
 <nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-xl shadow-sky-900/5">
   <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
 
@@ -83,24 +83,27 @@
   (function () {
     var btn  = document.getElementById("mobile-menu-toggle-inner");
     var menu = document.getElementById("mobile-menu-inner");
+    
     if (btn && menu) {
-      btn.addEventListener("click", function () { menu.classList.toggle("hidden"); });
+      btn.addEventListener("click", function () {
+        menu.classList.toggle("hidden");
+      });
     }
   })();
 </script>
 
-{# ── MAIN CONTENT ── #}
+{# MAIN CONTENT #}
 <main id="main-content" class="min-h-screen">
   {{ page.breadcrumb }}
   {{ page.content }}
 
-  {# ── RELATED TUTORIALS ── #}
+  {# RELATED TUTORIALS #}
   {% if page.related_content %}
     {{ page.related_content }}
   {% endif %}
 </main>
 
-{# ── FOOTER ── #}
+{# FOOTER #}
 <footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
   <div class="max-w-7xl mx-auto px-8 py-16
               grid grid-cols-1 md:grid-cols-3 gap-12">

@@ -5,26 +5,18 @@
     header  → view title / description (configured in Views UI)
     rows    → rendered by views-view-unformatted--all-tutorials.html.twig
     pager   → Drupal full pager (styled by pager.html.twig)
-
-  No extra configuration needed — Drupal picks this up automatically
-  from the View machine name "all_tutorials".
 #}
 
 {%- if title -%}
-  {# The View title set in the Views UI admin, if you added one.    #}
-  {# For the /tutorials page we set the heading in page--tutorials  #}
-  {# so you can leave the View title empty and skip this block.     #}
   <h2 class="sr-only">{{ title }}</h2>
 {%- endif -%}
 
 {# Active filter indicator — shows which category is being filtered #}
 {% if exposed %}
-  {# The exposed filter form is placed in the sidebar instead,      #}
-  {# so hide it here with sr-only (screen-reader accessible only).  #}
   <div class="sr-only">{{ exposed }}</div>
 {% endif %}
 
-{# Results count line (optional — delete if unwanted) #}
+{# Results count line #}
 {% if view_array['#view'].total_rows is defined %}
   <p class="text-sm text-outline font-body mb-6">
     {{ view_array['#view'].total_rows }}

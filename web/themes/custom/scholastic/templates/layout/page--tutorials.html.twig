@@ -5,23 +5,12 @@
   ┌──────────────────────────────────────────────────────────────────┐
   │  primary_menu   → "Main navigation" menu block                   │
   │  sidebar_first  → "Tutorial Categories" View block               │
-  │                   + (optional) "Pro-Tip" custom block            │
   │  content        → "All Tutorials" View (page display)            │
   │  footer         → Footer navigation menu block                   │
   └──────────────────────────────────────────────────────────────────┘
-
-  This template is auto-selected by Drupal for any page whose path
-  alias begins with /tutorials.  No extra configuration needed —
-  the file name alone is enough.
-
-  Tip: if you also want /tutorials/* sub-paths (e.g. the node view)
-  to use a different layout, they will fall back to page.html.twig
-  because this file only matches the exact path alias "tutorials".
-  For the node detail page that is correct — node--tutorial.html.twig
-  handles the look of individual tutorial pages already.
 #}
 
-{# ── TOP NAVIGATION (identical to page.html.twig) ── #}
+{# TOP NAVIGATION (identical to page.html.twig) #}
 <nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-xl shadow-sky-900/5">
   <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
 
@@ -84,7 +73,7 @@
   </div>
 </nav>
 
-{# ── PAGE HEADER ── #}
+{# PAGE HEADER #}
 <div class="bg-white border-b border-surface-container-high">
   <div class="max-w-7xl mx-auto px-8 py-14">
     <h1 class="text-5xl font-extrabold font-headline text-primary tracking-tight mb-4">
@@ -96,7 +85,7 @@
   </div>
 </div>
 
-{# ── MAIN LAYOUT: sidebar + content grid ── #}
+{# MAIN LAYOUT: sidebar + content grid #}
 <main id="main-content" class="bg-surface-container-lowest min-h-screen">
   <div class="max-w-7xl mx-auto px-8 py-12">
     <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 items-start">
@@ -115,7 +104,7 @@
   </div>
 </main>
 
-{# ── FOOTER (identical to page.html.twig) ── #}
+{# FOOTER (identical to page.html.twig) #}
 <footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
   <div class="max-w-7xl mx-auto px-8 py-16
               grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -147,10 +136,6 @@
         <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
           {{ "Explore"|t }}
         </h4>
-        {#
-          page.footer renders the Footer menu block (menu.html.twig).
-          The CSS in html.html.twig styles the resulting <ul> links.
-        #}
         {{ page.footer }}
       </div>
       <div>
@@ -215,26 +200,6 @@
   })();
 </script>
 
-{#
-  Prevent the exposed-filter autocomplete from auto-submitting the form.
-
-  Problem: Drupal's Views "auto-submit" behaviour listens for `change` events
-  on every exposed-filter field. jQuery UI autocomplete sets the field value
-  and immediately fires `change` after the user picks a suggestion, which
-  triggers an AJAX form submission before the user ever clicks Apply.
-
-  Fix (three-layer defence):
-    1. On `autocompleteselect`  — raise a flag the moment a suggestion is picked.
-    2. On `change` (capture)    — if the flag is up, eat the event before
-                                  Drupal's auto-submit handler sees it.
-    3. On form `submit` (capture) — belt-and-suspenders guard in case the
-                                  change event already escaped layer 2.
-
-  All three handlers are registered in the DOM capture phase so they run
-  before any jQuery bubble-phase handlers Drupal may have registered earlier.
-  The flag is cleared either when Apply is clicked or after a short safety
-  timeout so normal usage is never blocked.
-#}
 <script>
 (function ($, Drupal) {
   'use strict';
