@@ -46,14 +46,14 @@
 
       {% if logged_in %}
         <a href="{{ path('user.logout') }}"
+           data-logout-confirm
            class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm
                   hover:opacity-90 transition-all no-underline font-body">
           {{ "Log Out"|t }}
         </a>
       {% else %}
-        <a href="{{ path('user.login') }}"
-           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm
-                  hover:opacity-90 transition-all no-underline font-body">
+        <a href="{{ path('user.login', {}, {'query': {'destination': path('<front>')}}) }}"
+           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all no-underline font-body">
           {{ "Sign In"|t }}
         </a>
       {% endif %}
@@ -75,6 +75,7 @@
     <div class="mt-4 pt-4 border-t border-surface-container-high">
       {% if logged_in %}
         <a href="{{ path('user.logout') }}"
+           data-logout-confirm
            class="block bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold
                   text-sm text-center no-underline">{{ "Log Out"|t }}</a>
       {% else %}

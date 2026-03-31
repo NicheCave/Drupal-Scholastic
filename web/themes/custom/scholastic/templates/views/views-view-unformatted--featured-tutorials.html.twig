@@ -108,22 +108,17 @@
     </div>
 
     {# ── Card 4: Large dark horizontal split card ── #}
-    {#
-      IMPORTANT — {{ path }} renders a full <a>…</a> tag, not a raw URL.
-      Wrapping in another <a> would create invalid nested anchors.
-      Instead the outer div uses onclick to navigate via the rendered link inside,
-      making the full card surface clickable.
-    #}
     {% elseif loop.index == 4 %}
-    <div class="md:col-span-2">
-        <div class="relative overflow-hidden rounded-xl flex flex-col md:flex-row h-full md:h-[300px] group cursor-pointer"
-           style="background-color:#001f3c;"
-           onclick="var lnk=this.querySelector('a[href]');if(lnk){window.location.href=lnk.href;}">
+    <div class="md:col-span-2 group relative">
+      
+      {# ── Main Card Container ── #}
+      <div class="overflow-hidden rounded-xl flex flex-col md:flex-row h-full md:h-[300px] transition-all duration-300"
+           style="background-color:#001f3c;">
 
         {# ── Left: text panel ── #}
-        <div class="md:w-1/2 p-10 flex flex-col justify-center gap-0">
+        <div class="md:w-1/2 p-10 flex flex-col justify-center gap-0 z-10">
 
-          {# Category pill — semi-transparent white bg, light-blue text #}
+          {# Category pill #}
           <span class="inline-block text-[10px] font-bold tracking-widest uppercase mb-4 rounded px-3 py-1 w-fit font-label"
                 style="background-color:rgba(255,255,255,0.12); color:#93c5fd; border:1px solid rgba(255,255,255,0.15);">
             {{ category }}
@@ -139,20 +134,11 @@
             {{ subtitle }}
           </p>
 
-          {#
-            The real <a> tag from Views is hidden but still present for navigation.
-            A visible <span> styled as a button sits on top for the UI.
-            onclick on the outer div will find this hidden <a> and follow it.
-          #}
-          <div class="relative w-fit">
-            {# Invisible real link — zero size, absolute, used only for href targeting #}
-            <span class="absolute inset-0 opacity-0 overflow-hidden w-0 h-0">{{ path }}</span>
-
-            {# Visible button #}
-            <span class="inline-block px-6 py-2.5 rounded text-sm font-bold transition-all"
-                  style="background-color:#ffffff; color:#001f3c; cursor:pointer;">
-              Enroll in Course
-            </span>
+          {# Visible button (Visual only, the overlay handles the click) #}
+          <div class="flex items-center justify-between px-6 py-2.5 rounded text-sm font-bold transition-all w-fit gap-4"
+                style="background-color:#ffffff; color:#001f3c;">
+            Enroll in Course
+            <span class="material-symbols-outlined" style="font-size:18px;">east</span>
           </div>
 
         </div>
@@ -168,6 +154,10 @@
         </div>
 
       </div>
+
+      {# ── THE FIX: Full-card clickable overlay link ── #}
+      <a href="{{ path }}" class="absolute inset-0 z-20" aria-label="Enroll in {{ title }}"></a>
+
     </div>
 
     {# ── Cards 5+: Generic fallback card ── #}
