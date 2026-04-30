@@ -1,77 +1,59 @@
 {% set _ = attach_library('scholastic/block--hero') %}
 {#
   block--block-content--hero-block.html.twig
-  FOLDER: themes/custom/scholastic/templates/block/
-
-  Fields (Structure → Block types → Hero Block → Manage fields):
-    field_eyebrow   
-    field_heading   
-    field_heading_accent 
-    field_description   
-    field_cta_primary 
-    field_cta_secondary 
-    field_hero_image   
 #}
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="row g-5 align-items-center">
 
   {# ── Left: text content ── #}
-  <div class="z-10 flex flex-col gap-6">
+  <div class="col-12 col-lg-6 d-flex flex-column gap-3 position-relative" style="z-index:1;">
 
-    {# Eyebrow label — from field_eyebrow, editable in Block admin #}
     {% if content.field_eyebrow|render %}
-      <span class="inline-block py-1.5 px-4 bg-secondary-container text-on-secondary-container
-                   text-xs font-bold tracking-widest uppercase rounded font-label w-fit">
-        {{ content.field_eyebrow }}
-      </span>
+      <div class="d-flex">
+        <span class="py-1 px-3 bg-secondary-container text-on-secondary-container
+                     small fw-bold text-uppercase rounded font-label"
+              style="letter-spacing:.1em;">
+          {{ content.field_eyebrow|render|striptags|trim }}
+        </span>
+      </div>
     {% endif %}
 
-    {# Main heading — two lines: base + accent colour #}
-    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.08]
-               text-primary font-headline tracking-tighter">
+    <h1 class="display-4 fw-bolder font-headline lh-1 mb-0" style="color:#001f3c; letter-spacing:-.03em;">
       {{ content.field_heading }}
       {% if content.field_heading_accent|render %}
-        <span class="block" style="color:#1460a4;">
+        <span class="d-block" style="color:#1460a4;">
           {{ content.field_heading_accent }}
         </span>
       {% endif %}
     </h1>
 
-    {# Description paragraph #}
     {% if content.field_description|render %}
-      <div class="text-lg text-on-surface-variant leading-relaxed max-w-[520px] font-body">
+      <div class="fs-5 text-on-surface-variant lh-base font-body" style="max-width:32rem;">
         {{ content.field_description }}
       </div>
     {% endif %}
 
-    {# CTA buttons — primary (gradient) + secondary (tonal) #}
-    <div class="flex flex-col sm:flex-row gap-4 pt-2">
-
+    <div class="d-flex flex-column flex-sm-row gap-3 pt-2">
       {% if content.field_cta_primary|render %}
-        <div class="cta-primary-wrap">
-          {{ content.field_cta_primary }}
-        </div>
+        <div class="cta-primary-wrap">{{ content.field_cta_primary }}</div>
       {% endif %}
-
       {% if content.field_cta_secondary|render %}
-        <div class="cta-secondary-wrap">
-          {{ content.field_cta_secondary }}
-        </div>
+        <div class="cta-secondary-wrap">{{ content.field_cta_secondary }}</div>
       {% endif %}
-
     </div>
+
   </div>
 
-  {# ── Right: hero image ── #}
-  <div class="relative group hidden lg:block">
+  {# ── Right: hero image (desktop only) ── #}
+  <div class="col-lg-6 d-none d-lg-block position-relative">
 
-    {# Decorative tinted backing card #}
-    <div class="absolute -inset-4 bg-secondary-container/30 rounded-[2rem]
-                transform rotate-2 group-hover:rotate-1 transition-transform duration-500">
-    </div>
+    {# Decorative backing card — inset positive so it's smaller than the image #}
+    <div class="position-absolute rounded-4 bg-secondary-container"
+         style="inset:1.25rem 0 -1.25rem 1.25rem; opacity:.35; transform:rotate(1.5deg); transition:transform .5s; z-index:0;"></div>
 
-    <div class="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]
-                bg-surface-container shadow-2xl shadow-primary/10"
+    {# Image container #}
+    <div class="position-relative overflow-hidden rounded-4 shadow"
+         style="aspect-ratio:4/5; z-index:1;"
          data-hero-img-wrap>
       {{ content.field_hero_image }}
     </div>

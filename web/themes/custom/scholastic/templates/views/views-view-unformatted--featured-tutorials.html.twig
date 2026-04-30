@@ -1,167 +1,158 @@
 {#
   views-view-unformatted--featured-tutorials.html.twig
 
-  Fields in View:
-    - field_hero_image   
-    - title            
-    - field_subtitle   
-    - field_category     
-    - view_node        
+  View fields:
+    field_hero_image / title / field_subtitle / field_category / view_node
 #}
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="row g-4">
 
   {% for row in rows %}
 
-    {# Grab the raw field values from Views #}
-    {% set vsp       = row.content['#view'].style_plugin %}
-    {% set idx       = loop.index0 %}
-    {% set image     = vsp.getField(idx, 'field_hero_image') %}
-    {% set title     = vsp.getField(idx, 'title') %}
-    {% set subtitle  = vsp.getField(idx, 'field_subtitle') %}
-    {% set category  = vsp.getField(idx, 'field_category') %}
-    {% set path      = vsp.getField(idx, 'view_node') %}
+    {% set vsp      = row.content['#view'].style_plugin %}
+    {% set idx      = loop.index0 %}
+    {% set image    = vsp.getField(idx, 'field_hero_image') %}
+    {% set title    = vsp.getField(idx, 'title') %}
+    {% set subtitle = vsp.getField(idx, 'field_subtitle') %}
+    {% set category = vsp.getField(idx, 'field_category') %}
+    {% set path     = vsp.getField(idx, 'view_node') %}
 
-    {# Card 1 #}
+    {# ── Card 1: wide feature card ── #}
     {% if loop.index == 1 %}
-    <div class="md:col-span-2 group">
-      <div class="relative overflow-hidden rounded-xl bg-surface-container-highest h-[450px]">
-        <div class="bento-card-img absolute inset-0 z-0 transform group-hover:scale-105 transition-transform duration-700">
+    <div class="col-12 col-md-8">
+      <div class="position-relative overflow-hidden rounded-3 bg-dark" style="height:450px;">
+        <div class="bento-card-img position-absolute top-0 start-0 w-100 h-100"
+             style="transition:transform .7s;">
           {{ image }}
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent z-10"></div>
-        <div class="absolute bottom-0 left-0 p-10 z-20 text-white">
-          <span class="inline-block py-1 px-3 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold tracking-widest uppercase mb-4 rounded">
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+             style="background:linear-gradient(to top, rgba(0,31,60,.9) 0%, rgba(0,31,60,.2) 60%, transparent 100%); z-index:1;">
+        </div>
+        <div class="position-absolute bottom-0 start-0 p-4 p-lg-5 text-white" style="z-index:2;">
+          <span class="badge bg-tertiary-container text-on-tertiary-container text-uppercase mb-3"
+                style="letter-spacing:.08em; font-size:.65rem;">
             {{ category }}
           </span>
-          <h3 class="text-3xl font-bold font-headline mb-4 leading-tight">{{ title }}</h3>
-          <p class="text-blue-100/90 max-w-md mb-6 text-sm font-body line-clamp-3">{{ subtitle }}</p>
-          <a href="{{ path }}" class="flex items-center text-sm font-bold text-white hover:text-blue-200 transition-colors no-underline group">
-            Start Learning
-            <span class="material-symbols-outlined ml-2 group-hover:translate-x-2 transition-transform">east</span>
+          <h3 class="h4 fw-bolder font-headline mb-3 lh-sm">{{ title }}</h3>
+          <p class="small mb-4 line-clamp-3" style="color:rgba(191,219,254,.85); max-width:28rem;">{{ subtitle }}</p>
+          <a href="{{ path }}" class="d-inline-flex align-items-center gap-2 small fw-bold text-white text-decoration-none">
+            {{ 'Start Learning'|t }} &rarr;
           </a>
         </div>
-        <a href="{{ path }}" class="absolute inset-0 z-30" aria-label="Start {{ title }}"></a>
+        <a href="{{ path }}" class="position-absolute top-0 start-0 w-100 h-100"
+           style="z-index:3;" aria-label="{{ 'Start'|t }} {{ title|striptags }}"></a>
       </div>
     </div>
 
-    {# Card 2 #}
+    {# ── Card 2: narrow split card ── #}
     {% elseif loop.index == 2 %}
-    <div class="group">
-      <div class="relative overflow-hidden rounded-xl bg-surface-container-high h-[450px] flex flex-col">
-        <div class="h-1/2 relative overflow-hidden">
-          <div class="bento-card-img w-full h-full transform group-hover:scale-110 transition-transform duration-500">
+    <div class="col-12 col-md-4">
+      <div class="position-relative overflow-hidden rounded-3 bg-white border d-flex flex-column"
+           style="height:450px;">
+        <div class="overflow-hidden" style="height:50%;">
+          <div class="bento-card-img w-100 h-100"
+               style="transition:transform .5s;">
             {{ image }}
           </div>
-          <div class="absolute inset-0 bg-surface-tint/10"></div>
         </div>
-        <div class="h-1/2 p-8 flex flex-col justify-between bg-white">
+        <div class="p-4 d-flex flex-column justify-content-between flex-fill">
           <div>
-            <span class="inline-block py-1 px-2 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase mb-3 rounded">
+            <span class="badge bg-secondary-container text-on-secondary-container text-uppercase mb-2"
+                  style="letter-spacing:.08em; font-size:.65rem;">
               {{ category }}
             </span>
-            <h3 class="text-xl font-bold text-primary font-headline mb-2">{{ title }}</h3>
-            <p class="text-sm text-on-surface-variant line-clamp-2 font-body">{{ subtitle }}</p>
+            <h3 class="h5 fw-bold font-headline mb-2" style="color:#001f3c;">{{ title }}</h3>
+            <p class="small text-on-surface-variant line-clamp-2 font-body mb-0">{{ subtitle }}</p>
           </div>
-          <a href="{{ path }}" class="text-surface-tint text-sm font-bold flex items-center hover:gap-2 transition-all no-underline">
-            Read More <span class="material-symbols-outlined ml-1">chevron_right</span>
+          <a href="{{ path }}" class="small fw-bold text-decoration-none d-flex align-items-center gap-1 text-surface-tint">
+            {{ 'Read More'|t }} &rsaquo;
           </a>
         </div>
-        <a href="{{ path }}" class="absolute inset-0 z-10" aria-label="Read {{ title }}"></a>
+        <a href="{{ path }}" class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+           style="z-index:2;" aria-label="{{ 'Read'|t }} {{ title|striptags }}"></a>
       </div>
     </div>
 
-    {# Card 3 #}
+    {# ── Card 3: icon feature card ── #}
     {% elseif loop.index == 3 %}
-    <div class="group">
-      <div class="bg-white border border-surface-container-high shadow-sm p-10 rounded-xl h-full flex flex-col justify-between hover:shadow-md hover:border-outline-variant transition-all relative">
-        <div class="bg-secondary-container p-4 rounded-full w-fit mb-8">
-          <span class="material-symbols-outlined text-surface-tint text-3xl">storage</span>
+    <div class="col-12 col-md-4">
+      <div class="position-relative bg-white border rounded-3 p-4 p-lg-5 h-100 d-flex flex-column justify-content-between">
+        <div class="bg-secondary-container rounded-circle d-flex align-items-center justify-content-center mb-4"
+             style="width:3.5rem; height:3.5rem;">
+          <span class="fw-bolder text-surface-tint fs-4">&#9679;</span>
         </div>
         <div>
-          <span class="inline-block py-1 px-2 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase mb-3 rounded">
+          <span class="badge bg-secondary-container text-on-secondary-container text-uppercase mb-3"
+                style="letter-spacing:.08em; font-size:.65rem;">
             {{ category }}
           </span>
-          <h3 class="text-xl font-bold text-primary font-headline mb-4">{{ title }}</h3>
-          <p class="text-sm text-on-surface-variant leading-relaxed font-body">{{ subtitle }}</p>
+          <h3 class="h5 fw-bold font-headline mb-3" style="color:#001f3c;">{{ title }}</h3>
+          <p class="small text-on-surface-variant lh-base font-body mb-0">{{ subtitle }}</p>
         </div>
-        <div class="mt-8 pt-8 border-t border-surface-container-high flex items-center">
-          <a href="{{ path }}" class="text-surface-tint text-sm font-bold flex items-center no-underline">
-            Start Course <span class="material-symbols-outlined ml-1">chevron_right</span>
+        <div class="border-top pt-4 mt-4">
+          <a href="{{ path }}" class="small fw-bold text-decoration-none d-flex align-items-center gap-1 text-surface-tint">
+            {{ 'Start Course'|t }} &rsaquo;
           </a>
         </div>
-        <a href="{{ path }}" class="absolute inset-0 z-10 rounded-xl" aria-label="Start {{ title }}"></a>
+        <a href="{{ path }}" class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+           style="z-index:2;" aria-label="{{ 'Start'|t }} {{ title|striptags }}"></a>
       </div>
     </div>
 
-    {# Card 4 #}
+    {# ── Card 4: dark horizontal card ── #}
     {% elseif loop.index == 4 %}
-    <div class="md:col-span-2 group relative">
-      
-      <div class="overflow-hidden rounded-xl flex flex-col md:flex-row h-full md:h-[300px] transition-all duration-300"
-           style="background-color:#001f3c;">
-
-        <div class="md:w-1/2 p-10 flex flex-col justify-center gap-0 z-10">
-
-          <span class="inline-block text-[10px] font-bold tracking-widest uppercase mb-4 rounded px-3 py-1 w-fit font-label"
-                style="background-color:rgba(255,255,255,0.12); color:#93c5fd; border:1px solid rgba(255,255,255,0.15);">
+    <div class="col-12 col-md-8">
+      <div class="position-relative overflow-hidden rounded-3 d-flex flex-column flex-md-row"
+           style="background-color:#001f3c; min-height:300px;">
+        <div class="p-4 p-lg-5 d-flex flex-column justify-content-center gap-3 flex-fill" style="z-index:1;">
+          <span class="badge text-uppercase px-3 py-1"
+                style="background:rgba(255,255,255,.12); color:#93c5fd; border:1px solid rgba(255,255,255,.15); letter-spacing:.08em; font-size:.65rem; width:fit-content;">
             {{ category }}
           </span>
-
-          <h3 class="text-2xl font-bold font-headline mb-3 leading-tight"
-              style="color:#ffffff;">
-            {{ title }}
-          </h3>
-
-          <p class="text-sm mb-6 font-body line-clamp-3"
-             style="color:rgba(191,219,254,0.82);">
-            {{ subtitle }}
-          </p>
-
-          <div class="flex items-center justify-between px-6 py-2.5 rounded text-sm font-bold transition-all w-fit gap-4"
-                style="background-color:#ffffff; color:#001f3c;">
-            Enroll in Course
-            <span class="material-symbols-outlined" style="font-size:18px;">east</span>
+          <h3 class="h4 fw-bold font-headline lh-sm mb-0" style="color:#ffffff;">{{ title }}</h3>
+          <p class="small line-clamp-3 mb-0" style="color:rgba(191,219,254,.82);">{{ subtitle }}</p>
+          <div class="d-inline-flex align-items-center gap-2 fw-bold small rounded px-3 py-2"
+               style="background:#ffffff; color:#001f3c; width:fit-content;">
+            {{ 'Enroll in Course'|t }} &rarr;
           </div>
-
         </div>
-
-        <div class="md:w-1/2 relative overflow-hidden min-h-[200px]"
-             style="background-color:#0f172a;">
-          <div class="bento-card-img absolute inset-0 transform group-hover:scale-105 transition-transform duration-700">
+        <div class="position-relative overflow-hidden flex-shrink-0"
+             style="width:100%; height:200px; background:#0f172a;">
+          <div class="bento-card-img position-absolute top-0 start-0 w-100 h-100"
+               style="transition:transform .7s;">
             {{ image }}
           </div>
-          <div class="absolute inset-0" style="background-color:rgba(0,31,60,0.45);"></div>
+          <div class="position-absolute top-0 start-0 w-100 h-100"
+               style="background:rgba(0,31,60,.45);"></div>
         </div>
-
+        <a href="{{ path }}" class="position-absolute top-0 start-0 w-100 h-100"
+           style="z-index:2;" aria-label="{{ 'Enroll in'|t }} "></a>
       </div>
-
-      <a href="{{ path }}" class="absolute inset-0 z-20" aria-label="Enroll in {{ title }}"></a>
-
     </div>
 
-    {# Cards 5+ #}
+    {# ── Cards 5+: standard split card ── #}
     {% else %}
-    <div class="group">
-      <div class="relative overflow-hidden rounded-xl bg-surface-container-high h-[350px] flex flex-col">
-        <div class="h-1/2 relative overflow-hidden">
-          <div class="bento-card-img w-full h-full transform group-hover:scale-110 transition-transform duration-500">
-            {{ image }}
-          </div>
+    <div class="col-12 col-md-4">
+      <div class="position-relative overflow-hidden rounded-3 bg-white border d-flex flex-column"
+           style="height:350px;">
+        <div class="overflow-hidden" style="height:50%;">
+          <div class="bento-card-img w-100 h-100">{{ image }}</div>
         </div>
-        <div class="h-1/2 p-8 flex flex-col justify-between bg-white">
+        <div class="p-4 d-flex flex-column justify-content-between flex-fill">
           <div>
-            <span class="inline-block py-1 px-2 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase mb-3 rounded">
+            <span class="badge bg-secondary-container text-on-secondary-container text-uppercase mb-2"
+                  style="letter-spacing:.08em; font-size:.65rem;">
               {{ category }}
             </span>
-            <h3 class="text-xl font-bold text-primary font-headline mb-2">{{ title }}</h3>
-            <p class="text-sm text-on-surface-variant line-clamp-2 font-body">{{ subtitle }}</p>
+            <h3 class="h5 fw-bold font-headline mb-2" style="color:#001f3c;">{{ title }}</h3>
+            <p class="small text-on-surface-variant line-clamp-2 font-body mb-0">{{ subtitle }}</p>
           </div>
-          <a href="{{ path }}" class="text-surface-tint text-sm font-bold flex items-center no-underline">
-            Read More <span class="material-symbols-outlined ml-1">chevron_right</span>
+          <a href="{{ path }}" class="small fw-bold text-decoration-none d-flex align-items-center gap-1 text-surface-tint">
+            {{ 'Read More'|t }} &rsaquo;
           </a>
         </div>
-        <a href="{{ path }}" class="absolute inset-0 z-10" aria-label="Read {{ title }}"></a>
+        <a href="{{ path }}" class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+           style="z-index:2;" aria-label="{{ 'Read'|t }} {{ title|striptags }}"></a>
       </div>
     </div>
     {% endif %}

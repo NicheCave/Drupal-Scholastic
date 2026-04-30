@@ -1,56 +1,51 @@
 {#
   views-view-unformatted--tutorial-categories.html.twig
-
-  Each category link points to:
-    /tutorials?field_category_target_id=<term_id>
 #}
 
 {% set current_filter = app.request.query.get('field_category_target_id') %}
 
 <div class="sidebar-curations">
-  <p class="text-[10px] font-bold tracking-widest uppercase text-outline mb-3 font-label">
-    {{ "Curations"|t }}
+  <p class="small fw-bold text-uppercase text-muted mb-2 font-label"
+     style="letter-spacing:.1em; font-size:.7rem;">
+    {{ 'Curations'|t }}
   </p>
 
   <nav aria-label="{{ 'Tutorial categories'|t }}">
-    <ul class="list-none p-0 m-0 flex flex-col gap-1">
+    <ul class="list-group list-group-flush">
 
-      {# "All Modules" Link #}
-      <li>
+      {# "All Modules" link #}
+      <li class="list-group-item px-2 py-1 border-0">
         <a href="/tutorials"
-           class="flex items-center justify-between w-full px-3 py-2 rounded-lg
-                  font-body text-sm transition-colors no-underline
-                  {{ not current_filter ? 'bg-primary text-on-primary font-bold shadow-md' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary' }}">
-          <span>{{ "All Modules"|t }}</span>
-          <span class="text-xs font-bold {{ not current_filter ? 'opacity-70' : 'text-outline' }}">
+           class="d-flex align-items-center justify-content-between w-100 px-3 py-2 rounded text-decoration-none small font-body
+                  {% if not current_filter %}
+                    fw-bold text-white bg-primary
+                  {% else %}
+                    text-on-surface-variant
+                  {% endif %}">
+          <span>{{ 'All Modules'|t }}</span>
+          <span class="{% if not current_filter %}opacity-75{% else %}text-muted{% endif %} small fw-bold">
             {{ total_tutorials }}
           </span>
         </a>
       </li>
 
-      {# Category Links #}
+      {# Category links #}
       {% for row in rows %}
-        {% set vsp   = row.content['#view'].style_plugin %}
-        {% set idx   = loop.index0 %}
-        {% set name  = vsp.getField(idx, 'name')|striptags|trim %}
-        {% set count = vsp.getField(idx, 'nid')|striptags|trim %}
-        {% set tid   = row.content['#row']._entity.id() %}
-        
-        {# 
-          THE HANDSHAKE: 
-          exact string the Autocomplete field expects: "Category Name (ID)"
-        #}
+        {% set vsp    = row.content['#view'].style_plugin %}
+        {% set idx    = loop.index0 %}
+        {% set name   = vsp.getField(idx, 'name')|striptags|trim %}
+        {% set count  = vsp.getField(idx, 'nid')|striptags|trim %}
+        {% set tid    = row.content['#row']._entity.id() %}
         {% set filter_string = name ~ ' (' ~ tid ~ ')' %}
         {% set is_active = (current_filter == filter_string) %}
 
-        <li>
+        <li class="list-group-item px-2 py-1 border-0">
           <a href="/tutorials?field_category_target_id={{ filter_string|url_encode }}"
-             class="flex items-center justify-between w-full px-3 py-2 rounded-lg
-                    font-body text-sm transition-colors no-underline
-                    {{ is_active ? 'bg-primary text-on-primary font-bold shadow-md' : 'text-on-surface-variant hover:bg-surface-container hover:text-primary' }}"
+             class="d-flex align-items-center justify-content-between w-100 px-3 py-2 rounded text-decoration-none small font-body
+                    {% if is_active %}fw-bold text-white bg-primary{% else %}text-on-surface-variant{% endif %}"
              {% if is_active %}aria-current="true"{% endif %}>
             <span>{{ name }}</span>
-            <span class="text-xs font-bold {{ is_active ? 'opacity-70' : 'text-outline' }}">
+            <span class="{% if is_active %}opacity-75{% else %}text-muted{% endif %} small fw-bold">
               {{ count }}
             </span>
           </a>

@@ -1,48 +1,24 @@
-/* Logout page: submit button override */
-.logout-form-wrapper .form-submit {
-  width:            100%;
-  background-color: #001f3c;
-  color:            #ffffff;
-  padding:          0.85rem 1.5rem;
-  border-radius:    0.5rem;
-  font-weight:      700;
-  font-family:      "Inter", sans-serif;
-  font-size:        0.9375rem;
-  cursor:           pointer;
-  border:           none;
-  margin-top:       0;
-  transition:       opacity 0.15s ease;
-  letter-spacing:   0.01em;
-}
-.logout-form-wrapper .form-submit:hover {
-  opacity: 0.88;
+/* Bootstrap already styles form-control, labels, and btn.
+   These overrides handle the logout confirmation page wrapper
+   and any Drupal-specific form element quirks. */
+
+/* Logout page: force full-width button */
+.logout-form-wrapper .form-submit,
+.logout-form-wrapper input[type="submit"] {
+  width:         100%;
+  margin-top:    0;
 }
 
-/* Cancel link — rendered as a secondary button */
-.logout-form-wrapper a {
-  display:          block;
-  width:            100%;
-  text-align:       center;
-  margin-top:       0.75rem;
-  padding:          0.75rem 1.5rem;
-  border-radius:    0.5rem;
-  background-color: #f3f4f5;
-  color:            #43474f;
-  font-weight:      600;
-  font-family:      "Inter", sans-serif;
-  font-size:        0.875rem;
-  text-decoration:  none;
-  transition:       background-color 0.15s ease, color 0.15s ease;
-}
-.logout-form-wrapper a:hover {
-  background-color: #e7e8e9;
-  color:            #001f3c;
-}
-
-/* Remove default Drupal form margins */
+/* Remove default Drupal form bottom-margin inside auth cards */
 .logout-form-wrapper form {
-  margin:         0;
-  display:        flex;
-  flex-direction: column;
-  gap:            0;
+  margin: 0;
+}
+
+/* Override Bootstrap's default .btn colours to use brand primary */
+.btn-primary {
+  --bs-btn-bg:           #001f3c;
+  --bs-btn-border-color: #001f3c;
+  --bs-btn-hover-bg:     #00345f;
+  --bs-btn-hover-border-color: #00345f;
+  --bs-btn-active-bg:    #001429;
 }

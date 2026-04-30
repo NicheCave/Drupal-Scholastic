@@ -1,28 +1,26 @@
 {#
   views-view--all-tutorials.html.twig
 
-  Wraps the entire "All Tutorials" view output:
-    header  → view title / description (configured in Views UI)
+  Wraps the entire "All Tutorials" view:
+    exposed → filter form (hidden visually, still functional)
     rows    → rendered by views-view-unformatted--all-tutorials.html.twig
-    pager   → Drupal full pager (styled by pager.html.twig)
+    pager   → styled by pager.html.twig
 #}
 
 {%- if title -%}
-  <h2 class="sr-only">{{ title }}</h2>
+  <h2 class="visually-hidden">{{ title }}</h2>
 {%- endif -%}
 
-{# Active filter indicator — shows which category is being filtered #}
 {% if exposed %}
-  <div class="sr-only">{{ exposed }}</div>
+  <div class="visually-hidden">{{ exposed }}</div>
 {% endif %}
 
-{# Results count line #}
+{# Results count #}
 {% if view_array['#view'].total_rows is defined %}
-  <p class="text-sm text-outline font-body mb-6">
-    {{ view_array['#view'].total_rows }}
-    {{ "tutorials"|t }}
+  <p class="small text-muted font-body mb-4">
+    {{ view_array['#view'].total_rows }} {{ 'tutorials'|t }}
     {% if view_array['#view'].getExposedInput()['field_category_target_id'] is not empty %}
-      {{ "in this category"|t }}
+      {{ 'in this category'|t }}
     {% endif %}
   </p>
 {% endif %}
@@ -31,15 +29,15 @@
 {% if rows %}
   {{ rows }}
 {% elseif empty %}
-  <div class="py-20 text-center text-on-surface-variant font-body">
-    <span class="material-symbols-outlined text-5xl text-outline mb-4 block">search_off</span>
+  <div class="py-5 text-center text-on-surface-variant font-body">
+    <span class="d-block fs-1 text-muted mb-3">&#128269;</span>
     {{ empty }}
   </div>
 {% endif %}
 
-{# Pager — rendered by pager.html.twig #}
+{# Pager #}
 {% if pager %}
-  <div class="mt-12 flex justify-center">
+  <div class="mt-5 d-flex justify-content-center">
     {{ pager }}
   </div>
 {% endif %}

@@ -1,43 +1,48 @@
+{#
+  page--user--logout.html.twig
+#}
 {% set _ = attach_library('scholastic/page--user-auth') %}
-<div class="min-h-screen flex items-center justify-center bg-surface px-4 relative overflow-hidden">
 
-  {# Subtle background decoration #}
-  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-container/20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none"></div>
-  <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl pointer-events-none"></div>
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light px-3 position-relative overflow-hidden">
 
-  <div class="relative z-10 flex flex-col items-center gap-8 w-full max-w-sm">
+  {# Decorative circles #}
+  <div class="position-absolute rounded-circle pe-none"
+       style="width:31rem;height:31rem;background:rgba(213,228,247,.2);top:0;right:0;transform:translate(50%,-50%);filter:blur(3rem);"></div>
+  <div class="position-absolute rounded-circle pe-none"
+       style="width:19rem;height:19rem;background:rgba(0,31,60,.05);bottom:0;left:0;transform:translate(-50%,50%);filter:blur(2rem);"></div>
+
+  <div class="position-relative d-flex flex-column align-items-center gap-4 w-100" style="max-width:22rem; z-index:1;">
 
     {# Logo #}
-    <a href="/" class="no-underline">
-      <div class="text-xl font-extrabold tracking-tighter text-primary font-headline">Drupal Scholastic</div>
+    <a href="/" class="text-decoration-none">
+      <span class="fw-bolder fs-5 font-headline" style="color:#001f3c;">Drupal Scholastic</span>
     </a>
 
     {# Card #}
-    <div class="w-full bg-white rounded-2xl shadow-xl shadow-primary/5 border border-surface-container-high p-10 flex flex-col items-center gap-6">
+    <div class="w-100 bg-white rounded-4 shadow border p-5 d-flex flex-column align-items-center gap-4">
 
       {# Icon #}
-      <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center">
-        <span class="material-symbols-outlined text-primary" style="font-size:32px; font-variation-settings: 'FILL' 0, 'wght' 300;">logout</span>
+      <div class="rounded-circle bg-surface-container d-flex align-items-center justify-content-center"
+           style="width:4rem; height:4rem;">
+        <span class="fs-3" aria-hidden="true">&#x1F6AA;</span>
       </div>
 
       {# Heading #}
       <div class="text-center">
-        <h1 class="text-2xl font-extrabold text-primary font-headline mb-2">Sign out?</h1>
-        <p class="text-sm text-on-surface-variant font-body leading-relaxed">
-          You'll be signed out of your Drupal Scholastic account. You can always sign back in.
+        <h1 class="h4 fw-bolder font-headline mb-1" style="color:#001f3c;">{{ 'Sign out?'|t }}</h1>
+        <p class="small text-muted font-body lh-base mb-0">
+          {{ "You'll be signed out of your Drupal Scholastic account. You can always sign back in."|t }}
         </p>
       </div>
 
-      <div class="w-full logout-form-wrapper">
+      <div class="w-100 logout-form-wrapper">
         {{ page.content }}
       </div>
 
     </div>
 
-    {# Back link #}
-    <a href="/" class="flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors no-underline font-body">
-      <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
-      Back to home
+    <a href="/" class="d-flex align-items-center gap-2 small text-muted text-decoration-none font-body">
+      &larr; {{ 'Back to home'|t }}
     </a>
 
   </div>

@@ -1,15 +1,102 @@
-/* Material Symbols icon weight */
-.material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+/* ─────────────────────────────────────────────────────────────
+   1. BOOTSTRAP 5 VARIABLE OVERRIDES
+───────────────────────────────────────────────────────────────── */
+:root {
+  --bs-primary:              #001f3c;
+  --bs-primary-rgb:          0, 31, 60;
+  --bs-link-color:           #1460a4;
+  --bs-link-color-rgb:       20, 96, 164;
+  --bs-link-hover-color:     #001f3c;
+  --bs-link-hover-color-rgb: 0, 31, 60;
+
+  /* Custom surface tokens */
+  --sc-surface:                   #ffffff;
+  --sc-surface-container-lowest:  #f5f6f7;
+  --sc-surface-container-low:     #eef0f2;
+  --sc-surface-container:         #e7e8e9;
+  --sc-surface-container-high:    #dde0e3;
+  --sc-on-surface-variant:        #43474f;
+  --sc-surface-tint:              #1460a4;
+  --sc-secondary-container:       #d5e4f7;
+  --sc-on-secondary-container:    #001f3c;
+  --sc-tertiary-container:        #cce8ff;
+  --sc-on-tertiary:               #001f3c;
+
+  /* Typography */
+  --font-headline: 'Manrope', sans-serif;
+  --font-body:     'Inter', sans-serif;
+
+  /* Hover darkening for feature/expertise cards */
+  --sc-surface-hover: #edf0f3;
 }
 
-/* Reading column max-width */
+/* btn-primary brand colour */
+.btn-primary {
+  --bs-btn-bg:                 #001f3c !important;
+  --bs-btn-border-color:       #001f3c !important;
+  --bs-btn-hover-bg:           #00345f !important;
+  --bs-btn-hover-border-color: #00345f !important;
+  --bs-btn-active-bg:          #001428 !important;
+  --bs-btn-active-border-color:#001428 !important;
+  --bs-btn-focus-shadow-rgb:   0, 31, 60 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. CUSTOM SURFACE COLOUR UTILITIES
+───────────────────────────────────────────────────────────────── */
+.bg-surface                   { background-color: var(--sc-surface) !important; }
+.bg-surface-container-lowest  { background-color: var(--sc-surface-container-lowest) !important; }
+.bg-surface-container-low     { background-color: var(--sc-surface-container-low) !important; }
+.bg-surface-container         { background-color: var(--sc-surface-container) !important; }
+.bg-surface-container-high    { background-color: var(--sc-surface-container-high) !important; }
+.bg-secondary-container       { background-color: var(--sc-secondary-container) !important; }
+.bg-tertiary-container        { background-color: var(--sc-tertiary-container) !important; }
+.text-on-surface-variant      { color: var(--sc-on-surface-variant) !important; }
+.text-on-secondary-container  { color: var(--sc-on-secondary-container) !important; }
+.text-on-tertiary-container   { color: var(--sc-on-tertiary) !important; }
+.text-on-tertiary             { color: var(--sc-on-tertiary) !important; }
+.text-surface-tint            { color: var(--sc-surface-tint) !important; }
+.border-surface-container-high{ border-color: var(--sc-surface-container-high) !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   3. TYPOGRAPHY
+───────────────────────────────────────────────────────────────── */
+body { font-family: var(--font-body); color: #1a1d23; }
+
+h1, h2, h3, h4, h5, h6,
+.font-headline { font-family: var(--font-headline); }
+.font-body     { font-family: var(--font-body); }
+.font-label    { font-family: var(--font-body); }
+
+/* ─────────────────────────────────────────────────────────────
+   4. PROSE COLUMN
+───────────────────────────────────────────────────────────────── */
 .prose-column { max-width: 680px; }
 
-/* Page-cloak: hide unstyled flash */
-[data-tailwind-cloak] { opacity: 0; }
+/* ─────────────────────────────────────────────────────────────
+   5. LINE-CLAMP UTILITIES
+───────────────────────────────────────────────────────────────── */
+.line-clamp-2,
+.line-clamp-3 {
+  display:            -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow:           hidden;
+}
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
 
-/* Feature grid: flatten Drupal field wrappers  */
+/* ─────────────────────────────────────────────────────────────
+   6. GRADIENT HELPER
+───────────────────────────────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #001f3c 0%, #00345f 100%);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. DRUPAL FIELD WRAPPER FIXES
+───────────────────────────────────────────────────────────────── */
+
+/* Feature grid */
 [data-feature-grid] .field--name-field-features,
 [data-feature-grid] .field--name-field-features .field__items {
   display: contents;
@@ -22,7 +109,7 @@
   flex: 1;
 }
 
-/* Hero image wrapper: force all Drupal wrappers to fill container */
+/* Hero image */
 [data-hero-img-wrap],
 [data-hero-img-wrap] > *,
 [data-hero-img-wrap] .field,
@@ -44,7 +131,7 @@
   object-position: center;
 }
 
-/* Bento-card images (Views) */
+/* Bento card images */
 .bento-card-img,
 .bento-card-img > *,
 .bento-card-img .field,
@@ -64,7 +151,7 @@
   object-fit: cover;
 }
 
-/* Tutorial image wrapper */
+/* Tutorial hero image */
 [data-tutorial-img-wrap],
 [data-tutorial-img-wrap] > *,
 [data-tutorial-img-wrap] .field,
@@ -85,60 +172,40 @@
   object-position: center;
 }
 
-/* Drupal form styles (login / register / logout pages) */
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="tel"],
-select,
-textarea {
-  display:          block;
-  width:            100%;
-  padding:          0.75rem 1rem;
-  margin-top:       0.375rem;
-  margin-bottom:    1.25rem;
-  border:           1px solid #e7e8e9;
-  border-radius:    0.5rem;
-  background-color: #ffffff;
-  color:            #191c1d;
-  font-family:      "Inter", sans-serif;
-  font-size:        0.9375rem;
-  transition:       border-color 0.15s, box-shadow 0.15s;
-}
-input:focus,
-select:focus,
-textarea:focus {
-  outline:    none;
-  border-color: #1460a4;
-  box-shadow: 0 0 0 3px rgba(20, 96, 164, 0.12);
-}
-label {
-  display:      block;
-  font-weight:  600;
-  font-size:    0.875rem;
-  color:        #001f3c;
-  margin-bottom: 0.25rem;
-  font-family:  "Inter", sans-serif;
-}
-.form-submit {
-  display:          block;
-  width:            100%;
-  padding:          0.875rem 1.5rem;
-  margin-top:       0.5rem;
-  background-color: #001f3c;
-  color:            #ffffff;
-  font-weight:      700;
-  font-family:      "Inter", sans-serif;
-  font-size:        0.9375rem;
-  border:           none;
-  border-radius:    0.5rem;
-  cursor:           pointer;
-  transition:       opacity 0.15s;
-  letter-spacing:   0.01em;
-}
-.form-submit:hover { opacity: 0.88; }
+/* ─────────────────────────────────────────────────────────────
+   8. NAVBAR OVERRIDES
+   NOTE: No admin-toolbar offset here — the Drupal admin toolbar
+   handles its own offset via body margin-top. Adding top offsets
+   to sticky-top conflicts and pushes the navbar down for all users.
+───────────────────────────────────────────────────────────────── */
+.navbar-brand { font-family: var(--font-headline); color: #001f3c !important; }
+.navbar-brand:hover { opacity: .85; }
 
-/* Footer menu override */
+.navbar-light .nav-link {
+  color:         var(--sc-on-surface-variant);
+  font-family:   var(--font-body);
+  font-weight:   500;
+  padding-left:  .75rem !important;
+  padding-right: .75rem !important;
+  transition:    color .15s;
+}
+.navbar-light .nav-link:hover,
+.navbar-light .nav-link.active {
+  color: #001f3c !important;
+}
+.navbar-light .nav-link.active {
+  border-bottom: 2px solid #1460a4;
+}
+.navbar-toggler:focus { box-shadow: none; }
+
+/* Scroll shadow — added by scholastic.js */
+header.sticky-top.scrolled {
+  box-shadow: 0 2px 12px rgba(0, 31, 60, .10) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. FOOTER MENU
+───────────────────────────────────────────────────────────────── */
 footer nav ul,
 .region-footer ul {
   list-style: none;
@@ -148,16 +215,320 @@ footer nav ul,
 footer nav ul li a,
 .region-footer ul li a {
   display:         block;
-  font-size:       0.875rem;
-  color:           #43474f;
+  font-size:       .875rem;
+  color:           var(--sc-on-surface-variant);
   text-decoration: none;
-  padding:         0.25rem 0;
-  transition:      color 0.15s;
+  padding:         .25rem 0;
+  transition:      color .15s;
 }
 footer nav ul li a:hover,
 .region-footer ul li a:hover { color: #001f3c; }
 
-/* Gradient helper (hero CTA + auth pages) */
-.hero-gradient {
-  background: linear-gradient(135deg, #001f3c 0%, #00345f 100%);
+.col-6 h2 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.875rem; /* Matches Bootstrap 'small' */
+  margin-bottom: 1rem;
+  color: #001f3c;
+  letter-spacing: .1em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. MATERIAL SYMBOLS ICON STYLES
+───────────────────────────────────────────────────────────────── */
+.material-symbols-outlined {
+  font-family:             'Material Symbols Outlined', sans-serif;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 40;
+  font-size:               2.5rem;
+  line-height:             1;
+  display:                 inline-block;
+  vertical-align:          middle;
+  white-space:             nowrap;
+  word-wrap:               normal;
+  direction:               ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings:  'liga';
+  -webkit-font-smoothing:  antialiased;
+  text-rendering:          optimizeLegibility;
+}
+.scholastic-icon       { color: var(--sc-surface-tint); }
+.scholastic-icon--sm   {
+  font-size: 1.5rem;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. BADGE COLOUR OVERRIDES
+───────────────────────────────────────────────────────────────── */
+.badge.bg-secondary-container {
+  background-color: var(--sc-secondary-container) !important;
+  color:            var(--sc-on-secondary-container) !important;
+}
+.badge.bg-tertiary-container {
+  background-color: var(--sc-tertiary-container) !important;
+  color:            var(--sc-on-tertiary) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   12. FEATURE CARD HOVER EFFECT
+   .sc-feature-card wraps each paragraph--feature-item cell.
+   On hover the white surface darkens gradually to a warm grey.
+───────────────────────────────────────────────────────────────── */
+.sc-feature-card {
+  cursor: default;
+}
+.sc-feature-card > div {
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.sc-feature-card:hover > div {
+  background-color: var(--sc-surface-hover) !important;
+  box-shadow:       0 2px 16px rgba(0, 31, 60, .07);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. HONOR ITEM HOVER EFFECT
+   .sc-honor-card wraps each paragraph--honor-item row.
+   On hover the row gets a subtle tinted background.
+───────────────────────────────────────────────────────────────── */
+.sc-honor-card {
+  border-radius:    .375rem;
+  padding-left:     .5rem;
+  padding-right:    .5rem;
+  margin-left:      -.5rem;
+  margin-right:     -.5rem;
+  transition:       background-color 0.25s ease;
+  cursor:           default;
+}
+.sc-honor-card:hover {
+  background-color: var(--sc-surface-container-low);
+}
+
+/* Remove underlines from all links globally */
+a, a:hover, a:visited, a:active {
+  text-decoration: none !important;
+}
+/* ─────────────────────────────────────────────────────────────
+   14. SIDEBAR EXPOSED FILTER FORM
+   Styles Drupal's auto-generated Views exposed filter form
+   inside the sidebar to match the design system.
+───────────────────────────────────────────────────────────────── */
+
+/* Wrap the whole exposed form in a styled card */
+.views-exposed-form {
+  background:    var(--sc-surface);
+  border:        1px solid var(--sc-surface-container-high);
+  border-radius: .625rem;
+  padding:       1rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Hide the default label — the placeholder provides enough context */
+.views-exposed-form label {
+  font-size:     .75rem;
+  font-weight:   600;
+  color:         var(--sc-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: .4rem;
+  font-family:   var(--font-body);
+  display:       block;
+}
+
+/* Text/autocomplete input */
+.views-exposed-form .form-item input[type="text"],
+.views-exposed-form .form-item input[type="search"] {
+  width:            100%;
+  padding:          .5rem .75rem;
+  font-size:        .875rem;
+  font-family:      var(--font-body);
+  border:           1px solid var(--sc-surface-container-high);
+  border-radius:    .375rem;
+  background:       var(--sc-surface-container-lowest);
+  color:            #001f3c;
+  outline:          none;
+  transition:       border-color .15s, box-shadow .15s;
+}
+.views-exposed-form .form-item input[type="text"]:focus,
+.views-exposed-form .form-item input[type="search"]:focus {
+  border-color: #1460a4;
+  box-shadow:   0 0 0 3px rgba(20, 96, 164, .12);
+}
+
+/* Apply / submit button — matches btn-primary design */
+.views-exposed-form .form-actions {
+  margin-top: .625rem;
+}
+.views-exposed-form .form-actions input[type="submit"],
+.views-exposed-form .form-actions button[type="submit"] {
+  display:         inline-block;
+  padding:         .45rem 1.25rem;
+  font-size:       .875rem;
+  font-weight:     600;
+  font-family:     var(--font-body);
+  background:      #001f3c;
+  color:           #ffffff;
+  border:          none;
+  border-radius:   .375rem;
+  cursor:          pointer;
+  transition:      background-color .15s, transform .1s;
+  letter-spacing:  .01em;
+}
+.views-exposed-form .form-actions input[type="submit"]:hover,
+.views-exposed-form .form-actions button[type="submit"]:hover {
+  background:  #00345f;
+  transform:   translateY(-1px);
+}
+
+/* Reset button — subtle secondary style */
+.views-exposed-form .form-actions a.reset {
+  display:         inline-block;
+  margin-left:     .5rem;
+  font-size:       .8125rem;
+  color:           var(--sc-on-surface-variant);
+  text-decoration: none;
+  font-family:     var(--font-body);
+}
+.views-exposed-form .form-actions a.reset:hover {
+  color: #001f3c;
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   15. LOGOUT CONFIRMATION MODAL
+───────────────────────────────────────────────────────────────── */
+
+/* Prevent body scroll while modal is open */
+body.sc-modal-active {
+  overflow: hidden;
+}
+
+/* The modal root — hidden by default */
+#sc-logout-modal {
+  display:        none;
+  position:       fixed;
+  inset:          0;
+  z-index:        9999;
+  align-items:    center;
+  justify-content: center;
+}
+#sc-logout-modal.sc-modal-open {
+  display: flex;
+}
+
+/* Semi-transparent backdrop */
+#sc-logout-backdrop {
+  position:   absolute;
+  inset:      0;
+  background: rgba(0, 15, 30, .55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation:  sc-backdrop-in .2s ease forwards;
+}
+
+@keyframes sc-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Dialog card */
+#sc-logout-dialog {
+  position:         relative;
+  z-index:          1;
+  background:       #ffffff;
+  border-radius:    1rem;
+  padding:          2rem 2rem 1.75rem;
+  width:            min(90vw, 22rem);
+  box-shadow:       0 24px 60px rgba(0, 31, 60, .22);
+  text-align:       center;
+  animation:        sc-dialog-in .22s cubic-bezier(.34,1.2,.64,1) forwards;
+}
+
+@keyframes sc-dialog-in {
+  from { opacity: 0; transform: scale(.93) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);   }
+}
+
+/* Icon circle */
+#sc-logout-icon {
+  width:            3.25rem;
+  height:           3.25rem;
+  border-radius:    50%;
+  background:       var(--sc-secondary-container);
+  color:            #001f3c;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  margin:           0 auto 1.25rem;
+}
+#sc-logout-icon svg {
+  width:  1.375rem;
+  height: 1.375rem;
+}
+
+/* Heading */
+#sc-logout-dialog h2 {
+  font-family:   var(--font-headline);
+  font-size:     1.25rem;
+  font-weight:   800;
+  color:         #001f3c;
+  margin:        0 0 .5rem;
+}
+
+/* Body copy */
+#sc-logout-dialog p {
+  font-family:   var(--font-body);
+  font-size:     .9rem;
+  color:         var(--sc-on-surface-variant);
+  margin:        0 0 1.5rem;
+  line-height:   1.5;
+}
+
+/* Button row */
+#sc-logout-actions {
+  display:       flex;
+  flex-direction: column;
+  gap:           .625rem;
+}
+
+/* Sign out — primary */
+#sc-logout-confirm-btn,
+a#sc-logout-confirm-btn {
+  display:          block;
+  width:            100%;
+  padding:          .7rem 1rem;
+  background:       #001f3c;
+  color:            #ffffff !important;
+  font-family:      var(--font-body);
+  font-size:        .9375rem;
+  font-weight:      700;
+  border-radius:    .5rem;
+  text-decoration:  none;
+  text-align:       center;
+  transition:       background-color .15s, transform .1s;
+  cursor:           pointer;
+  border:           none;
+}
+#sc-logout-confirm-btn:hover {
+  background:   #00345f;
+  transform:    translateY(-1px);
+}
+
+/* Cancel — outlined */
+#sc-logout-cancel {
+  display:          block;
+  width:            100%;
+  padding:          .7rem 1rem;
+  background:       transparent;
+  color:            #001f3c;
+  font-family:      var(--font-body);
+  font-size:        .9375rem;
+  font-weight:      600;
+  border:           1px solid var(--sc-surface-container-high);
+  border-radius:    .5rem;
+  cursor:           pointer;
+  transition:       background-color .15s, border-color .15s;
+}
+#sc-logout-cancel:hover {
+  background:   var(--sc-surface-container-low);
+  border-color: var(--sc-surface-container-high);
 }

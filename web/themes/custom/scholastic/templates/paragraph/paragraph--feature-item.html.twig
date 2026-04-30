@@ -1,38 +1,31 @@
 {#
   paragraph--feature-item.html.twig
-  FOLDER: themes/custom/scholastic/templates/paragraph/
-
-  Fields (Structure → Paragraph types → Feature Item → Manage fields):
-    field_icon        → Text plain  — enter a Material Symbols name
-    field_title       → Text plain
-    field_description → Text plain long
-
-  NOTE: field_icon must be rendered with |render|striptags|trim 
+  Fields: field_icon, field_title, field_description
+  Icon: Material Symbols Outlined ligature name stored in field_icon.
 #}
 
-<div class="bg-surface p-10 flex flex-col gap-4 h-full
-            hover:bg-surface-container-lowest transition-colors duration-200">
+{# Outer sc-feature-card wrapper catches the hover; inner div holds styling #}
+<div class="sc-feature-card h-100">
+  <div class="bg-surface p-4 p-lg-5 d-flex flex-column gap-3 h-100">
 
-  {# Material Symbol icon — renders the icon name as text inside <span> #}
-  {% if content.field_icon|render %}
-    <span class="material-symbols-outlined"
-          style="font-size:2.5rem; color:#1460a4; line-height:1;">
-      {{- content.field_icon|render|striptags|trim -}}
-    </span>
-  {% endif %}
+    {% set icon_name = content.field_icon|render|striptags|trim %}
+    {% if icon_name %}
+      <span class="material-symbols-outlined scholastic-icon" aria-hidden="true">
+        {{- icon_name -}}
+      </span>
+    {% endif %}
 
-  {# Feature title #}
-  {% if content.field_title|render %}
-    <h3 class="text-lg font-bold text-primary font-headline leading-snug">
-      {{ content.field_title }}
-    </h3>
-  {% endif %}
+    {% if content.field_title|render %}
+      <h3 class="h5 fw-bold font-headline lh-sm mb-0" style="color:#001f3c;">
+        {{ content.field_title }}
+      </h3>
+    {% endif %}
 
-  {# Description #}
-  {% if content.field_description|render %}
-    <p class="text-sm text-on-surface-variant leading-relaxed font-body">
-      {{ content.field_description }}
-    </p>
-  {% endif %}
+    {% if content.field_description|render %}
+      <p class="small text-on-surface-variant lh-base font-body mb-0">
+        {{ content.field_description }}
+      </p>
+    {% endif %}
 
+  </div>
 </div>

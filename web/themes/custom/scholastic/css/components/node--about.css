@@ -7,18 +7,22 @@
   max-height: 480px;
 }
 
-/* Expertise 3-col grid */
+/* ─────────────────────────────────────────────────────────────
+   Expertise 3-col grid
+───────────────────────────────────────────────────────────────── */
 .about-expertise-grid {
   display:               grid;
   grid-template-columns: repeat(3, 1fr);
   gap:                   1px;
-  background-color:      rgba(195, 198, 209, 0.15);
-  border-radius:         0.75rem;
+  background-color:      rgba(195, 198, 209, .2);
+  border-radius:         .75rem;
   overflow:              hidden;
 }
-.about-expertise-grid > *           { display: contents; } /* .field        */
-.about-expertise-grid > * > *       { display: contents; } /* .field__items */
-.about-expertise-grid > * > * > *   { display: flex; flex-direction: column; }
+
+/* Flatten Drupal's nested field wrappers so grid children are the cards */
+.about-expertise-grid > *             { display: contents; }
+.about-expertise-grid > * > *         { display: contents; }
+.about-expertise-grid > * > * > *     { display: flex; flex-direction: column; }
 .about-expertise-grid > * > * > * > * { flex: 1; display: flex; flex-direction: column; }
 
 @media (max-width: 767px) {
@@ -28,46 +32,55 @@
   .about-expertise-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Honors list: flatten Drupal wrappers */
-.about-honors-list > *       { display: contents; } /* .field        */
-.about-honors-list > * > *   { display: contents; } /* .field__items */
+/* ─────────────────────────────────────────────────────────────
+   Expertise card hover — targets the sc-feature-card inside the grid
+   Overrides global .sc-feature-card:hover to darken against the
+   bg-surface-container-lowest section background instead of white.
+───────────────────────────────────────────────────────────────── */
+.about-expertise-grid .sc-feature-card > div {
+  background-color: #ffffff;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.about-expertise-grid .sc-feature-card:hover > div {
+  background-color: #edf0f3 !important;
+  box-shadow: inset 0 0 0 1px rgba(0,31,60,.07);
+}
+
+/* Honors list — flatten Drupal wrappers */
+.about-honors-list > *         { display: contents; }
+.about-honors-list > * > *     { display: contents; }
 .about-honors-list > * > * > * { display: block; width: 100%; }
 
-/* CTA button */
+/* CTA button inside dark card */
 .about-cta-btn a {
   display:         inline-flex;
   align-items:     center;
   justify-content: space-between;
   width:           100%;
-  padding:         0.75rem 1.25rem;
-  border-radius:   0.5rem;
-  border:          1px solid rgba(255, 255, 255, 0.25);
+  padding:         .75rem 1.25rem;
+  border-radius:   .5rem;
+  border:          1px solid rgba(255,255,255,.25);
   color:           #ffffff;
-  font-size:       0.875rem;
+  font-size:       .875rem;
   font-weight:     600;
   text-decoration: none;
-  transition:      background-color 0.2s;
-}
-.about-cta-btn a::after {
-  content:     "→";
-  font-size:   1rem;
-  margin-left: 0.5rem;
+  transition:      background-color .2s, border-color .2s;
 }
 .about-cta-btn a:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255,255,255,.08);
+  border-color:     rgba(255,255,255,.45);
 }
 
-/* Pull quote */
-.about-pull-quote .about-quote-text,
-.about-pull-quote .about-quote-text * {
-  font-style:  italic    !important;
-  font-weight: 500       !important;
-  color:       #1e3a5f   !important;
-  font-size:   0.9375rem !important;
-}
-
-/* CTA body text */
+/* CTA body text colour inside dark card */
 .about-cta-body,
+.about-cta-body p,
 .about-cta-body * {
-  color: rgba(191, 219, 254, 0.85) !important;
+  color: rgba(255,255,255,.8);
+}
+
+/* Pull quote italic */
+.about-quote-text,
+.about-quote-text p {
+  font-style: italic;
+  color:      var(--sc-on-surface-variant);
 }

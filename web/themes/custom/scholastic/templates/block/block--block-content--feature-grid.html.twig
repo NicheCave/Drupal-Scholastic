@@ -1,35 +1,37 @@
 {% set _ = attach_library('scholastic/block--feature-grid') %}
 {#
   block--block-content--feature-grid.html.twig
-  FOLDER: themes/custom/scholastic/templates/block/
 
-  Fields (Structure → Block types → Feature Grid → Manage fields):
-    field_section_heading 
-    field_section_description 
-    field_features 
+  Fields:
+    field_section_heading
+    field_section_description
+    field_features
 #}
 
-<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-start">
+<div class="row g-4 g-md-5 align-items-start">
 
-  {# ── Left column: section copy ── #}
-  <div class="md:col-span-5">
+  {# ── Left: section copy ── #}
+  <div class="col-12 col-md-5">
 
     {% if content.field_section_heading|render %}
-      <h2 class="text-4xl font-extrabold text-primary mb-5 font-headline leading-tight tracking-tight">
+      <h2 class="display-6 fw-bolder font-headline lh-sm mb-4" style="color:#001f3c; letter-spacing:-.02em;">
         {{ content.field_section_heading }}
       </h2>
     {% endif %}
 
     {% if content.field_section_description|render %}
-      <p class="text-on-surface-variant leading-relaxed text-base font-body">
+      <p class="text-on-surface-variant lh-base font-body">
         {{ content.field_section_description }}
       </p>
     {% endif %}
 
   </div>
 
-  <div class="md:col-span-7 feature-items-grid" data-fg>
-    {{ content.field_features }}
+  {# ── Right: feature items grid ── #}
+  <div class="col-12 col-md-7">
+    <div class="feature-items-grid" data-feature-grid>
+      {{ content.field_features }}
+    </div>
   </div>
 
 </div>

@@ -1,16 +1,21 @@
-/* Feature grid */
+/* ─────────────────────────────────────────────────────────────
+   Feature grid — 2-col CSS grid that flattens Drupal field wrappers
+   Hover is handled by .sc-feature-card in global.css
+───────────────────────────────────────────────────────────────── */
 .feature-items-grid {
   display:               grid;
   grid-template-columns: repeat(2, 1fr);
   gap:                   1px;
-  background-color:      rgba(195, 198, 209, 0.15);
+  background-color:      rgba(195, 198, 209, .15);
 }
 
-.feature-items-grid > *           { display: contents; } /* .field        */
-.feature-items-grid > * > *       { display: contents; } /* .field__items */
-.feature-items-grid > * > * > *   { display: flex; flex-direction: column; }
-.feature-items-grid > * > * > * > * { flex: 1; display: flex; flex-direction: column; }
+/* Flatten every layer of Drupal's paragraph field wrappers so the
+   grid direct children are the .sc-feature-card divs */
+.feature-items-grid > *             { display: contents; }
+.feature-items-grid > * > *         { display: contents; }
+.feature-items-grid > * > * > *     { display: contents; }
+.feature-items-grid > * > * > * > * { display: flex; flex-direction: column; }
 
-@media (max-width: 639px) {
+@media (max-width: 575px) {
   .feature-items-grid { grid-template-columns: 1fr; }
 }

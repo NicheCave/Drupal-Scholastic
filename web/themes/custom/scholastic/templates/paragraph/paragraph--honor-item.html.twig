@@ -1,44 +1,26 @@
 {#
   paragraph--honor-item.html.twig
-  FOLDER: themes/custom/scholastic/templates/paragraph/
-
-  PARAGRAPH TYPE SETUP 
-  Structure → Paragraph types 
-    Label:        Honor Item
-    Machine name: honor_item
-
-  Then add these fields:
-    field_icon              Text (plain)       Material Symbols name
-    field_honor_title       Text (plain)       "Acquia Certified Grand Master"
-    field_honor_description Text (plain, long) single-line description
-  ────────────────────────────────────────────────────────────────────
+  Fields: field_honor_icon, field_honor_title, field_honor_description
 #}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
-<div class="honor-item" 
-     style="display: flex; flex-direction: row; align-items: center; gap: 1.25rem; padding: 0.875rem 0;">
+<div class="sc-honor-card d-flex align-items-start gap-3 py-3 border-bottom">
 
-  {# ── Fixed-size Icon ── #}
   {% if paragraph.field_honor_icon.value %}
-    <span class="material-symbols-outlined" 
-          style="color: #1460a4; font-size: 32px; flex: none; width: 32px;
-                 font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 40;">
+    <span class="material-symbols-outlined scholastic-icon scholastic-icon--sm flex-shrink-0"
+          aria-hidden="true"
+          style="margin-top:.125rem;">
       {{- paragraph.field_honor_icon.value -}}
     </span>
   {% endif %}
 
-  {# ── Text Block (Takes remaining space) ── #}
-  <div style="flex: 1; display: flex; flex-direction: column; gap: 0.125rem;">
+  <div class="d-flex flex-column gap-1">
     {% if content.field_honor_title|render %}
-      <h4 class="text-base font-bold text-primary font-headline m-0" style="letter-spacing: -0.01em; line-height: 1.2;">
+      <h4 class="h6 fw-bold font-headline mb-0" style="color:#001f3c; letter-spacing:-.01em;">
         {{ content.field_honor_title }}
       </h4>
     {% endif %}
-    
     {% if content.field_honor_description|render %}
-      <p class="text-sm text-on-surface-variant font-body m-0 leading-relaxed" style="opacity: 0.9;">
+      <p class="small text-on-surface-variant font-body mb-0 lh-base">
         {{ content.field_honor_description }}
       </p>
     {% endif %}

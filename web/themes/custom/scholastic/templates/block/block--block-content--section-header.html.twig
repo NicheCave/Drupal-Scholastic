@@ -1,27 +1,24 @@
 {#
-  FILENAME: block--block-content--section-header.html.twig
-  FOLDER:   themes/custom/scholastic/templates/block/
-            ↑ must be in the /block/ subfolder, not /templates/ directly
-
-  Fields (exact machine names from your Manage fields):
-    field_section_eyebrow        → Text plain
-    field_section_header_heading → Text plain
-    field_link                   → Link
+  block--block-content--section-header.html.twig
 #}
-<div class="flex justify-between items-end mb-16">
+
+<div class="d-flex justify-content-between align-items-end mb-5">
 
   <div>
-    <span class="text-surface-tint font-bold text-sm tracking-widest uppercase block mb-2">
-      {{ content.field_section_eyebrow }}
-    </span>
-    <h2 class="text-4xl font-extrabold text-primary font-headline">
+    {% if content.field_section_eyebrow|render %}
+      <span class="d-inline-block text-uppercase fw-bold small mb-2 text-surface-tint font-label"
+            style="letter-spacing:.1em;">
+        {{ content.field_section_eyebrow|render|striptags|trim }}
+      </span>
+    {% endif %}
+    <h2 class="display-6 fw-bolder font-headline mb-0" style="color:#001f3c;">
       {{ content.field_section_header_heading }}
     </h2>
   </div>
 
-  <div class="flex items-center gap-1 text-primary font-bold">
+  <div class="d-flex align-items-center gap-1 fw-bold text-decoration-none" style="color:#001f3c;">
     {{ content.field_link }}
-    <span class="material-symbols-outlined" style="font-size:20px; color:#001f3c;">arrow_forward</span>
+    <span aria-hidden="true">&rarr;</span>
   </div>
 
 </div>

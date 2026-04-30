@@ -7,36 +7,36 @@ function scholastic_theme_suggestions_block_alter(array &$suggestions, array $va
   // Check if this is a custom block entity.
   if (isset($variables['elements']['content']['#block_content'])) {
     $block_content = $variables['elements']['content']['#block_content'];
-    
+
     // Get the machine name of the block type (bundle).
     $bundle = $block_content->bundle();
-    
-    // Add the new template suggestion to the list.
-    // Drupal converts underscores to hyphens in the file name automatically.
+
+    // Add the template suggestion. Drupal converts underscores to hyphens
+    // in the file name automatically.
     $suggestions[] = 'block__block_content__' . $bundle;
   }
 }
 
 function scholastic_preprocess_page(&$variables) {
-  // Fetch the Site Name and Slogan from Basic Site Settings
-  $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  // Fetch Site Name and Slogan from Basic Site Settings.
+  $variables['site_name']   = \Drupal::config('system.site')->get('name');
   $variables['site_slogan'] = \Drupal::config('system.site')->get('slogan');
 
-  // Fetch the uploaded Logo URL from Appearance -> Theme Settings
+  // Fetch the uploaded Logo URL from Appearance → Theme Settings.
   $variables['logo'] = theme_get_setting('logo.url');
 }
 
 function scholastic_preprocess_views_view_unformatted(&$variables) {
-  // Only run this specific query for our sidebar categories view.
+  // Only run for the sidebar categories view.
   if ($variables['view']->id() === 'tutorial_categories') {
-    
-    // Query the database for ALL published tutorials
+
+    // Query the database for ALL published tutorials.
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'tutorial')
       ->condition('status', 1)
       ->accessCheck(TRUE);
-      
-    // Count them and pass the number to Twig as a new variable
+
+    // Pass the total count to Twig.
     $variables['total_tutorials'] = $query->count()->execute();
   }
 }

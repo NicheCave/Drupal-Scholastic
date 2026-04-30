@@ -1,62 +1,64 @@
-<section class="bg-surface-container-lowest border-t border-surface-container-high py-20">
-  <div class="max-w-7xl mx-auto px-8">
-    <h2 class="text-3xl font-headline font-extrabold text-primary mb-10">
+{#
+  views-view-unformatted--related-tutorials.html.twig
+#}
+
+<section class="bg-surface-container-lowest border-top py-5">
+  <div class="container-xl">
+
+    <h2 class="h3 fw-bolder font-headline mb-5" style="color:#001f3c;">
       {{ 'Related Technical Guides'|t }}
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for row in rows %}
-        {% set node = row.content['#row']._entity %}
+        {% set node     = row.content['#row']._entity %}
         {% set node_url = path('entity.node.canonical', {'node': node.id}) %}
-        <article class="bg-white rounded-xl overflow-hidden shadow-sm
-                        hover:shadow-md transition-shadow border border-surface-container-high
-                        flex flex-col relative group">
 
-          <a href="{{ node_url }}"
-             class="absolute inset-0 z-10"
-             aria-label="{{ node.label }}"></a>
+        <div class="col">
+          <article class="position-relative bg-white rounded-3 overflow-hidden border shadow-sm d-flex flex-column h-100">
 
-          {# Hero image #}
-          <div class="bento-card-img aspect-video overflow-hidden bg-surface-container">
-            {% if node.field_hero_image.entity %}
-              {% set media = node.field_hero_image.entity %}
-              {% if media.field_media_image.entity %}
-                <img
-                  src="{{ file_url(media.field_media_image.entity.uri.value) }}"
-                  alt="{{ media.field_media_image.alt }}"
-                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+            <a href="{{ node_url }}"
+               class="position-absolute top-0 start-0 w-100 h-100"
+               style="z-index:2;"
+               aria-label="{{ node.label }}"></a>
+
+            {# Hero image #}
+            <div class="ratio ratio-16x9 overflow-hidden bg-surface-container">
+              {% if node.field_hero_image.entity %}
+                {% set media = node.field_hero_image.entity %}
+                {% if media.field_media_image.entity %}
+                  <img src="{{ file_url(media.field_media_image.entity.uri.value) }}"
+                       alt="{{ media.field_media_image.alt }}"
+                       style="width:100%;height:100%;object-fit:cover;transition:transform .3s;">
+                {% endif %}
               {% endif %}
-            {% endif %}
-          </div>
+            </div>
 
-          {# Card body #}
-          <div class="p-6 flex flex-col gap-3 flex-1">
+            {# Card body #}
+            <div class="p-4 d-flex flex-column gap-2 flex-fill">
 
-            {# Category pill #}
-            {% if node.field_category.entity %}
-              <div class="bg-secondary-container text-on-secondary-container px-3 py-1
-                          text-xs font-semibold rounded-full uppercase tracking-wider
-                          font-label w-fit">
-                {{ node.field_category.entity.label }}
-              </div>
-            {% endif %}
+              {% if node.field_category.entity %}
+                <div class="badge bg-secondary-container text-on-secondary-container text-uppercase w-auto"
+                     style="letter-spacing:.08em; font-size:.65rem; width:fit-content;">
+                  {{ node.field_category.entity.label }}
+                </div>
+              {% endif %}
 
-            {# Title #}
-            <h3 class="text-lg font-headline font-bold text-primary leading-snug
-                       group-hover:underline">
-              {{ node.label }}
-            </h3>
+              <h3 class="h6 fw-bold font-headline lh-sm mb-0" style="color:#001f3c;">
+                {{ node.label }}
+              </h3>
 
-            {# Subtitle #}
-            {% if node.field_subtitle.value %}
-              <p class="text-sm text-on-surface-variant leading-relaxed font-body line-clamp-2">
-                {{ node.field_subtitle.value }}
-              </p>
-            {% endif %}
+              {% if node.field_subtitle.value %}
+                <p class="small text-on-surface-variant lh-base font-body line-clamp-2 mb-0">
+                  {{ node.field_subtitle.value }}
+                </p>
+              {% endif %}
 
-          </div>
-        </article>
+            </div>
+          </article>
+        </div>
       {% endfor %}
     </div>
+
   </div>
 </section>

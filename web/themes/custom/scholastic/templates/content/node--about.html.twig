@@ -1,101 +1,56 @@
 {% set _ = attach_library('scholastic/node--about') %}
 {#
   node--about.html.twig
-  FOLDER: themes/custom/scholastic/templates/content/
-
-  ── FIELD REFERENCE ─────────────────────────────────────────────────
-  All fields live on Structure → Content types → About Page → Manage fields.
-
-  HERO SECTION
-    field_eyebrow 
-    field_headline    
-    field_bio       
-    field_portrait       
-    field_stat_number    
-    field_stat_label       
-    field_stat_description  
-
-  JOURNEY SECTION
-    field_journey_heading 
-    field_journey_body    
-    field_quote         
-
-  EXPERTISE SECTION
-    field_expertise_heading  
-    field_expertise_subtitle  
-    field_expertise_items    
-
-  HONORS SECTION
-    field_honors_heading 
-    field_honors_items    
-    field_cta_heading    
-    field_cta_body 
-    field_cta_label   
-    field_cta_url   
-  ────────────────────────────────────────────────────────────────────
 #}
 
 <article{{ attributes.addClass('node-about') }}>
 
-{# 1. HERO SECTION #}
-<section class="bg-white pt-20 pb-10">
-  <div class="max-w-7xl mx-auto px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+{# ── 1. HERO ── #}
+<section class="bg-white pt-5 pb-4">
+  <div class="container-xl">
+    <div class="row g-5 align-items-center">
 
-      {# ── Left: text ── #}
-      <div class="flex flex-col gap-6">
+      <div class="col-12 col-lg-6 d-flex flex-column gap-3">
 
-        {# Eyebrow label #}
         {% if content.field_eyebrow|render %}
-          <span class="text-xs font-bold tracking-widest uppercase
-                       text-surface-tint font-label">
-            {{ content.field_eyebrow }}
+          <span class="d-inline-block small fw-bold text-uppercase text-surface-tint font-label"
+                style="letter-spacing:.1em;">
+            {{ content.field_eyebrow|render|striptags|trim }}
           </span>
         {% endif %}
 
-        {# Headline #}
         {% if content.field_headline|render %}
-          <h1 class="text-5xl font-extrabold font-headline text-primary
-                     leading-tight tracking-tight">
+          <h1 class="display-5 fw-bolder font-headline lh-sm mb-0"
+              style="color:#001f3c; letter-spacing:-.02em;">
             {{ content.field_headline }}
           </h1>
         {% endif %}
 
-        {# Bio / intro paragraph #}
         {% if content.field_bio|render %}
-          <div class="text-base text-on-surface-variant leading-relaxed font-body
-                      max-w-lg">
+          <div class="text-on-surface-variant lh-base font-body" style="max-width:32rem;">
             {{ content.field_bio }}
           </div>
         {% endif %}
 
       </div>
 
-      {# ── Right: portrait + stat card ── #}
-      <div class="relative">
+      <div class="col-12 col-lg-6 position-relative">
 
-        {# Portrait image #}
         {% if content.field_portrait|render %}
-          <div class="rounded-2xl overflow-hidden shadow-xl shadow-primary/10
-                      about-portrait-img">
+          <div class="rounded-3 overflow-hidden shadow about-portrait-img">
             {{ content.field_portrait }}
           </div>
         {% endif %}
 
-        {# Stat card — floats over the bottom-left of the image #}
         {% if content.field_stat_number|render %}
-          <div class="absolute -bottom-6 -left-4 lg:-left-10
-                      bg-white rounded-2xl shadow-2xl shadow-primary/15
-                      px-7 py-5 flex flex-col gap-1 max-w-[220px]
-                      border border-surface-container-high">
-            <span class="text-2xl font-extrabold text-primary font-headline">
+          <div class="position-absolute bg-white rounded-3 shadow-lg border p-4"
+               style="bottom:-1.5rem; left:-2rem; max-width:14rem;">
+            <span class="fw-bolder fs-4 font-headline" style="color:#001f3c;">
               {{ content.field_stat_number }}
-              {% if content.field_stat_label|render %}
-                {{ content.field_stat_label }}
-              {% endif %}
+              {% if content.field_stat_label|render %}{{ content.field_stat_label }}{% endif %}
             </span>
             {% if content.field_stat_description|render %}
-              <span class="text-xs text-on-surface-variant font-body leading-snug">
+              <span class="d-block small text-on-surface-variant lh-sm mt-1">
                 {{ content.field_stat_description }}
               </span>
             {% endif %}
@@ -107,31 +62,26 @@
   </div>
 </section>
 
-{# 2. THE JOURNEY SECTION #}
+{# ── 2. THE JOURNEY ── #}
 {% if content.field_journey_body|render %}
-<section class="bg-white pt-24 pb-16">
-  <div class="max-w-7xl mx-auto px-8">
-    <div class="max-w-2xl flex flex-col gap-8">
+<section class="bg-white pt-5 pb-4">
+  <div class="container-xl">
+    <div class="d-flex flex-column gap-4" style="max-width:38rem;">
 
-      {# Section heading #}
       {% if content.field_journey_heading|render %}
-        <h2 class="text-3xl font-extrabold text-primary font-headline">
+        <h2 class="h3 fw-bolder font-headline mb-0" style="color:#001f3c;">
           {{ content.field_journey_heading }}
         </h2>
       {% endif %}
 
-      {# Body copy — rendered as formatted text; <strong> works here #}
-      <div class="text-base text-on-surface-variant leading-relaxed
-                  font-body flex flex-col gap-4">
+      <div class="text-on-surface-variant lh-base font-body d-flex flex-column gap-3">
         {{ content.field_journey_body }}
       </div>
 
-      {# Pull quote #}
       {% if content.field_quote|render %}
-        <blockquote class="relative border-l-4 pl-6 py-4 pr-4
-                           rounded-r-xl about-pull-quote"
-                    style="border-color:#1460a4; background:rgba(20,96,164,0.05);">
-          <div class="text-base leading-relaxed font-body about-quote-text">
+        <blockquote class="border-start border-4 ps-4 py-3 rounded-end about-pull-quote"
+                    style="border-color:#1460a4 !important; background:rgba(20,96,164,.05);">
+          <div class="lh-base font-body about-quote-text">
             {{ content.field_quote }}
           </div>
         </blockquote>
@@ -142,26 +92,25 @@
 </section>
 {% endif %}
 
-{# 3. CORE EXPERTISE SECTION #}
+{# ── 3. CORE EXPERTISE ── #}
 {% if content.field_expertise_items|render %}
-<section class="bg-surface-container-lowest py-20">
-  <div class="max-w-7xl mx-auto px-8">
+<section class="bg-surface-container-lowest py-5">
+  <div class="container-xl">
 
-    {# Section header #}
-    <div class="mb-10 flex flex-col gap-2">
+    <div class="d-flex flex-column gap-1 mb-4">
       {% if content.field_expertise_heading|render %}
-        <h2 class="text-3xl font-extrabold text-primary font-headline">
+        <h2 class="h3 fw-bolder font-headline mb-0" style="color:#001f3c;">
           {{ content.field_expertise_heading }}
         </h2>
       {% endif %}
       {% if content.field_expertise_subtitle|render %}
-        <p class="text-sm text-on-surface-variant font-body">
+        <p class="small text-on-surface-variant font-body mb-0">
           {{ content.field_expertise_subtitle }}
         </p>
       {% endif %}
     </div>
 
-    {# 3-column expertise grid. #}
+    {# expertise items — hover handled via .about-expertise-grid .sc-expertise-card in node--about.css #}
     <div class="about-expertise-grid" data-eg>
       {{ content.field_expertise_items }}
     </div>
@@ -170,53 +119,45 @@
 </section>
 {% endif %}
 
-{# 4. PROFESSIONAL HONORS + CTA SECTION #}
+{# ── 4. HONORS + CTA ── #}
 {% if content.field_honors_items|render or content.field_cta_heading|render %}
-<section class="bg-white py-20">
-  <div class="max-w-7xl mx-auto px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<section class="bg-white py-5">
+  <div class="container-xl">
+    <div class="row g-5 align-items-start">
 
-      {# ── Left: honors list ── #}
-      <div>
+      <div class="col-12 col-lg-6">
         {% if content.field_honors_heading|render %}
-          <h2 class="text-3xl font-extrabold text-primary font-headline mb-8">
+          <h2 class="h3 fw-bolder font-headline mb-4" style="color:#001f3c;">
             {{ content.field_honors_heading }}
           </h2>
         {% endif %}
-
-        {# Honor Item paragraphs — each renders its own row #}
-        <div class="about-honors-list flex flex-col gap-0">
+        <div class="about-honors-list d-flex flex-column">
           {{ content.field_honors_items }}
         </div>
       </div>
 
-      {# ── Right: dark CTA card ── #}
       {% if content.field_cta_heading|render %}
-        <div class="rounded-2xl p-10 flex flex-col gap-6"
-             style="background-color: #001f3c;">
+        <div class="col-12 col-lg-6">
+          <div class="rounded-3 p-5 d-flex flex-column gap-4"
+               style="background-color:#001f3c;">
 
-          <h3 class="text-2xl font-bold font-headline"
-              style="color:#ffffff;">
-            {{ content.field_cta_heading }}
-          </h3>
+            <h3 class="fw-bold font-headline mb-0" style="color:#ffffff;">
+              {{ content.field_cta_heading }}
+            </h3>
 
-          {% if content.field_cta_body|render %}
-            <div class="about-cta-body text-sm leading-relaxed font-body">
-              {{ content.field_cta_body }}
-            </div>
-          {% endif %}
+            {% if content.field_cta_body|render %}
+              <div class="small lh-base font-body about-cta-body">
+                {{ content.field_cta_body }}
+              </div>
+            {% endif %}
 
-          {% if content.field_cta_url|render %}
-            {#
-              field_cta_url is a Link field.
-              Rendered with: Label = the button text (field_cta_label overrides it),
-              URL = destination.  We let Drupal render it and restyle below.
-            #}
-            <div class="about-cta-btn">
-              {{ content.field_cta_url }}
-            </div>
-          {% endif %}
+            {% if content.field_cta_url|render %}
+              <div class="about-cta-btn">
+                {{ content.field_cta_url }}
+              </div>
+            {% endif %}
 
+          </div>
         </div>
       {% endif %}
 
@@ -226,8 +167,3 @@
 {% endif %}
 
 </article>
-
-{# ────────────────────────────────────────────────
-   Self-contained styles for this node template.
-   Scoped with .node-about so nothing bleeds out.
-──────────────────────────────────────────────── #}

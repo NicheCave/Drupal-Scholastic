@@ -1,88 +1,83 @@
-<div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+{#
+  page--user--login.html.twig
+#}
+{% set _ = attach_library('scholastic/page--user-auth') %}
 
-  {# Left Panel: Branded hero #}
-  <div class="hidden lg:flex flex-col justify-between hero-gradient p-16 relative overflow-hidden">
+<div class="min-vh-100 row g-0">
 
-    {# Decorative geometric shapes #}
-    <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/3 -translate-x-1/3"></div>
-    <div class="absolute top-1/2 left-1/2 w-48 h-48 bg-surface-tint/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
+  {# ── Left panel: branded hero (desktop only) ── #}
+  <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between hero-gradient p-5 position-relative overflow-hidden">
+
+    {# Decorative shapes #}
+    <div class="position-absolute rounded-circle" style="width:24rem;height:24rem;background:rgba(255,255,255,.05);top:0;right:0;transform:translate(50%,-50%);"></div>
+    <div class="position-absolute rounded-circle" style="width:16rem;height:16rem;background:rgba(255,255,255,.05);bottom:0;left:0;transform:translate(-50%,33%);"></div>
 
     {# Logo #}
-    <a href="/" class="no-underline">
-      <div class="text-2xl font-extrabold tracking-tighter text-white font-headline relative z-10">
-        Drupal Scholastic
-      </div>
+    <a href="/" class="text-decoration-none position-relative" style="z-index:1;">
+      <span class="fw-bolder fs-4 text-white font-headline">Drupal Scholastic</span>
     </a>
 
     {# Central copy #}
-    <div class="relative z-10">
-      <span class="inline-block py-1 px-3 bg-white/10 text-blue-200 text-xs font-bold tracking-widest uppercase mb-6 rounded">
-        The Architectural Monograph
+    <div class="position-relative" style="z-index:1;">
+      <span class="badge px-3 py-2 mb-4 d-inline-block"
+            style="background:rgba(255,255,255,.1); color:#93c5fd; letter-spacing:.1em; font-size:.7rem;">
+        {{ 'The Architectural Monograph'|t }}
       </span>
-      <h2 class="text-4xl font-extrabold text-white font-headline leading-tight mb-4">
+      <h2 class="display-6 fw-bolder text-white font-headline lh-sm mb-3">
         Master Drupal.<br>Build What Lasts.
       </h2>
-      <p class="text-blue-100/80 text-base leading-relaxed max-w-xs font-body">
-        Join thousands of developers learning to build resilient, high-performance digital experiences.
+      <p class="font-body mb-0" style="color:rgba(191,219,254,.8); max-width:20rem;">
+        {{ 'Join thousands of developers learning to build resilient, high-performance digital experiences.'|t }}
       </p>
     </div>
 
-    {# Feature pills at bottom #}
-    <div class="relative z-10 flex flex-wrap gap-3">
-      <div class="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-        <span class="material-symbols-outlined text-blue-200 text-base" style="font-size:16px;">architecture</span>
-        <span class="text-xs text-blue-100 font-medium font-body">Modular Design</span>
-      </div>
-      <div class="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-        <span class="material-symbols-outlined text-blue-200 text-base" style="font-size:16px;">security</span>
-        <span class="text-xs text-blue-100 font-medium font-body">Enterprise Security</span>
-      </div>
-      <div class="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-        <span class="material-symbols-outlined text-blue-200 text-base" style="font-size:16px;">speed</span>
-        <span class="text-xs text-blue-100 font-medium font-body">Unmatched Speed</span>
-      </div>
+    {# Feature pills #}
+    <div class="d-flex flex-wrap gap-2 position-relative" style="z-index:1;">
+      <span class="d-flex align-items-center gap-2 rounded-pill px-3 py-2 small"
+            style="background:rgba(255,255,255,.1); color:rgba(191,219,254,.9);">
+        &#9723; {{ 'Modular Design'|t }}
+      </span>
+      <span class="d-flex align-items-center gap-2 rounded-pill px-3 py-2 small"
+            style="background:rgba(255,255,255,.1); color:rgba(191,219,254,.9);">
+        &#128274; {{ 'Enterprise Security'|t }}
+      </span>
+      <span class="d-flex align-items-center gap-2 rounded-pill px-3 py-2 small"
+            style="background:rgba(255,255,255,.1); color:rgba(191,219,254,.9);">
+        &#9889; {{ 'Unmatched Speed'|t }}
+      </span>
     </div>
 
   </div>
 
-  {# Right Panel: Login form #}
-  <div class="flex flex-col justify-center items-center bg-surface px-8 py-16 lg:px-16">
+  {# ── Right panel: login form ── #}
+  <div class="col-12 col-lg-6 d-flex flex-column justify-content-center align-items-center bg-light px-4 py-5 px-lg-5">
 
     {# Mobile-only logo #}
-    <a href="/" class="lg:hidden no-underline mb-10">
-      <div class="text-xl font-extrabold tracking-tighter text-primary font-headline">Drupal Scholastic</div>
+    <a href="/" class="d-lg-none text-decoration-none mb-5">
+      <span class="fw-bolder fs-5 font-headline" style="color:#001f3c;">Drupal Scholastic</span>
     </a>
 
-    <div class="w-full max-w-sm">
+    <div class="w-100" style="max-width:22rem;">
 
-      {# Header #}
-      <div class="mb-10">
-        <h1 class="text-3xl font-extrabold text-primary font-headline mb-2">Welcome back</h1>
-        <p class="text-sm text-on-surface-variant font-body">Sign in to continue your learning journey.</p>
+      <div class="mb-5">
+        <h1 class="h3 fw-bolder font-headline mb-1" style="color:#001f3c;">{{ 'Welcome back'|t }}</h1>
+        <p class="small text-muted font-body mb-0">{{ 'Sign in to continue your learning journey.'|t }}</p>
       </div>
 
-      {# Drupal injects the login form here #}
+      {# Bootstrap styles Drupal's form fields via form-control automatically #}
       <div class="drupal-form-wrapper">
         {{ page.content }}
       </div>
 
-      {# Footer links #}
-      <div class="mt-8 pt-8 border-t border-surface-container-high flex items-center justify-between text-sm">
-        <a href="/user/password" class="text-surface-tint font-medium hover:underline no-underline font-body">
-          Forgot password?
-        </a>
-        <a href="/user/register" class="text-primary font-semibold hover:text-surface-tint transition-colors no-underline font-body">
-          Create account →
-        </a>
+      <div class="d-flex align-items-center justify-content-between mt-4 pt-4 border-top small">
+        <a href="/user/password" class="text-surface-tint text-decoration-none font-body">{{ 'Forgot password?'|t }}</a>
+        <a href="/user/register" class="fw-semibold text-decoration-none font-body" style="color:#001f3c;">{{ 'Create account'|t }} &rarr;</a>
       </div>
 
     </div>
 
-    {# Back to home #}
-    <a href="/" class="mt-12 flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors no-underline font-body">
-      <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
-      Back to home
+    <a href="/" class="d-flex align-items-center gap-2 mt-5 small text-muted text-decoration-none font-body">
+      &larr; {{ 'Back to home'|t }}
     </a>
 
   </div>

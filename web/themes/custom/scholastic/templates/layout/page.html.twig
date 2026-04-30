@@ -1,174 +1,88 @@
-{#
-  page.html.twig — All non-front pages (tutorials, user pages, etc.)
+{# page.html.twig — All non-front inner pages #}
 
-  Variables:
-    logo         → Site logo image URL  (Appearance → Scholastic → Settings)
-    site_name    → Configuration → System → Basic site settings
-    site_slogan  → Configuration → System → Basic site settings
-    logged_in    → TRUE when user is authenticated
-    page.content → Main content region (node body, views, forms…)
-    page.footer  → Footer menu block
-#}
-
-{# TOP NAVIGATION #}
-<nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-xl shadow-sky-900/5">
-  <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
-
-    {# 1. LEFT SIDE: Logo / site name (Fully Dynamic) (not implemented actually) #}
-    {# 1. LEFT SIDE: Site name (Forced Text Mode) #}
-    <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3 group">
-      <span class="text-2xl font-extrabold tracking-tight font-headline transition-opacity group-hover:opacity-80" 
-            style="color: #001f3c;">
+{# ── TOP NAVIGATION ── #}
+<header class="sticky-top bg-white shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light py-3">
+    <div class="container-xl">
+      <a class="navbar-brand fw-bolder fs-5" href="{{ path('<front>') }}" style="color:#001f3c;">
         {{ site_name|striptags }}
-      </span>
-    </a>
-
-    {# Right-hand actions #}
-    <div class="flex items-center gap-4">
-
-      <div class="hidden md:block">
-        {{ page.primary_menu }}
+      </a>
+      <button class="navbar-toggler border-0" type="button"
+              data-bs-toggle="collapse" data-bs-target="#mainNav"
+              aria-controls="mainNav" aria-expanded="false"
+              aria-label="{{ 'Toggle navigation'|t }}">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <div class="ms-auto d-flex align-items-center gap-1">
+          {{ page.primary_menu }}
+          <div class="d-flex align-items-center gap-3 ms-3">
+            <form class="d-none d-md-flex align-items-center" role="search"
+                  action="{{ path('search.view') }}" method="get">
+              <input class="form-control form-control-sm border-0 bg-light rounded-pill"
+                     type="search" name="keys"
+                     placeholder="{{ 'Search tutorials…'|t }}"
+                     style="width:11rem; font-size:.85rem;">
+            </form>
+            {% if logged_in %}
+              <a href="{{ path('user.logout') }}" data-logout-confirm
+                 class="btn btn-primary btn-sm px-3 fw-semibold">{{ 'Log Out'|t }}</a>
+            {% else %}
+              <a href="{{ path('user.login', {}, {'query': {'destination': path('<front>')}}) }}"
+                 class="btn btn-primary btn-sm px-3 fw-semibold">{{ 'Sign In'|t }}</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-
-      <div class="hidden lg:flex items-center bg-surface-container-low rounded-lg px-3 py-2
-                  gap-2 cursor-pointer hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-outline" style="font-size:18px;">search</span>
-        <span class="text-sm text-outline font-body">{{ "Search tutorials…"|t }}</span>
-      </div>
-
-      {% if logged_in %}
-        <a href="{{ path('user.logout') }}"
-           data-logout-confirm
-           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm
-                  hover:opacity-90 transition-all no-underline font-body">
-          {{ "Log Out"|t }}
-        </a>
-      {% else %}
-        <a href="{{ path('user.login', {}, {'query': {'destination': path('<front>')}}) }}"
-           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-all no-underline font-body">
-          {{ "Sign In"|t }}
-        </a>
-      {% endif %}
     </div>
+  </nav>
+</header>
 
-    {# Mobile hamburger #}
-    <button class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg
-                   bg-surface-container-low hover:bg-surface-container transition-colors"
-            aria-label="{{ 'Open menu'|t }}" id="mobile-menu-toggle-inner">
-      <span class="material-symbols-outlined text-primary">menu</span>
-    </button>
-
-  </div>
-
-  {# Mobile menu dropdown #}
-  <div id="mobile-menu-inner"
-       class="hidden md:hidden border-t border-surface-container-high bg-white px-8 py-6">
-    {{ page.primary_menu }}
-    <div class="mt-4 pt-4 border-t border-surface-container-high">
-      {% if logged_in %}
-        <a href="{{ path('user.logout') }}"
-           data-logout-confirm
-           class="block bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold
-                  text-sm text-center no-underline">{{ "Log Out"|t }}</a>
-      {% else %}
-        <a href="{{ path('user.login') }}"
-           class="block bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold
-                  text-sm text-center no-underline">{{ "Sign In"|t }}</a>
-      {% endif %}
-    </div>
-  </div>
-</nav>
-
-<script>
-  (function () {
-    var btn  = document.getElementById("mobile-menu-toggle-inner");
-    var menu = document.getElementById("mobile-menu-inner");
-    
-    if (btn && menu) {
-      btn.addEventListener("click", function () {
-        menu.classList.toggle("hidden");
-      });
-    }
-  })();
-</script>
-
-{# MAIN CONTENT #}
-<main id="main-content" class="min-h-screen">
+{# ── MAIN CONTENT ── #}
+<main id="main-content" class="min-vh-100">
   {{ page.breadcrumb }}
   {{ page.content }}
-
-  {# RELATED TUTORIALS #}
-  {% if page.related_content %}
-    {{ page.related_content }}
-  {% endif %}
+  {% if page.related_content %}{{ page.related_content }}{% endif %}
 </main>
 
-{# FOOTER #}
-<footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
-  <div class="max-w-7xl mx-auto px-8 py-16
-              grid grid-cols-1 md:grid-cols-3 gap-12">
-
-    {# Column 1 – brand #}
-    <div class="flex flex-col gap-4">
-      <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3">
-        {% if logo %}
-          <img src="{{ logo }}" alt="{{ site_name }}" class="h-7 w-auto object-contain">
-        {% else %}
-          <span class="text-lg font-extrabold tracking-tighter text-primary font-headline">
-            {{ site_name }}
-          </span>
-        {% endif %}
-      </a>
-      {% if site_slogan %}
-        <p class="text-sm text-on-surface-variant leading-relaxed font-body max-w-[240px]">
-          {{ site_slogan }}
-        </p>
-      {% endif %}
-      <p class="text-xs text-outline font-body mt-2">
-        © {{ "now"|date("Y") }} {{ site_name }}.
-      </p>
-    </div>
-
-    {# Column 2 – footer nav + legal #}
-    <div class="grid grid-cols-2 gap-8">
-      <div>
-        <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Explore"|t }}
-        </h4>
-        {{ page.footer }}
+{# ── FOOTER ── #}
+<footer class="bg-surface-container-lowest border-top mt-0">
+  <div class="container-xl py-5">
+    <div class="row g-5">
+      <div class="col-12 col-md-4">
+        <a href="{{ path('<front>') }}" class="text-decoration-none d-flex align-items-center gap-2 mb-3">
+          {% if logo %}<img src="{{ logo }}" alt="{{ site_name }}" style="height:1.75rem;width:auto;object-fit:contain;">
+          {% else %}<span class="fw-bolder fs-5 font-headline" style="color:#001f3c;">{{ site_name }}</span>{% endif %}
+        </a>
+        {% if site_slogan %}<p class="small text-on-surface-variant mb-2">{{ site_slogan }}</p>{% endif %}
+        <p class="small text-muted mb-0">&copy; {{ "now"|date("Y") }} {{ site_name }}. {{ 'An Architectural Approach to Learning.'|t }}</p>
       </div>
-      <div>
-        <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Legal"|t }}
-        </h4>
-        <ul class="space-y-2 list-none p-0 m-0">
-          <li><a href="/privacy"  class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Privacy Policy"|t }}</a></li>
-          <li><a href="/terms"    class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Terms of Service"|t }}</a></li>
-          <li><a href="/contact"  class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">{{ "Contact Support"|t }}</a></li>
-        </ul>
+      <div class="col-12 col-md-5">
+        <div class="row g-4">
+          <div class="col-6">
+            <h6 class="text-uppercase fw-bold small mb-3 font-headline" style="color:#001f3c;letter-spacing:.1em;">{{ 'Resources'|t }}</h6>
+            {{ page.footer }}
+          </div>
+          <div class="col-6">
+            <h6 class="text-uppercase fw-bold small mb-3 font-headline" style="color:#001f3c;letter-spacing:.1em;">{{ 'Connect'|t }}</h6>
+            <ul class="list-unstyled mb-0">
+              <li><a href="/contact" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Contact Support'|t }}</a></li>
+              <li><a href="/privacy" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Privacy Policy'|t }}</a></li>
+              <li><a href="/terms" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Terms of Service'|t }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 d-flex flex-column align-items-md-end justify-content-start">
+        <div class="d-flex gap-2">
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">&#8599;</a>
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">@</a>
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">&#9675;</a>
+        </div>
       </div>
     </div>
-
-    {# Column 3 – social icons #}
-    <div class="flex flex-col justify-between items-start md:items-end gap-6">
-      <div class="flex gap-3">
-        <a href="#" aria-label="{{ 'Share'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">share</span>
-        </a>
-        <a href="#" aria-label="{{ 'Email'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">mail</span>
-        </a>
-        <a href="#" aria-label="{{ 'Website'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">language</span>
-        </a>
-      </div>
-    </div>
-
   </div>
 </footer>
+
+{# LIVE RELOAD SCRIPT - REMOVE BEFORE PRODUCTION #}
+<script src="https://learning-project-2.ddev.site:35729/livereload.js?snipver=1"></script>

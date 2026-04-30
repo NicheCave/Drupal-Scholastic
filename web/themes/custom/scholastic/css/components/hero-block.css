@@ -1,35 +1,35 @@
 /* Primary CTA — dark gradient button */
 .cta-primary-wrap a {
   display:         inline-block;
-  padding:         0.875rem 2rem;
+  padding:         .875rem 2rem;
   background:      linear-gradient(135deg, #001f3c 0%, #00345f 100%);
   color:           #ffffff;
   font-weight:     700;
-  font-family:     "Inter", sans-serif;
-  font-size:       0.9375rem;
-  border-radius:   0.375rem;
+  font-family:     'Inter', sans-serif;
+  font-size:       .9375rem;
+  border-radius:   .375rem;
   text-decoration: none;
-  transition:      opacity 0.15s, transform 0.15s;
+  transition:      opacity .15s, transform .15s;
   white-space:     nowrap;
-  letter-spacing:  0.01em;
+  letter-spacing:  .01em;
 }
 .cta-primary-wrap a:hover {
-  opacity:   0.92;
+  opacity:   .92;
   transform: translateY(-1px);
 }
 
 /* Secondary CTA — tonal surface button */
 .cta-secondary-wrap a {
   display:          inline-block;
-  padding:          0.875rem 2rem;
+  padding:          .875rem 2rem;
   background-color: #e7e8e9;
   color:            #001f3c;
   font-weight:      700;
-  font-family:      "Inter", sans-serif;
-  font-size:        0.9375rem;
-  border-radius:    0.375rem;
+  font-family:      'Inter', sans-serif;
+  font-size:        .9375rem;
+  border-radius:    .375rem;
   text-decoration:  none;
-  transition:       background-color 0.15s, transform 0.15s;
+  transition:       background-color .15s, transform .15s;
   white-space:      nowrap;
 }
 .cta-secondary-wrap a:hover {

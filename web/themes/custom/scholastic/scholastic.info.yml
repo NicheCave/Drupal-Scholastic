@@ -1,21 +1,23 @@
 name: 'Scholastic'
 type: theme
-description: 'An editorial, architectural theme for technical documentation.'
+description: 'An editorial Bootstrap 5 theme for Drupal. Self-contained — no contrib theme dependency.'
 package: Custom
 core_version_requirement: ^9 || ^10 || ^11
-base theme: false
+base theme: bootstrap
 
 libraries:
   - scholastic/global-styling
 
 regions:
-  header: 'Header'
-  primary_menu: 'Primary menu'
-  breadcrumb: 'Breadcrumbs'
-  hero: 'Front: Hero'
-  features: 'Front: Feature Grid'
+  header:          'Header'
+  primary_menu:    'Primary menu'
+  breadcrumb:      'Breadcrumbs'
+  hero:            'Front: Hero'
+  features:        'Front: Feature Grid'
   related_content: 'Related Content'
-  content: 'Main content'
-  newsletter: 'Front: Newsletter CTA'
-  sidebar_first: 'Sidebar First'
-  footer: 'Footer'
+  content:         'Main content'
+  newsletter:      'Front: Newsletter CTA'
+  sidebar_first:   'Sidebar First'
+  footer:          'Footer'
+  page_top:        'Page top'
+  page_bottom:     'Page bottom'

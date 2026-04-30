@@ -1,253 +1,106 @@
-{#
-  page--tutorials.html.twig — /tutorials listing page only.
+{# page--tutorials.html.twig — /tutorials listing page #}
 
-  REGION MAP (Block Layout → configure in /admin/structure/block):
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  primary_menu   → "Main navigation" menu block                   │
-  │  sidebar_first  → "Tutorial Categories" View block               │
-  │  content        → "All Tutorials" View (page display)            │
-  │  footer         → Footer navigation menu block                   │
-  └──────────────────────────────────────────────────────────────────┘
-#}
-
-{# TOP NAVIGATION (identical to page.html.twig) #}
-<nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-xl shadow-sky-900/5">
-  <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
-
-    <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3 group">
-      <span class="text-2xl font-extrabold tracking-tight font-headline transition-opacity group-hover:opacity-80"
-            style="color: #001f3c;">
+{# ── TOP NAVIGATION ── #}
+<header class="sticky-top bg-white shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light py-3">
+    <div class="container-xl">
+      <a class="navbar-brand fw-bolder fs-5" href="{{ path('<front>') }}" style="color:#001f3c;">
         {{ site_name|striptags }}
-      </span>
-    </a>
-
-    <div class="flex items-center gap-4">
-      <div class="hidden md:block">
-        {{ page.primary_menu }}
+      </a>
+      <button class="navbar-toggler border-0" type="button"
+              data-bs-toggle="collapse" data-bs-target="#mainNavTutorials"
+              aria-controls="mainNavTutorials" aria-expanded="false"
+              aria-label="{{ 'Toggle navigation'|t }}">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNavTutorials">
+        <div class="ms-auto d-flex align-items-center gap-1">
+          {{ page.primary_menu }}
+          <div class="d-flex align-items-center gap-3 ms-3">
+            <form class="d-none d-md-flex align-items-center" role="search"
+                  action="{{ path('search.view') }}" method="get">
+              <input class="form-control form-control-sm border-0 bg-light rounded-pill"
+                     type="search" name="keys"
+                     placeholder="{{ 'Search tutorials…'|t }}"
+                     style="width:11rem; font-size:.85rem;">
+            </form>
+            {% if logged_in %}
+              <a href="{{ path('user.logout') }}" data-logout-confirm
+                 class="btn btn-primary btn-sm px-3 fw-semibold">{{ 'Log Out'|t }}</a>
+            {% else %}
+              <a href="{{ path('user.login') }}"
+                 class="btn btn-primary btn-sm px-3 fw-semibold">{{ 'Sign In'|t }}</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-
-      <div class="hidden lg:flex items-center bg-surface-container-low rounded-lg px-3 py-2
-                  gap-2 cursor-pointer hover:bg-surface-container transition-colors">
-        <span class="material-symbols-outlined text-outline" style="font-size:18px;">search</span>
-        <span class="text-sm text-outline font-body">{{ "Search tutorials…"|t }}</span>
-      </div>
-
-      {% if logged_in %}
-        <a href="{{ path('user.logout') }}"
-           data-logout-confirm
-           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm
-                  hover:opacity-90 transition-all no-underline font-body">
-          {{ "Log Out"|t }}
-        </a>
-      {% else %}
-        <a href="{{ path('user.login') }}"
-           class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm
-                  hover:opacity-90 transition-all no-underline font-body">
-          {{ "Sign In"|t }}
-        </a>
-      {% endif %}
     </div>
+  </nav>
+</header>
 
-    <button class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg
-                   bg-surface-container-low hover:bg-surface-container transition-colors"
-            aria-label="{{ 'Open menu'|t }}" id="mobile-menu-toggle-tutorials">
-      <span class="material-symbols-outlined text-primary">menu</span>
-    </button>
-  </div>
-
-  <div id="mobile-menu-tutorials"
-       class="hidden md:hidden border-t border-surface-container-high bg-white px-8 py-6">
-    {{ page.primary_menu }}
-    <div class="mt-4 pt-4 border-t border-surface-container-high">
-      {% if logged_in %}
-        <a href="{{ path('user.logout') }}"
-           data-logout-confirm
-           class="block bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold
-                  text-sm text-center no-underline">{{ "Log Out"|t }}</a>
-      {% else %}
-        <a href="{{ path('user.login') }}"
-           class="block bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold
-                  text-sm text-center no-underline">{{ "Sign In"|t }}</a>
-      {% endif %}
-    </div>
-  </div>
-</nav>
-
-{# PAGE HEADER #}
-<div class="bg-white border-b border-surface-container-high">
-  <div class="max-w-7xl mx-auto px-8 py-14">
-    <h1 class="text-5xl font-extrabold font-headline text-primary tracking-tight mb-4">
-      {{ "The Architectural Library."|t }}
+{# ── PAGE HEADER ── #}
+<div class="bg-white border-bottom">
+  <div class="container-xl py-5">
+    <h1 class="display-5 fw-bolder font-headline mb-3" style="color:#001f3c;letter-spacing:-.02em;">
+      {{ 'The Architectural Library.'|t }}
     </h1>
-    <p class="text-lg text-on-surface-variant font-body max-w-lg leading-relaxed">
-      {{ "Master the structural complexity of Drupal through our curated monographs. From foundational blocks to high-performance module development."|t }}
+    <p class="lead text-on-surface-variant font-body mb-0" style="max-width:38rem;">
+      {{ 'Master the structural complexity of Drupal through our curated monographs.'|t }}
     </p>
   </div>
 </div>
 
-{# MAIN LAYOUT: sidebar + content grid #}
-<main id="main-content" class="bg-surface-container-lowest min-h-screen">
-  <div class="max-w-7xl mx-auto px-8 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 items-start">
-
-      {# ── LEFT SIDEBAR ── #}
-      <aside class="lg:sticky lg:top-28 flex flex-col gap-6">
-        {{ page.sidebar_first }}
+{# ── MAIN LAYOUT ── #}
+<main id="main-content" class="bg-surface-container-lowest min-vh-100">
+  <div class="container-xl py-5">
+    <div class="row g-5 align-items-start">
+      <aside class="col-12 col-lg-3">
+        <div class="position-sticky" style="top:5rem;">
+          {{ page.sidebar_first }}
+        </div>
       </aside>
-
-      {# ── MAIN CONTENT: View renders header + cards + pager ── #}
-      <div>
+      <div class="col-12 col-lg-9">
         {{ page.content }}
       </div>
-
     </div>
   </div>
 </main>
 
-{# FOOTER (identical to page.html.twig) #}
-<footer class="bg-surface-container-lowest border-t border-surface-container-high mt-0">
-  <div class="max-w-7xl mx-auto px-8 py-16
-              grid grid-cols-1 md:grid-cols-3 gap-12">
-
-    {# Column 1 – brand #}
-    <div class="flex flex-col gap-4">
-      <a href="{{ path('<front>') }}" class="no-underline flex items-center gap-3">
-        {% if logo %}
-          <img src="{{ logo }}" alt="{{ site_name }}" class="h-7 w-auto object-contain">
-        {% else %}
-          <span class="text-lg font-extrabold tracking-tighter text-primary font-headline">
-            {{ site_name }}
-          </span>
-        {% endif %}
-      </a>
-      {% if site_slogan %}
-        <p class="text-sm text-on-surface-variant leading-relaxed font-body max-w-[240px]">
-          {{ site_slogan }}
-        </p>
-      {% endif %}
-      <p class="text-xs text-outline font-body mt-2">
-        © {{ "now"|date("Y") }} {{ site_name }}.
-      </p>
-    </div>
-
-    {# Column 2 – Explore + Legal links #}
-    <div class="grid grid-cols-2 gap-8">
-      <div>
-        <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Explore"|t }}
-        </h4>
-        {{ page.footer }}
+{# ── FOOTER ── #}
+<footer class="bg-surface-container-lowest border-top">
+  <div class="container-xl py-5">
+    <div class="row g-5">
+      <div class="col-12 col-md-4">
+        <a href="{{ path('<front>') }}" class="text-decoration-none d-flex align-items-center gap-2 mb-3">
+          {% if logo %}<img src="{{ logo }}" alt="{{ site_name }}" style="height:1.75rem;width:auto;">
+          {% else %}<span class="fw-bolder fs-5 font-headline" style="color:#001f3c;">{{ site_name }}</span>{% endif %}
+        </a>
+        {% if site_slogan %}<p class="small text-on-surface-variant mb-2">{{ site_slogan }}</p>{% endif %}
+        <p class="small text-muted mb-0">&copy; {{ "now"|date("Y") }} {{ site_name }}. {{ 'An Architectural Approach to Learning.'|t }}</p>
       </div>
-      <div>
-        <h4 class="text-xs font-bold uppercase tracking-widest text-primary mb-4 font-headline">
-          {{ "Legal"|t }}
-        </h4>
-        <ul class="space-y-2 list-none p-0 m-0">
-          <li>
-            <a href="/privacy"
-               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
-              {{ "Privacy Policy"|t }}
-            </a>
-          </li>
-          <li>
-            <a href="/terms"
-               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
-              {{ "Terms of Service"|t }}
-            </a>
-          </li>
-          <li>
-            <a href="/contact"
-               class="text-sm text-on-surface-variant hover:text-primary transition-colors no-underline">
-              {{ "Contact Support"|t }}
-            </a>
-          </li>
-        </ul>
+      <div class="col-12 col-md-5">
+        <div class="row g-4">
+          <div class="col-6">
+            <h6 class="text-uppercase fw-bold small mb-3 font-headline" style="color:#001f3c;letter-spacing:.1em;">{{ 'Explore'|t }}</h6>
+            {{ page.footer }}
+          </div>
+          <div class="col-6">
+            <h6 class="text-uppercase fw-bold small mb-3 font-headline" style="color:#001f3c;letter-spacing:.1em;">{{ 'Legal'|t }}</h6>
+            <ul class="list-unstyled mb-0">
+              <li><a href="/privacy" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Privacy Policy'|t }}</a></li>
+              <li><a href="/terms" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Terms of Service'|t }}</a></li>
+              <li><a href="/contact" class="small text-on-surface-variant text-decoration-none d-block py-1">{{ 'Contact Support'|t }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 d-flex flex-column align-items-md-end">
+        <div class="d-flex gap-2">
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">&#8599;</a>
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">@</a>
+          <a href="#" class="d-flex align-items-center justify-content-center rounded-circle text-muted border" style="width:2.5rem;height:2.5rem;">&#9675;</a>
+        </div>
       </div>
     </div>
-
-    {# Column 3 – Social icons + tagline #}
-    <div class="flex flex-col justify-between items-start md:items-end gap-6">
-      <div class="flex gap-3">
-        <a href="#" aria-label="{{ 'Share'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">share</span>
-        </a>
-        <a href="#" aria-label="{{ 'Email'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">mail</span>
-        </a>
-        <a href="#" aria-label="{{ 'Website'|t }}"
-           class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center
-                  text-outline hover:bg-primary hover:text-on-primary transition-all no-underline">
-          <span class="material-symbols-outlined" style="font-size:18px;">language</span>
-        </a>
-      </div>
-    </div>
-
   </div>
 </footer>
-
-{# Mobile menu toggle script #}
-<script>
-  (function(){
-    var btn  = document.getElementById('mobile-menu-toggle-tutorials');
-    var menu = document.getElementById('mobile-menu-tutorials');
-    if (btn && menu) {
-      btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); });
-    }
-  })();
-</script>
-
-<script>
-(function ($, Drupal) {
-  'use strict';
-
-  Drupal.behaviors.scholasticPreventAutoSubmit = {
-    attach: function (context) {
-
-      var $form = $(context).find('.views-exposed-form').addBack('.views-exposed-form');
-      if (!$form.length || $form.data('sch-patched')) return;
-      $form.data('sch-patched', true);
-
-      var formEl  = $form[0];
-      var $input  = $form.find('input.form-autocomplete, input[data-autocomplete-path]');
-      if (!$input.length) return;
-
-      var inputEl = $input[0];
-      var blocked = false;   // true while a suggestion was just selected
-
-      /* ── 1. Flag the moment autocomplete commits a selection ── */
-      $input.on('autocompleteselect', function () {
-        blocked = true;
-        /* Safety valve: clear flag after 600 ms so normal typing still works */
-        setTimeout(function () { blocked = false; }, 600);
-      });
-
-      /* ── 2. Block the `change` event autocomplete fires right after ── */
-      inputEl.addEventListener('change', function (e) {
-        if (blocked) {
-          e.stopImmediatePropagation();
-          e.preventDefault();
-        }
-      }, true /* capture — runs before jQuery handlers */);
-
-      /* ── 3. Belt-and-suspenders: block any form submit while blocked ── */
-      formEl.addEventListener('submit', function (e) {
-        if (blocked) {
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          blocked = false;
-        }
-      }, true /* capture */);
-
-      /* ── 4. Apply button: clear flag so the real submit goes through ── */
-      $form.find('input[type="submit"], button[type="submit"]').on('click', function () {
-        blocked = false;
-      });
-    }
-  };
-
-})(jQuery, Drupal);
-</script>

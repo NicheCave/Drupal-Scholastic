@@ -1,94 +1,78 @@
 {#
-  pager.html.twig — Theme-wide styled pager.
+  pager.html.twig — Bootstrap pagination.
 
   Drupal variables:
-    items.previous   → previous page (has .href and .text)
-    items.pages      → array keyed by page number; each has .href
-    items.next       → next page
-    current          → 1-based current page number
-    ellipses.previous, ellipses.next → boolean, show "…"
-    heading_id       → aria heading id
-    quantity         → number of page links shown
+    items.previous / items.next  → prev/next page links
+    items.pages                  → keyed array of page number links
+    current                      → 1-based current page number
+    ellipses.previous/next       → boolean, show "…"
+    heading_id                   → aria heading id
 #}
 
 {% if items %}
-<nav class="flex items-center gap-2" aria-labelledby="{{ heading_id }}">
-  <h4 id="{{ heading_id }}" class="sr-only">{{ "Pagination"|t }}</h4>
+<nav aria-labelledby="{{ heading_id }}">
+  <h4 id="{{ heading_id }}" class="visually-hidden">{{ 'Pagination'|t }}</h4>
 
-  {# ← Previous #}
-  {% if items.previous %}
-    <a href="{{ items.previous.href }}"
-       {{ items.previous.attributes.addClass([
-           'flex items-center justify-center w-10 h-10 rounded-lg',
-           'border border-surface-container-high',
-           'text-on-surface-variant hover:bg-surface-container',
-           'hover:text-primary transition-colors no-underline'
-         ]) }}>
-      <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
-    </a>
-  {% else %}
-    <span class="flex items-center justify-center w-10 h-10 rounded-lg
-                 border border-surface-container-high
-                 text-outline opacity-40 cursor-not-allowed">
-      <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
-    </span>
-  {% endif %}
+  <ul class="pagination justify-content-center gap-1 mb-0">
 
-  {# … before first page if needed #}
-  {% if ellipses.previous %}
-    <span class="flex items-center justify-center w-10 h-10
-                 text-outline text-sm font-body select-none">…</span>
-  {% endif %}
+    {# ← Previous #}
+    <li class="page-item{% if not items.previous %} disabled{% endif %}">
+      {% if items.previous %}
+        <a class="page-link rounded" href="{{ items.previous.href }}"
+           {{ items.previous.attributes }} aria-label="{{ 'Previous page'|t }}">
+          &lsaquo;
+        </a>
+      {% else %}
+        <span class="page-link rounded" aria-hidden="true">&lsaquo;</span>
+      {% endif %}
+    </li>
 
-  {# Page numbers #}
-  {% for key, item in items.pages %}
-    {% if current == key %}
-      <span class="flex items-center justify-center w-10 h-10 rounded-lg
-                   bg-primary text-on-primary
-                   text-sm font-bold font-body"
-            aria-current="page"
-            aria-label="{{ 'Current page, page'|t }} {{ key }}">
-        {{ key }}
-      </span>
-    {% else %}
-      <a href="{{ item.href }}"
-         {{ item.attributes.addClass([
-             'flex items-center justify-center w-10 h-10 rounded-lg',
-             'border border-surface-container-high',
-             'text-on-surface-variant hover:bg-surface-container',
-             'hover:text-primary text-sm font-body',
-             'transition-colors no-underline'
-           ]) }}
-         aria-label="{{ 'Page'|t }} {{ key }}">
-        {{ key }}
-      </a>
+    {# … before first shown page #}
+    {% if ellipses.previous %}
+      <li class="page-item disabled">
+        <span class="page-link border-0 bg-transparent">…</span>
+      </li>
     {% endif %}
-  {% endfor %}
 
-  {# … after last page if needed #}
-  {% if ellipses.next %}
-    <span class="flex items-center justify-center w-10 h-10
-                 text-outline text-sm font-body select-none">…</span>
-  {% endif %}
+    {# Page numbers #}
+    {% for key, item in items.pages %}
+      <li class="page-item{% if current == key %} active{% endif %}">
+        {% if current == key %}
+          <span class="page-link rounded fw-bold"
+                aria-current="page"
+                aria-label="{{ 'Current page, page'|t }} {{ key }}">
+            {{ key }}
+          </span>
+        {% else %}
+          <a class="page-link rounded"
+             href="{{ item.href }}"
+             {{ item.attributes }}
+             aria-label="{{ 'Page'|t }} {{ key }}">
+            {{ key }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
 
-  {# → Next #}
-  {% if items.next %}
-    <a href="{{ items.next.href }}"
-       {{ items.next.attributes.addClass([
-           'flex items-center justify-center w-10 h-10 rounded-lg',
-           'border border-surface-container-high',
-           'text-on-surface-variant hover:bg-surface-container',
-           'hover:text-primary transition-colors no-underline'
-         ]) }}>
-      <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
-    </a>
-  {% else %}
-    <span class="flex items-center justify-center w-10 h-10 rounded-lg
-                 border border-surface-container-high
-                 text-outline opacity-40 cursor-not-allowed">
-      <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
-    </span>
-  {% endif %}
+    {# … after last shown page #}
+    {% if ellipses.next %}
+      <li class="page-item disabled">
+        <span class="page-link border-0 bg-transparent">…</span>
+      </li>
+    {% endif %}
 
+    {# → Next #}
+    <li class="page-item{% if not items.next %} disabled{% endif %}">
+      {% if items.next %}
+        <a class="page-link rounded" href="{{ items.next.href }}"
+           {{ items.next.attributes }} aria-label="{{ 'Next page'|t }}">
+          &rsaquo;
+        </a>
+      {% else %}
+        <span class="page-link rounded" aria-hidden="true">&rsaquo;</span>
+      {% endif %}
+    </li>
+
+  </ul>
 </nav>
 {% endif %}

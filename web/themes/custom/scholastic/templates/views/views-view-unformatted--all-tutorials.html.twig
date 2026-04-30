@@ -1,14 +1,9 @@
 {#
   views-view-unformatted--all-tutorials.html.twig
-
-  ── VIEW FIELDS
-    • field_category  
-    • title           
-    • field_subtitle
-    • field_read_time
+  View fields: field_category / title / field_subtitle / field_read_time
 #}
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="row row-cols-1 row-cols-md-2 g-4">
 
   {% for row in rows %}
 
@@ -16,7 +11,6 @@
     {% set idx         = loop.index0 %}
     {% set node_entity = row.content['#row']._entity %}
 
-    {# HERO IMAGE #}
     {% set media_entity = node_entity.field_hero_image.entity %}
     {% if media_entity and media_entity.field_media_image is not empty %}
       {% set img_uri = media_entity.field_media_image.entity.uri.value %}
@@ -26,91 +20,72 @@
       {% set img_alt = '' %}
     {% endif %}
 
-    {# Other fields #}
     {% set title    = vsp.getField(idx, 'title')|striptags|trim %}
     {% set category = vsp.getField(idx, 'field_category')|striptags|trim %}
     {% set subtitle = vsp.getField(idx, 'field_subtitle') %}
     {% set readtime = vsp.getField(idx, 'field_read_time')|striptags|trim %}
-
-    {# Node URL #}
     {% set node_url = path('entity.node.canonical', {'node': node_entity.id()}) %}
 
-    {# TUTORIAL CARD #}
-    <article class="group bg-white rounded-2xl overflow-hidden
-                    shadow-sm hover:shadow-lg
-                    border border-surface-container-high
-                    transition-all duration-300
-                    relative flex flex-col">
+    <div class="col">
+      <article class="position-relative bg-white rounded-3 overflow-hidden border shadow-sm h-100 d-flex flex-column"
+               style="transition:box-shadow .3s;">
 
-      {# Hero image #}
-      <div class="overflow-hidden w-full" style="aspect-ratio: 16/9;">
-        <div class="bento-card-img w-full h-full transform
-                    group-hover:scale-105 transition-transform duration-500">
-          {% if img_uri %}
-            <img src="{{ file_url(img_uri) }}"
-                 alt="{{ img_alt }}"
-                 loading="lazy"
-                 style="width:100%;height:100%;object-fit:cover;display:block;">
-          {% else %}
-            <div class="w-full h-full bg-surface-container-high"></div>
-          {% endif %}
+        {# Hero image — 16:9 #}
+        <div class="ratio ratio-16x9 overflow-hidden">
+          <div class="bento-card-img w-100 h-100" style="transition:transform .5s;">
+            {% if img_uri %}
+              <img src="{{ file_url(img_uri) }}" alt="{{ img_alt }}" loading="lazy"
+                   style="width:100%;height:100%;object-fit:cover;display:block;">
+            {% else %}
+              <div class="w-100 h-100 bg-surface-container-high"></div>
+            {% endif %}
+          </div>
         </div>
-      </div>
 
-      {# Card body #}
-      <div class="p-6 flex flex-col gap-3 flex-1">
+        {# Card body #}
+        <div class="p-4 d-flex flex-column gap-2 flex-fill">
 
-        {% if category %}
-          <span class="inline-block py-1 px-2.5
-                       bg-secondary-container text-on-secondary-container
-                       text-[10px] font-bold tracking-widest uppercase
-                       rounded w-fit font-label">
-            {{ category }}
-          </span>
-        {% endif %}
-
-        <h2 class="text-xl font-bold text-primary font-headline leading-snug
-                   line-clamp-2">
-          {{ title }}
-        </h2>
-
-        {% if subtitle %}
-          <p class="text-sm text-on-surface-variant line-clamp-2
-                    font-body leading-relaxed flex-1">
-            {{ subtitle }}
-          </p>
-        {% endif %}
-
-        <div class="flex items-center justify-between
-                    pt-4 mt-auto
-                    border-t border-surface-container-high">
-
-          {% if readtime %}
-            <span class="flex items-center gap-1 text-xs text-outline font-body">
-              <span class="material-symbols-outlined" style="font-size:15px;">schedule</span>
-              {{ readtime }} {{ "min read"|t }}
+          {% if category %}
+            {# align-self-start prevents flex-column from stretching the badge to full width #}
+            <span class="align-self-start badge bg-secondary-container text-on-secondary-container
+                         text-uppercase"
+                  style="letter-spacing:.08em; font-size:.65rem;">
+              {{ category }}
             </span>
-          {% else %}
-            <span></span>
           {% endif %}
 
-          <span class="text-surface-tint text-sm font-bold
-                       flex items-center gap-0.5
-                       group-hover:gap-1.5 transition-all
-                       font-body pointer-events-none">
-            {{ "Read More"|t }}
-            <span class="material-symbols-outlined" style="font-size:16px;">chevron_right</span>
-          </span>
+          <h2 class="h5 fw-bold font-headline lh-sm line-clamp-2 mb-0" style="color:#001f3c;">
+            {{ title }}
+          </h2>
+
+          {% if subtitle %}
+            <p class="small text-on-surface-variant lh-base font-body line-clamp-2 flex-fill mb-0">
+              {{ subtitle }}
+            </p>
+          {% endif %}
+
+          <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-auto">
+            {% if readtime %}
+              <span class="small text-muted d-flex align-items-center gap-1">
+                &#9200; {{ readtime }} {{ 'min read'|t }}
+              </span>
+            {% else %}
+              <span></span>
+            {% endif %}
+            <span class="small fw-bold text-surface-tint font-body pe-none">
+              {{ 'Read More'|t }} &rsaquo;
+            </span>
+          </div>
 
         </div>
-      </div>
 
-      {# Full-card click overlay #}
-      <a href="{{ node_url }}"
-         class="absolute inset-0 z-10 rounded-2xl"
-         aria-label="{{ title }}"></a>
+        <a href="{{ node_url }}"
+           class="position-absolute top-0 start-0 w-100 h-100 rounded-3"
+           style="z-index:2;"
+           aria-label="{{ title }}"></a>
 
-    </article>
+      </article>
+    </div>
 
   {% endfor %}
 

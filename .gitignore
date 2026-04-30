@@ -1,5 +1,33 @@
+Ignore Composer dependencies
 /vendor/
-/web/sites/default/files/
-/web/sites/default/settings.local.php
-.ddev/db-build
-.ddev/.importdb*
+
+# Ignore Drupal core (if you are not using a specialized 'core-integrated' repo)
+/web/core/
+
+# Ignore contributed modules and libraries
+web/modules/contrib/
+web/libraries/
+web/themes/contrib/
+
+# Ignore frontend dependencies (CRITICAL)
+**/node_modules/
+dist/
+.sass-cache/
+
+# Ignore Drupal site-specific files
+web/sites/*/settings.php
+web/sites/*/settings.local.php
+web/sites/*/files/
+web/sites/*/private/
+web/sites/*/services.yml
+
+# Ignore Zips and OS garbage
+*.zip
+*.tar.gz
+.DS_Store
+Thumbs.db
+
+# Ignore DDEV and Local Env files
+.ddev/
+.env
+.env.local
